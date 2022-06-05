@@ -24,7 +24,7 @@ dependencies:
   shared_preferences: 0.5.7+3
   http: ^0.12.1
   data_connection_checker: ^0.3.4
-  connectivity: ^2.0.2
+  connectivity: ^2.0.1
   carousel_slider: ^3.0.0
   shimmer: ^1.1.2
   flutter_html: ^1.0.0
@@ -45,7 +45,7 @@ dependencies:
   flutter_inappwebview: ^4.0.0+4
   extended_image: ^0.8.0
   flushbar: ^1.10.4
-  firebase_messaging: 6.0.16
+  firebase_messaging: ^6.0.16
   multi_image_picker2: ^5.0.1
   flutter_absolute_path: ^1.0.6
   flutter_local_notifications: ^1.4.0

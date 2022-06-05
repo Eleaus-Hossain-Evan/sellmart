@@ -275,7 +275,7 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
                                   },
                                   child: Container(
                                     height: 7 * SizeConfig.heightSizeMultiplier,
-                                    color: Theme.of(context).primaryColor,
+                                    color: Theme.of(context).accentColor,
                                     child: Center(
                                       child: Text(AppLocalization.of(context).getTranslatedValue("confirm_order").toUpperCase(),
                                         style: Theme.of(context).textTheme.subtitle2.copyWith(

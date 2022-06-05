@@ -32,7 +32,10 @@ class _ProductGridViewState extends State<ProductGridView> {
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         cacheExtent: 20,
-        itemCount: widget.products == null ? 0 : widget.products.length,
+        itemCount: widget.products == null ? 0 : 
+        // widget.products.length
+        4
+        ,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 1 * SizeConfig.heightSizeMultiplier,

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "436169993823",
+    "project_id": "sell-mart",
+    "storage_bucket": "sell-mart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436169993823:android:63ad3643e984f3e03b75ea",
+        "android_client_info": {
+          "package_name": "com.sellmart.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436169993823-klg602d6kqlrj5iup10f990d2k39ma14.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sellmart.app",
+            "certificate_hash": "329dbf33db68dfb6e89e97fe6b4cdbc2fc64a486"
+          }
+        },
+        {
+          "client_id": "436169993823-nrkvqsg2ujbike79f9cpln3sj9iha8n6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkM54s28Ka-X3WxNSl_igW3fULElGunCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436169993823-nrkvqsg2ujbike79f9cpln3sj9iha8n6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
