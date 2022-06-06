@@ -40,6 +40,8 @@ class _MyAddressState extends State<MyAddress> with ChangeNotifier implements Co
 
   MySharedPreference _sharedPreference = MySharedPreference();
 
+  ValueNotifier<int> addressIndex = ValueNotifier(0);
+
 
   @override
   void initState() {
