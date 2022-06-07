@@ -1,5 +1,4 @@
 import 'dart:convert';
-import '../utils/fcm_setup.dart';
 import 'address.dart';
 
 class User {
@@ -100,7 +99,7 @@ class User {
     return {
       "phone" : phone == null ? "" : phone,
       "password" : password == null ? "" : password,
-      "deviceToken" : deviceToken.value == null ? "" : deviceToken.value,
+      //"deviceToken" : deviceToken.value == null ? "" : deviceToken.value,
     };
   }
 
