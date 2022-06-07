@@ -12,6 +12,7 @@ import '../utils/ssl_commerz_gateway.dart';
 import '../widget/checkout_product_list.dart';
 import '../widget/delivery_payment_option_widget.dart';
 import '../widget/error_widget.dart';
+import '../widget/order_referral_coin_widget.dart';
 import '../widget/order_coupon_widget.dart';
 import '../widget/order_delivery_address_widget.dart';
 import '../widget/order_summary_widget.dart';
@@ -31,13 +32,13 @@ import 'package:sslcommerz_flutter/model/SSLCTransactionInfoModel.dart';
 ValueNotifier<Order> order = ValueNotifier(Order());
 
 class Cart extends StatefulWidget {
-
   @override
   _CartState createState() => _CartState();
 }
 
-class _CartState extends State<Cart> with ChangeNotifier implements Connectivity, OrderContract, CouponContract {
-
+class _CartState extends State<Cart>
+    with ChangeNotifier
+    implements Connectivity, OrderContract, CouponContract {
   DataPresenter _presenter;
 
   Connectivity _connectivity;
@@ -66,8 +67,8 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
 
   @override
   void initState() {
-
-    order.value = Order(deliveryFee: 0.0, vat: 0.0, sslCharge: 0.0, advancePayment: 0.0);
+    order.value =
+        Order(deliveryFee: 0.0, vat: 0.0, sslCharge: 0.0, advancePayment: 0.0);
 
     _getCartItems();
 
@@ -75,14 +76,14 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
     _orderContract = this;
     _couponContract = this;
 
-    _presenter = DataPresenter(_connectivity, orderContract: _orderContract, couponContract: _couponContract);
+    _presenter = DataPresenter(_connectivity,
+        orderContract: _orderContract, couponContract: _couponContract);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: _onBackPress,
       child: Scaffold(
@@ -90,23 +91,21 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
           builder: (BuildContext context) {
-
             _context = context;
 
             return SafeArea(
               child: Column(
                 children: <Widget>[
-
-                  MyAppBar(AppLocalization.of(context).getTranslatedValue("cart"),
+                  MyAppBar(
+                    AppLocalization.of(context).getTranslatedValue("cart"),
                     enableButtons: false,
                     onBackPress: () {
-
                       _onBackPress();
                     },
                   ),
-
                   Expanded(
-                    child: NotificationListener<OverscrollIndicatorNotification>(
+                    child:
+                        NotificationListener<OverscrollIndicatorNotification>(
                       onNotification: (overScroll) {
                         overScroll.disallowGlow();
                         return;
@@ -114,192 +113,282 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
                       child: ValueListenableBuilder(
                         valueListenable: numberOfItems,
                         builder: (BuildContext context, int numberOfItem, _) {
-
-                          return numberOfItem > 0 ? SingleChildScrollView(
-                            controller: _scrollController,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 5.12 * SizeConfig.widthSizeMultiplier,
-                                    right: 5.12 * SizeConfig.widthSizeMultiplier,
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-
-                                      RichText(
-                                        text: TextSpan(
-                                          text: _items.length.toString() + " " + (_items.length > 1 ? AppLocalization.of(context).getTranslatedValue("items").toUpperCase() :
-                                          AppLocalization.of(context).getTranslatedValue("item").toUpperCase()) + " ",
-                                          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                            fontSize: 1.75 * SizeConfig.textSizeMultiplier,
-                                            color: Colors.black.withOpacity(.65),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          children: <TextSpan>[
-
-                                            TextSpan(text: AppLocalization.of(context).getTranslatedValue("in_the_cart").toUpperCase(),
-                                              style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                                fontSize: 1.75 * SizeConfig.textSizeMultiplier,
-                                                color: Colors.black.withOpacity(.47),
-                                                fontWeight: FontWeight.w500,
+                          return numberOfItem > 0
+                              ? SingleChildScrollView(
+                                  controller: _scrollController,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: 5.12 *
+                                              SizeConfig.widthSizeMultiplier,
+                                          right: 5.12 *
+                                              SizeConfig.widthSizeMultiplier,
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            RichText(
+                                              text: TextSpan(
+                                                text: _items.length.toString() +
+                                                    " " +
+                                                    (_items.length > 1
+                                                        ? AppLocalization.of(
+                                                                context)
+                                                            .getTranslatedValue(
+                                                                "items")
+                                                            .toUpperCase()
+                                                        : AppLocalization.of(
+                                                                context)
+                                                            .getTranslatedValue(
+                                                                "item")
+                                                            .toUpperCase()) +
+                                                    " ",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2
+                                                    .copyWith(
+                                                      fontSize: 1.75 *
+                                                          SizeConfig
+                                                              .textSizeMultiplier,
+                                                      color: Colors.black
+                                                          .withOpacity(.65),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                    text: AppLocalization.of(
+                                                            context)
+                                                        .getTranslatedValue(
+                                                            "in_the_cart")
+                                                        .toUpperCase(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText2
+                                                        .copyWith(
+                                                          fontSize: 1.75 *
+                                                              SizeConfig
+                                                                  .textSizeMultiplier,
+                                                          color: Colors.black
+                                                              .withOpacity(.47),
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              behavior: HitTestBehavior.opaque,
+                                              onTap: () {
+                                                setState(() {
+                                                  _removalActive =
+                                                      !_removalActive;
+                                                });
+                                              },
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                  top: 2.5 *
+                                                      SizeConfig
+                                                          .heightSizeMultiplier,
+                                                  bottom: 2.5 *
+                                                      SizeConfig
+                                                          .heightSizeMultiplier,
+                                                ),
+                                                child: Text(
+                                                  !_removalActive
+                                                      ? AppLocalization.of(
+                                                              context)
+                                                          .getTranslatedValue(
+                                                              "remove_item")
+                                                      : AppLocalization.of(
+                                                              context)
+                                                          .getTranslatedValue(
+                                                              "i_am_done"),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2
+                                                      .copyWith(
+                                                        fontSize: 2.1 *
+                                                            SizeConfig
+                                                                .textSizeMultiplier,
+                                                        color: Colors.black
+                                                            .withOpacity(.47),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                ),
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-
+                                      CheckoutProductList(
+                                        _items,
+                                        _removalActive,
+                                        deleteItem: (int index) {
+                                          _removeItem(index, context);
+                                        },
+                                        onQuantityChange: () {
+                                          _calculateSSLCharge();
+                                          _calculateSummary();
+                                        },
+                                      ),
+                                      OrderSummaryWidget(_coupon, _subTotal),
+                                      OrderDeliveryAddressWidget(),
+                                      OrderCouponWidget(
+                                        _coupon,
+                                        onCouponSubmit: (String code) {
+                                          _presenter.verifyCoupon(
+                                              context, code);
+                                        },
+                                        onCouponRemoval: () {
+                                          _removeCoupon();
+                                        },
+                                      ),
+                                      OrderReferralCoinWidget(
+                                        _coupon,
+                                        onCouponSubmit: (String code) {
+                                          _presenter.verifyCoupon(
+                                              context, code);
+                                        },
+                                        onCouponRemoval: () {
+                                          _removeCoupon();
+                                        },
+                                      ),
+                                      DeliveryPaymentOptionWidget(
+                                        onSelected: () {
+                                          _calculateSSLCharge();
+                                          _calculateSummary();
+                                        },
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top: 1.25 *
+                                              SizeConfig.heightSizeMultiplier,
+                                          bottom: 1.25 *
+                                              SizeConfig.heightSizeMultiplier,
+                                          left: 2.56 *
+                                              SizeConfig.widthSizeMultiplier,
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Checkbox(
+                                              activeColor: Theme.of(context)
+                                                  .primaryColor,
+                                              checkColor: Colors.white,
+                                              value: _isChecked,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _isChecked = !_isChecked;
+                                                });
+                                              },
+                                            ),
+                                            Text(
+                                              AppLocalization.of(context)
+                                                  .getTranslatedValue(
+                                                      "i_agree_to"),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2,
+                                            ),
+                                            Flexible(
+                                              child: GestureDetector(
+                                                behavior:
+                                                    HitTestBehavior.opaque,
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => WebView(
+                                                              AppLocalization.of(
+                                                                      context)
+                                                                  .getTranslatedValue(
+                                                                      "terms_condition"),
+                                                              Constants
+                                                                  .TERMS_CONDITIONS)));
+                                                },
+                                                child: Text(
+                                                  AppLocalization.of(context)
+                                                      .getTranslatedValue(
+                                                          "terms_condition"),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2
+                                                      .copyWith(
+                                                          color: Colors.blue),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 2.5 *
+                                            SizeConfig.heightSizeMultiplier,
+                                        color: Theme.of(context).hintColor,
+                                      ),
                                       GestureDetector(
                                         behavior: HitTestBehavior.opaque,
                                         onTap: () {
-
-                                          setState(() {
-                                            _removalActive = !_removalActive;
-                                          });
+                                          _validate();
                                         },
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                            top: 2.5 * SizeConfig.heightSizeMultiplier,
-                                            bottom: 2.5 * SizeConfig.heightSizeMultiplier,
-                                          ),
-                                          child: Text(!_removalActive ? AppLocalization.of(context).getTranslatedValue("remove_item") : AppLocalization.of(context).getTranslatedValue("i_am_done"),
-                                            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                              fontSize: 2.1 * SizeConfig.textSizeMultiplier,
-                                              color: Colors.black.withOpacity(.47),
-                                              fontWeight: FontWeight.w500,
+                                        child: Container(
+                                          height: 7 *
+                                              SizeConfig.heightSizeMultiplier,
+                                          color: Theme.of(context).accentColor,
+                                          child: Center(
+                                            child: Text(
+                                              AppLocalization.of(context)
+                                                  .getTranslatedValue(
+                                                      "confirm_order")
+                                                  .toUpperCase(),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2
+                                                  .copyWith(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white,
+                                                  ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-
-                                CheckoutProductList(_items, _removalActive,
-                                  deleteItem: (int index) {
-
-                                    _removeItem(index, context);
-                                  },
-                                  onQuantityChange: () {
-
-                                    _calculateSSLCharge();
-                                    _calculateSummary();
-                                  },
-                                ),
-
-                                OrderSummaryWidget(_coupon, _subTotal),
-
-                                OrderDeliveryAddressWidget(),
-
-                                OrderCouponWidget(_coupon,
-                                  onCouponSubmit: (String code) {
-
-                                    _presenter.verifyCoupon(context, code);
-                                  },
-                                  onCouponRemoval: () {
-
-                                    _removeCoupon();
-                                  },
-                                ),
-
-                                DeliveryPaymentOptionWidget(
-                                  onSelected: () {
-
-                                    _calculateSSLCharge();
-                                    _calculateSummary();
-                                  },
-                                ),
-
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 1.25 * SizeConfig.heightSizeMultiplier,
-                                    bottom: 1.25 * SizeConfig.heightSizeMultiplier,
-                                    left: 2.56 * SizeConfig.widthSizeMultiplier,
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: <Widget>[
-
-                                      Checkbox(
-                                        activeColor: Theme.of(context).primaryColor,
-                                        checkColor: Colors.white,
-                                        value: _isChecked,
-                                        onChanged: (value) {
-
-                                          setState(() {
-                                            _isChecked = !_isChecked;
-                                          });
-                                        },
-                                      ),
-
-                                      Text(AppLocalization.of(context).getTranslatedValue("i_agree_to"),
-                                        style: Theme.of(context).textTheme.bodyText2,
-                                      ),
-
-                                      Flexible(
-                                        child: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onTap: () {
-
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                WebView(AppLocalization.of(context).getTranslatedValue("terms_condition"), Constants.TERMS_CONDITIONS)));
-                                          },
-                                          child: Text(AppLocalization.of(context).getTranslatedValue("terms_condition"),
-                                            style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.blue),
-                                          ),
-                                        ),
+                                      Container(
+                                        height:
+                                            5 * SizeConfig.heightSizeMultiplier,
+                                        color: Theme.of(context).hintColor,
                                       ),
                                     ],
                                   ),
-                                ),
-
-                                Container(
-                                  height: 2.5 * SizeConfig.heightSizeMultiplier,
-                                  color: Theme.of(context).hintColor,
-                                ),
-
-                                GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-
-                                    _validate();
-                                  },
-                                  child: Container(
-                                    height: 7 * SizeConfig.heightSizeMultiplier,
-                                    color: Theme.of(context).primaryColor,
-                                    child: Center(
-                                      child: Text(AppLocalization.of(context).getTranslatedValue("confirm_order").toUpperCase(),
-                                        style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
+                                )
+                              : Center(
+                                  child: Text(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue(
+                                            "no_products_in_cart"),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4
+                                        .copyWith(
+                                          color: Colors.grey,
                                         ),
-                                      ),
-                                    ),
                                   ),
-                                ),
-
-                                Container(
-                                  height: 5 * SizeConfig.heightSizeMultiplier,
-                                  color: Theme.of(context).hintColor,
-                                ),
-                              ],
-                            ),
-                          ) : Center(
-                            child: Text(AppLocalization.of(context).getTranslatedValue("no_products_in_cart"),
-                              style: Theme.of(context).textTheme.headline4.copyWith(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          );
+                                );
                         },
                       ),
                     ),
@@ -313,112 +402,108 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
     );
   }
 
-
   @override
   void dispose() {
-
     _presenter.hideOverlayLoader();
     super.dispose();
   }
 
-
   Future<bool> _onBackPress() {
-
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.pop(context);
 
     return Future(() => false);
   }
 
-
   Future<void> _getCartItems() async {
-
     _items = await _dbHelper.getCartItems();
 
-    if(mounted) {
+    if (mounted) {
       setState(() {});
     }
 
     _calculateSummary();
   }
 
-
   void _calculateSSLCharge() {
-
     order.value.advancePayment = 0.0;
     order.value.sslCharge = 0.0;
 
-    if(order.value.paymentOption == null || order.value.paymentOption.id == Constants.CASH_ON_DELIVERY) {
-
-      for(int i=0; i<_items.length; i++) {
-
-        if(_items[i].product.advancePayment != null && _items[i].product.advancePayment > 0.0) {
-
-          order.value.advancePayment = order.value.advancePayment + ((_items[i].product.currentPrice * _items[i].product.advancePayment) / 100);
+    if (order.value.paymentOption == null ||
+        order.value.paymentOption.id == Constants.CASH_ON_DELIVERY) {
+      for (int i = 0; i < _items.length; i++) {
+        if (_items[i].product.advancePayment != null &&
+            _items[i].product.advancePayment > 0.0) {
+          order.value.advancePayment = order.value.advancePayment +
+              ((_items[i].product.currentPrice *
+                      _items[i].product.advancePayment) /
+                  100);
         }
       }
 
-      order.value.advancePayment = order.value.advancePayment.truncateToDouble();
+      order.value.advancePayment =
+          order.value.advancePayment.truncateToDouble();
 
-      if(order.value.advancePayment > 0.0) {
-
-        order.value.sslCharge = ((order.value.advancePayment * 3) / 100).roundToDouble();
-      }
-      else {
-
+      if (order.value.advancePayment > 0.0) {
+        order.value.sslCharge =
+            ((order.value.advancePayment * 3) / 100).roundToDouble();
+      } else {
         order.value.sslCharge = 0.0;
       }
-    }
-    else if(order.value.paymentOption.id == Constants.ONLINE_PAYMENT) {
-
-      order.value.sslCharge = (((_subTotal.round() + order.value.vat.round() - _coupon.discountAmount.round() + order.value.deliveryFee.round()).round() * 3) / 100).roundToDouble();
+    } else if (order.value.paymentOption.id == Constants.ONLINE_PAYMENT) {
+      order.value.sslCharge = (((_subTotal.round() +
+                          order.value.vat.round() -
+                          _coupon.discountAmount.round() +
+                          order.value.deliveryFee.round())
+                      .round() *
+                  3) /
+              100)
+          .roundToDouble();
     }
 
     order.notifyListeners();
     setState(() {});
   }
 
-
   void _removeCoupon() {
-
     setState(() {
       _coupon = Coupon(discountAmount: 0.0);
     });
   }
 
-
   void _calculateSummary() {
-
     _subTotal = 0.0;
     order.value.vat = 0.0;
 
     _items.forEach((item) {
-
-      if(item.isChecked) {
-
-        _subTotal = _subTotal + (item.product.currentPrice.round() * item.product.quantity);
-        order.value.vat = order.value.vat + ((item.product.currentPrice.round() * item.product.quantity).round() * item.product.vat.round()) / 100;
+      if (item.isChecked) {
+        _subTotal = _subTotal +
+            (item.product.currentPrice.round() * item.product.quantity);
+        order.value.vat = order.value.vat +
+            ((item.product.currentPrice.round() * item.product.quantity)
+                        .round() *
+                    item.product.vat.round()) /
+                100;
       }
     });
 
     order.notifyListeners();
 
-    if(mounted) {
+    if (mounted) {
       setState(() {});
     }
   }
 
-
   Future<void> _removeItem(int index, BuildContext context) async {
-
     int result = await _dbHelper.deleteProduct(_items[index].position);
 
-    if(result == 0) {
-
-      _showToast(AppLocalization.of(context).getTranslatedValue("failed_to_remove") + " " + AppLocalization.of(context).getTranslatedValue("item"), Toast.LENGTH_LONG);
-    }
-    else {
-
+    if (result == 0) {
+      _showToast(
+          AppLocalization.of(context).getTranslatedValue("failed_to_remove") +
+              " " +
+              AppLocalization.of(context).getTranslatedValue("item"),
+          Toast.LENGTH_LONG);
+    } else {
       _items.removeAt(index);
     }
 
@@ -430,9 +515,7 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
     _calculateSummary();
   }
 
-
   void _showToast(String message, Toast length) {
-
     Fluttertoast.showToast(
       msg: message,
       toastLength: length,
@@ -444,37 +527,31 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
     );
   }
 
-
   void _validate() {
-
-    if(_items.length > 0) {
-
-      if(order.value.address == null) {
-
-        _showToast(AppLocalization.of(context).getTranslatedValue("select_delivery_address"), Toast.LENGTH_SHORT);
-      }
-      else {
-
-        if(order.value.paymentOption == null) {
-
-          _showToast(AppLocalization.of(context).getTranslatedValue("select_payment_option"), Toast.LENGTH_SHORT);
-        }
-        else {
-
-          if(!_isChecked) {
-
-            _showToast(AppLocalization.of(context).getTranslatedValue("you_must_agree"), Toast.LENGTH_SHORT);
-          }
-          else {
-
+    if (_items.length > 0) {
+      if (order.value.address == null) {
+        _showToast(
+            AppLocalization.of(context)
+                .getTranslatedValue("select_delivery_address"),
+            Toast.LENGTH_SHORT);
+      } else {
+        if (order.value.paymentOption == null) {
+          _showToast(
+              AppLocalization.of(context)
+                  .getTranslatedValue("select_payment_option"),
+              Toast.LENGTH_SHORT);
+        } else {
+          if (!_isChecked) {
+            _showToast(
+                AppLocalization.of(context)
+                    .getTranslatedValue("you_must_agree"),
+                Toast.LENGTH_SHORT);
+          } else {
             order.value.coupon = _coupon;
 
-            if(_paymentIncomplete) {
-
+            if (_paymentIncomplete) {
               onOrderPlaced(_placedOrder);
-            }
-            else {
-
+            } else {
               _presenter.placeOrder(_context, _items);
             }
           }
@@ -483,72 +560,61 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
     }
   }
 
-
   @override
   void onDisconnected(BuildContext context) {
-
-    MyFlushBar.show(context, AppLocalization.of(context).getTranslatedValue("not_connected"));
+    MyFlushBar.show(context,
+        AppLocalization.of(context).getTranslatedValue("not_connected"));
   }
-
 
   @override
   void onInactive(BuildContext context) {
-
-    MyFlushBar.show(context, AppLocalization.of(context).getTranslatedValue("inactive_connection"));
+    MyFlushBar.show(context,
+        AppLocalization.of(context).getTranslatedValue("inactive_connection"));
   }
-
 
   @override
   void onTimeout(BuildContext context) {
-
-    MyFlushBar.show(context, AppLocalization.of(context).getTranslatedValue("connection_time_out"));
+    MyFlushBar.show(context,
+        AppLocalization.of(context).getTranslatedValue("connection_time_out"));
   }
-
 
   @override
   void onFailedToPlaceOrder(BuildContext context, String message) {
-
     MyFlushBar.show(context, message);
   }
 
-
   @override
   void onOrderPlaced(Order placedOrder) {
-
     _placedOrder = placedOrder;
 
-    if(order.value.paymentOption.id == Constants.CASH_ON_DELIVERY) {
-
-      if(order.value.advancePayment > 0.0) {
-
+    if (order.value.paymentOption.id == Constants.CASH_ON_DELIVERY) {
+      if (order.value.advancePayment > 0.0) {
         _paymentIncomplete = true;
-        _getPaymentConfirmation((order.value.advancePayment.round() + order.value.sslCharge.round()).roundToDouble());
-      }
-      else {
-
+        _getPaymentConfirmation(
+            (order.value.advancePayment.round() + order.value.sslCharge.round())
+                .roundToDouble());
+      } else {
         _onOrderSuccess();
       }
-    }
-    else if(order.value.paymentOption.id == Constants.ONLINE_PAYMENT) {
-
+    } else if (order.value.paymentOption.id == Constants.ONLINE_PAYMENT) {
       _paymentIncomplete = true;
-      _getPaymentConfirmation((_subTotal.round() + order.value.vat.round() - _coupon.discountAmount.round() +
-          order.value.deliveryFee.round() + order.value.sslCharge.round()).roundToDouble());
+      _getPaymentConfirmation((_subTotal.round() +
+              order.value.vat.round() -
+              _coupon.discountAmount.round() +
+              order.value.deliveryFee.round() +
+              order.value.sslCharge.round())
+          .roundToDouble());
     }
   }
-
 
   @override
   void failedToGetAllOrders(BuildContext context) {}
 
-
   @override
   void showAllOrders(List<Order> orders) {}
 
-
   @override
   void onInvalid(BuildContext context, String message) {
-
     _removeCoupon();
 
     _calculateSSLCharge();
@@ -557,28 +623,24 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
     MyFlushBar.show(context, message);
   }
 
-
   @override
   void onValid(Coupon coupon) {
-
-    if(coupon != null && coupon.discount != null && coupon.discount.type != null) {
-
-      if(coupon.discount.type == Constants.FLAT_DISCOUNT) {
-
+    if (coupon != null &&
+        coupon.discount != null &&
+        coupon.discount.type != null) {
+      if (coupon.discount.type == Constants.FLAT_DISCOUNT) {
         coupon.discountAmount = coupon.discount.amount;
-      }
-      else if(coupon.discount.type == Constants.PERCENTAGE_DISCOUNT) {
-
+      } else if (coupon.discount.type == Constants.PERCENTAGE_DISCOUNT) {
         coupon.discountAmount = (_subTotal * coupon.discount.amount) / 100;
       }
     }
 
-    if(coupon.discountAmount > _subTotal) {
-
-      onInvalid(_context, AppLocalization.of(context).getTranslatedValue("discount_can_not_be_greater"));
-    }
-    else {
-
+    if (coupon.discountAmount > _subTotal) {
+      onInvalid(
+          _context,
+          AppLocalization.of(context)
+              .getTranslatedValue("discount_can_not_be_greater"));
+    } else {
       setState(() {
         _coupon = coupon;
       });
@@ -588,38 +650,34 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
     }
   }
 
-
   @override
-  void onPaymentStatusChangeFailed(BuildContext context, Order order, SSLCTransactionInfoModel transactionInfo) {
-
-    _showErrorDialog(AppLocalization.of(context).getTranslatedValue("failed_to_set_payment_status"), order, transactionInfo);
+  void onPaymentStatusChangeFailed(BuildContext context, Order order,
+      SSLCTransactionInfoModel transactionInfo) {
+    _showErrorDialog(
+        AppLocalization.of(context)
+            .getTranslatedValue("failed_to_set_payment_status"),
+        order,
+        transactionInfo);
   }
-
 
   @override
   void onPaymentStatusSet() {
-
     _onOrderSuccess();
   }
 
-
   Future<void> _getPaymentConfirmation(double amount) async {
+    SSLCTransactionInfoModel transactionInfo =
+        await _sslCommerzGateway.pay(amount);
 
-    SSLCTransactionInfoModel transactionInfo = await _sslCommerzGateway.pay(amount);
-
-    if(transactionInfo != null && transactionInfo.status == "VALID") {
-
+    if (transactionInfo != null && transactionInfo.status == "VALID") {
       _presenter.setPaymentSuccessful(_context, _placedOrder, transactionInfo);
-    }
-    else {
-
-      _showPaymentErrorDialog(AppLocalization.of(context).getTranslatedValue("failed_to_complete_payment"));
+    } else {
+      _showPaymentErrorDialog(AppLocalization.of(context)
+          .getTranslatedValue("failed_to_complete_payment"));
     }
   }
 
-
   Future<void> _onOrderSuccess() async {
-
     await _dbHelper.deleteAllProduct();
 
     numberOfItems.value = await _dbHelper.getProductCount();
@@ -631,64 +689,50 @@ class _CartState extends State<Cart> with ChangeNotifier implements Connectivity
     Navigator.of(context).pushNamed(RouteManager.ORDER_SUCCESS);
   }
 
-
   Future<Widget> _showPaymentErrorDialog(String subTitle) async {
-
     return showDialog(
         context: _context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-
           return MyErrorWidget(
             subTitle: subTitle,
             onPressed: () {
-
               onOrderPlaced(_placedOrder);
             },
           );
-        }
-    );
+        });
   }
 
-
-  Future<Widget> _showErrorDialog(String subTitle, Order placedOrder, SSLCTransactionInfoModel transactionInfo) async {
-
+  Future<Widget> _showErrorDialog(String subTitle, Order placedOrder,
+      SSLCTransactionInfoModel transactionInfo) async {
     return showDialog(
         context: _context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-
           return MyErrorWidget(
             subTitle: subTitle,
             onPressed: () {
-
-              _presenter.setPaymentSuccessful(_context, placedOrder, transactionInfo);
+              _presenter.setPaymentSuccessful(
+                  _context, placedOrder, transactionInfo);
             },
           );
-        }
-    );
+        });
   }
-
 
   @override
   void onFailedCancelOrder(BuildContext context, String message) {}
 
-
   @override
   void onOrderCanceled(Order order) {}
-
 
   @override
   void onFailedToRequestRefund(BuildContext context, String message) {}
 
-
   @override
   void onRefundRequested(Order order) {}
 
-
   @override
   void onFailedToRequestReturnRefund(BuildContext context, String message) {}
-
 
   @override
   void onReturnRefundRequested(Order order) {}

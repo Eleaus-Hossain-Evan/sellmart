@@ -1,5 +1,10 @@
 import 'dart:convert';
+// import '../utils/fcm_setup.dart';
+import 'package:flutter/material.dart';
+
 import 'address.dart';
+
+ValueNotifier<String> deviceToken = ValueNotifier("");
 
 class User {
 
@@ -99,7 +104,7 @@ class User {
     return {
       "phone" : phone == null ? "" : phone,
       "password" : password == null ? "" : password,
-      //"deviceToken" : deviceToken.value == null ? "" : deviceToken.value,
+      "deviceToken" : deviceToken.value == null ? "" : deviceToken.value,
     };
   }
 

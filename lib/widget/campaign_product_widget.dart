@@ -1,3 +1,5 @@
+import 'package:app/utils/stock_out_clipper.dart';
+
 import '../utils/api_routes.dart';
 import '../localization/app_localization.dart';
 
@@ -7,7 +9,6 @@ import '../utils/price_calculator.dart';
 import 'package:flutter/material.dart';
 
 class CampaignProductWidget extends StatefulWidget {
-
   final Product product;
 
   CampaignProductWidget(this.product);
@@ -17,29 +18,26 @@ class CampaignProductWidget extends StatefulWidget {
 }
 
 class _CampaignProductWidgetState extends State<CampaignProductWidget> {
-
   @override
   Widget build(BuildContext context) {
-
     return Material(
       elevation: 2,
       color: Colors.grey[100],
       borderRadius: BorderRadius.circular(.2 * SizeConfig.heightSizeMultiplier),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(.2 * SizeConfig.heightSizeMultiplier),
+          borderRadius:
+              BorderRadius.circular(.2 * SizeConfig.heightSizeMultiplier),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-
             Expanded(
               flex: 10,
               child: Stack(
                 children: <Widget>[
-
                   Container(
                     height: double.infinity,
                     width: double.infinity,
@@ -50,9 +48,11 @@ class _CampaignProductWidgetState extends State<CampaignProductWidget> {
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(.2 * SizeConfig.heightSizeMultiplier),
+                      borderRadius: BorderRadius.circular(
+                          .2 * SizeConfig.heightSizeMultiplier),
                     ),
-                    child: Image.network(widget.product.thumbnail ?? (APIRoute.BASE_URL + ""),
+                    child: Image.network(
+                      widget.product.thumbnail ?? (APIRoute.BASE_URL + ""),
                       height: double.infinity,
                       width: double.infinity,
                       cacheHeight: 500,
@@ -61,12 +61,15 @@ class _CampaignProductWidgetState extends State<CampaignProductWidget> {
                       scale: .5,
                     ),
                   ),
-
                   Align(
                     alignment: Alignment.topRight,
                     child: Visibility(
-                      visible: widget.product.campaignOfferPrice != null && widget.product.price != null && widget.product.campaignOfferDiscount != null
-                          && widget.product.campaignDiscountType != null && widget.product.campaignOfferPrice != widget.product.price,
+                      visible: widget.product.campaignOfferPrice != null &&
+                          widget.product.price != null &&
+                          widget.product.campaignOfferDiscount != null &&
+                          widget.product.campaignDiscountType != null &&
+                          widget.product.campaignOfferPrice !=
+                              widget.product.price,
                       child: Container(
                         padding: EdgeInsets.only(
                           top: .475 * SizeConfig.heightSizeMultiplier,
@@ -76,40 +79,60 @@ class _CampaignProductWidgetState extends State<CampaignProductWidget> {
                         ),
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(.2 * SizeConfig.heightSizeMultiplier),
+                          borderRadius: BorderRadius.circular(
+                              .2 * SizeConfig.heightSizeMultiplier),
                         ),
-                        child: Text(widget.product.campaignDiscountType != null && widget.product.campaignOfferDiscount != null ?
-                          (widget.product.campaignDiscountType == PriceCalculator.AMOUNT ? ("৳" + widget.product.campaignOfferDiscount.round().toString()) :
-                          widget.product.campaignOfferDiscount.round().toString() + "%") : "",
+                        child: Text(
+                          widget.product.campaignDiscountType != null &&
+                                  widget.product.campaignOfferDiscount != null
+                              ? (widget.product.campaignDiscountType ==
+                                      PriceCalculator.AMOUNT
+                                  ? ("৳" +
+                                      widget.product.campaignOfferDiscount
+                                          .round()
+                                          .toString())
+                                  : widget.product.campaignOfferDiscount
+                                          .round()
+                                          .toString() +
+                                      "%")
+                              : "",
                           style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            fontSize: 1.625 * SizeConfig.textSizeMultiplier,
-                            color: Colors.white,
-                          ),
+                                fontSize: 1.625 * SizeConfig.textSizeMultiplier,
+                                color: Colors.white,
+                              ),
                         ),
                       ),
                     ),
                   ),
-
                   Visibility(
-                    visible: !(widget.product.currentStock != null && widget.product.currentStock > 0),
+                    visible: !(widget.product.currentStock != null &&
+                        widget.product.currentStock > 0),
                     child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: .7 * SizeConfig.heightSizeMultiplier,
-                          bottom: .7 * SizeConfig.heightSizeMultiplier,
-                          left: 5.5 * SizeConfig.widthSizeMultiplier,
-                          right: 5.5 * SizeConfig.widthSizeMultiplier,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.red[600],
-                          borderRadius: BorderRadius.circular(1.8 * SizeConfig.heightSizeMultiplier),
-                        ),
-                        child: Text(AppLocalization.of(context).getTranslatedValue("out_of_stock"),
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            fontSize: 1.825 * SizeConfig.textSizeMultiplier,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                      alignment: Alignment.topLeft,
+                      child: ClipPath(
+                        clipper: StockOutClipper(),
+                        child: Container(
+                          height: 7 * SizeConfig.heightSizeMultiplier,
+                          width: 10 * SizeConfig.heightSizeMultiplier,
+                          alignment: Alignment.topCenter,
+                          decoration: BoxDecoration(
+                            color: Colors.red[600],
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 1 * SizeConfig.heightSizeMultiplier,
+                          ),
+                          child: Text(
+                            // AppLocalization.of(context)
+                            //     .getTranslatedValue("out_of_stock")
+                            "Stock Out",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(
+                                  fontSize: 1.5 * SizeConfig.textSizeMultiplier,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                           ),
                         ),
                       ),
@@ -118,9 +141,9 @@ class _CampaignProductWidgetState extends State<CampaignProductWidget> {
                 ],
               ),
             ),
-
-            SizedBox(height: 1.25 * SizeConfig.heightSizeMultiplier,),
-
+            SizedBox(
+              height: 1.25 * SizeConfig.heightSizeMultiplier,
+            ),
             Expanded(
               flex: 2,
               child: Padding(
@@ -130,19 +153,19 @@ class _CampaignProductWidgetState extends State<CampaignProductWidget> {
                 ),
                 child: Align(
                   alignment: Alignment.topCenter,
-                  child: Text(widget.product.name,
+                  child: Text(
+                    widget.product.name,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontSize: 1.5 * SizeConfig.textSizeMultiplier,
-                      fontWeight: FontWeight.w500,
-                    ),
+                          fontSize: 1.5 * SizeConfig.textSizeMultiplier,
+                          fontWeight: FontWeight.w500,
+                        ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
             ),
-
             Expanded(
               flex: 2,
               child: Align(
@@ -157,34 +180,40 @@ class _CampaignProductWidgetState extends State<CampaignProductWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-
-                          Text("৳" + widget.product.currentPrice.round().toString(),
-                            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              fontSize: 1.75 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          Text(
+                            "৳" +
+                                widget.product.currentPrice.round().toString(),
+                            style:
+                                Theme.of(context).textTheme.bodyText2.copyWith(
+                                      fontSize:
+                                          1.75 * SizeConfig.textSizeMultiplier,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                           ),
-
                           Visibility(
-                            visible: widget.product.currentPrice != widget.product.price,
-                            child: Text("৳" + widget.product.price.round().toString(),
-                              style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                fontSize: 1.5 * SizeConfig.textSizeMultiplier,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.grey[800],
-                                decoration: TextDecoration.lineThrough,
-                              ),
+                            visible: widget.product.currentPrice !=
+                                widget.product.price,
+                            child: Text(
+                              "৳" + widget.product.price.round().toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  .copyWith(
+                                    fontSize:
+                                        1.5 * SizeConfig.textSizeMultiplier,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey[800],
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
                             ),
                           ),
                         ],
                       ),
-
                       Container(
                         padding: EdgeInsets.only(
                           top: .625 * SizeConfig.heightSizeMultiplier,
@@ -194,14 +223,17 @@ class _CampaignProductWidgetState extends State<CampaignProductWidget> {
                         ),
                         decoration: BoxDecoration(
                           color: Theme.of(context).accentColor,
-                          borderRadius: BorderRadius.circular(1.875 * SizeConfig.heightSizeMultiplier),
+                          borderRadius: BorderRadius.circular(
+                              1.875 * SizeConfig.heightSizeMultiplier),
                         ),
-                        child: Text(AppLocalization.of(context).getTranslatedValue("buy_now"),
+                        child: Text(
+                          AppLocalization.of(context)
+                              .getTranslatedValue("buy_now"),
                           style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontSize: 1.55 * SizeConfig.textSizeMultiplier,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
+                                fontSize: 1.55 * SizeConfig.textSizeMultiplier,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
                         ),
                       ),
                     ],
@@ -209,8 +241,9 @@ class _CampaignProductWidgetState extends State<CampaignProductWidget> {
                 ),
               ),
             ),
-
-            SizedBox(height: .625 * SizeConfig.heightSizeMultiplier,),
+            SizedBox(
+              height: .625 * SizeConfig.heightSizeMultiplier,
+            ),
           ],
         ),
       ),
