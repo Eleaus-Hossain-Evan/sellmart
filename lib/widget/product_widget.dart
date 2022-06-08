@@ -17,8 +17,12 @@ class ProductWidget extends StatefulWidget {
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
+  bool isAllVariationOut = false;
+
   @override
   Widget build(BuildContext context) {
+    isAllVariationOut =
+        widget.product.variations.every((element) => element.stock == 0);
     return Material(
       elevation: 2,
       color: Colors.grey[100],
@@ -169,8 +173,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     ),
                   ),
                   Visibility(
-                    visible: !(widget.product.currentStock != null &&
-                        widget.product.currentStock > 0),
+                    visible: (widget.product.variations != null &&widget.product.variations.isNotEmpty && isAllVariationOut),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: ClipPath(
