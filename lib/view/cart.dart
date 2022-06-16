@@ -1,3 +1,5 @@
+import 'package:app/contract/balance_contract.dart';
+
 import '../view/web_view.dart';
 
 import '../contract/connectivity_contract.dart';
@@ -38,7 +40,7 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart>
     with ChangeNotifier
-    implements Connectivity, OrderContract, CouponContract {
+    implements Connectivity, OrderContract, CouponContract, BalanceContract {
   DataPresenter _presenter;
 
   Connectivity _connectivity;
@@ -198,10 +200,9 @@ class _CartState extends State<Cart>
                                                         .heightSizeMultiplier,
                                               ),
                                               child: Text(
-                                               AppLocalization.of(
-                                                            context)
-                                                        .getTranslatedValue(
-                                                            "i_am_done"),
+                                                AppLocalization.of(context)
+                                                    .getTranslatedValue(
+                                                        "i_am_done"),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText2
@@ -221,7 +222,6 @@ class _CartState extends State<Cart>
                                       ),
                                       CheckoutProductList(
                                         _items,
-                                        
                                         deleteItem: (int index) {
                                           _removeItem(index, context);
                                         },
@@ -249,6 +249,8 @@ class _CartState extends State<Cart>
                                           setState(() {
                                             _usedCoin.value = coin;
                                           });
+                                          _presenter.cusmoterBalancReduce(
+                                              context, coin);
                                         },
                                         onCoinRemoval: () {},
                                       ),
@@ -725,4 +727,14 @@ class _CartState extends State<Cart>
 
   @override
   void onReturnRefundRequested(Order order) {}
+
+  @override
+  void onFailureBalanceReduced(BuildContext context, String message) {
+    MyFlushBar.show(context, message);
+  }
+
+  @override
+  void onSuccessBalanceReduced() {
+    MyFlushBar.show(context, "Successfully added...");
+  }
 }

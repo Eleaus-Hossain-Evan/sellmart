@@ -28,6 +28,7 @@ import '../contract/product_detail_contract.dart';
 import '../contract/search_contract.dart';
 import '../contract/shop_contract.dart';
 import '../contract/policy_contract.dart';
+import '../contract/balance_contract.dart';
 import '../model/brand.dart';
 import '../model/category.dart';
 import '../model/home_data.dart';
@@ -64,6 +65,7 @@ class DataPresenter with ChangeNotifier {
   CampaignContract _campaignContract;
   ReviewContract _reviewContract;
   PolicyContract _policyContract;
+  BalanceContract _balanceContract;
 
   MySharedPreference _sharedPreference = MySharedPreference();
 
@@ -85,7 +87,8 @@ class DataPresenter with ChangeNotifier {
       LocationContract locationContract,
       CampaignContract campaignContract,
       ReviewContract reviewContract,
-      PolicyContract policyContract}) {
+      PolicyContract policyContract,
+      BalanceContract balanceContract}) {
     this._connectivity = connectivity;
 
     if (homeContract != null) {
@@ -138,6 +141,9 @@ class DataPresenter with ChangeNotifier {
 
     if (policyContract != null) {
       this._policyContract = policyContract;
+    }
+    if (balanceContract != null) {
+      this._balanceContract = balanceContract;
     }
   }
 
@@ -846,6 +852,72 @@ class DataPresenter with ChangeNotifier {
                   context,
                   AppLocalization.of(context)
                       .getTranslatedValue("invalid_coupon"));
+            });
+          } else {
+            _connectivity.onInactive(context);
+          }
+        });
+      } else {
+        _connectivity.onDisconnected(context);
+      }
+    });
+  }
+
+  void cusmoterBalancReduce(BuildContext context, double balance) {
+    con.Connectivity().checkConnectivity().then((result) {
+      if (result == con.ConnectivityResult.mobile ||
+          result == con.ConnectivityResult.wifi) {
+        DataConnectionChecker().isHostReachable(_options).then((addressCheck) {
+          if (addressCheck.isSuccess) {
+            _myOverlayLoader.customLoaderWithBlurEffect(context);
+            Map<String, dynamic> data = {"balance": "$balance"};
+
+            var client = http.Client();
+
+            client
+                .post(
+              Uri.encodeFull(
+                  APIRoute.BALANCE_REDUCE + "${currentUser.value.id}"),
+              headers: {"Accept": "application/json"},
+              body: data,
+            )
+                .then((response) async {
+              CustomLogger.debug(
+                  trace: CustomTrace(StackTrace.current),
+                  tag: "Balance Reduce",
+                  message:
+                      response.body + " " + response.statusCode.toString());
+
+              var jsonData = json.decode(response.body);
+
+              _myOverlayLoader.dismissDialog(context);
+
+              if (response.statusCode == 200 || response.statusCode == 201) {
+                if (jsonData['success']) {
+                  _balanceContract.onSuccessBalanceReduced();
+                } else {
+                  _balanceContract.onFailureBalanceReduced(
+                      context, jsonData['message']);
+                }
+              } else if (response.statusCode == 400) {
+                _balanceContract.onFailureBalanceReduced(
+                    context, jsonData['message']);
+              } else {
+                _balanceContract.onFailureBalanceReduced(
+                    context, jsonData['message']);
+              }
+            }).timeout(Duration(seconds: Constants.timeoutSeconds),
+                    onTimeout: () {
+              client.close();
+
+              _myOverlayLoader.dismissDialog(context);
+              _connectivity.onTimeout(context);
+            }).catchError((error) {
+              debugPrint(error.toString());
+
+              _myOverlayLoader.dismissDialog(context);
+              _balanceContract.onFailureBalanceReduced(
+                  context, "Something went wrong");
             });
           } else {
             _connectivity.onInactive(context);
