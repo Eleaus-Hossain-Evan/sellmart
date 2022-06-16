@@ -59,7 +59,7 @@ class _OrderReferralCoinWidgetState extends State<OrderReferralCoinWidget>
               Text(
                 // AppLocalization.of(context)
                 //     .getTranslatedValue("delivery_address")
-                "Total: ${currentUser.value.balance.toStringAsFixed(1)}",
+                "Total: ${currentUser.value.balance}",
                 style: Theme.of(context).textTheme.subtitle2.copyWith(
                       fontWeight: FontWeight.w400,
                     ),
@@ -157,7 +157,8 @@ class _OrderReferralCoinWidgetState extends State<OrderReferralCoinWidget>
 
   void _validate() async {
     FocusScope.of(context).unfocus();
-    if (currentUser.value.balance > double.parse(_coinController.text)) {
+    if (int.parse(currentUser.value.balance) >
+        int.parse(_coinController.text)) {
       if (_coinController.text.isNotEmpty) {
         await _showConfirmationDialog(
           context,

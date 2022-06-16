@@ -17,7 +17,7 @@ class User {
   String confirmPassword;
   String newPassword;
   bool isBlocked;
-  double balance;
+  String balance;
   String myReferCode;
   String image;
   String email;
@@ -53,7 +53,7 @@ class User {
     phone = json['phone'] == null ? "" : json['phone'].toString();
     token = json['token'] == null ? "" : json['token'].toString();
     isBlocked = json['isBlocked'] == null ? false : json['isBlocked'];
-    balance = json['balance'] == null ? "" : double.parse(json['balance']);
+    balance = json['balance'] == null ? "" : json['balance'].toString();
     myReferCode =
         json['myReferCode'] == null ? "" : json['myReferCode'].toString();
     image = json['image'] == null ? "" : json['image'];

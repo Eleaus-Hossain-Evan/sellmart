@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:logger/logger.dart';
 import '../contract/login_contract.dart';
 import '../contract/password_contract.dart';
 import '../contract/profile_contract.dart';
@@ -102,10 +103,13 @@ class UserPresenter with ChangeNotifier {
               body: data,
             )
                 .then((response) async {
-              CustomLogger.debug(
-                  trace: CustomTrace(StackTrace.current),
-                  tag: "Send SignUp OTP",
-                  message: response.body);
+              // CustomLogger.debug(
+              //     trace: CustomTrace(StackTrace.current),
+              //     tag: "Send SignUp OTP",
+              //     message: response.body);
+
+              Logger().wtf(
+                  "response.body=> ${response.body}-${response.statusCode}");
 
               var jsonData = json.decode(response.body);
 
@@ -196,18 +200,24 @@ class UserPresenter with ChangeNotifier {
               body: user.toSignUpSecondStep(),
             )
                 .then((response) async {
-              CustomLogger.debug(
-                  trace: CustomTrace(StackTrace.current),
-                  tag: "SignUp",
-                  message: response.body);
+              // CustomLogger.debug(
+              //     trace: CustomTrace(StackTrace.current),
+              //     tag: "SignUp",
+              //     message: response.body);
+
+              Logger().wtf(
+                  "response.body=> ${response.body}-${response.statusCode}");
 
               var jsonData = json.decode(response.body);
 
+              Logger().i("jsonData => $jsonData");
+
               _myOverlayLoader.dismissDialog(context);
 
-              if (response.statusCode == 200 || response.statusCode == 201) {
+              if (isSuccessful(response.statusCode)) {
                 if (jsonData['success']) {
                   _setUser(jsonData, jsonData['token'].toString());
+                  Logger().i("currentUser.value => ${currentUser.value}");
                   _registerContract.onSuccess();
                 }
               } else {
@@ -231,14 +241,6 @@ class UserPresenter with ChangeNotifier {
 
               _myOverlayLoader.dismissDialog(context);
               _connectivity.onTimeout(context);
-            }).catchError((error) {
-              print(error);
-
-              _myOverlayLoader.dismissDialog(context);
-              _registerContract.onFailure(
-                  context,
-                  AppLocalization.of(context)
-                      .getTranslatedValue("failed_to_register"));
             });
           } else {
             _connectivity.onInactive(context);
@@ -266,23 +268,30 @@ class UserPresenter with ChangeNotifier {
               headers: {"Accept": "application/json"},
               body: user.toLogin(),
             )
-                .then((response) async {
-              CustomLogger.debug(
-                  trace: CustomTrace(StackTrace.current),
-                  tag: "Login",
-                  message: response.body);
+                .then((response) {
+              // CustomLogger.debug(
+              //     trace: CustomTrace(StackTrace.current),
+              //     tag: "Login",
+              //     message:
+              //         response.body + " - " + response.statusCode.toString());
+              Logger()
+                  .wtf(response.body + " - " + response.statusCode.toString());
 
-              var jsonData = json.decode(response.body);
+              Map<String, dynamic> jsonData = json.decode(response.body);
 
               _myOverlayLoader.dismissDialog(context);
 
-              if (response.statusCode == 200 || response.statusCode == 201) {
-                if (jsonData['success']) {
+              Logger().i("message: $jsonData");
+
+              if (true) {
+                if (jsonData['success'] == true) {
                   _setUser(jsonData, jsonData['token'].toString());
-                  _loginContract.onSuccess();
+                  _loginContract.onLoginSuccess();
+                  Logger()
+                      .i("currentUser.value: " + currentUser.value.toString());
                 }
               } else {
-                if (!jsonData['success']) {
+                if (jsonData['success'] == false) {
                   if (jsonData['message'] == Constants.INCORRECT_PHONE) {
                     _loginContract.onFailure(
                         context,
@@ -299,7 +308,14 @@ class UserPresenter with ChangeNotifier {
                         context,
                         AppLocalization.of(context)
                             .getTranslatedValue("phone_or_password_incorrect"));
+                  } else if (jsonData['message'] == "Logged in Successful") {
+                    _setUser(jsonData, jsonData['token'].toString());
+                    _loginContract.onLoginSuccess();
+                    Logger().i(
+                        "currentUser.value: " + currentUser.value.toString());
                   } else {
+                    Logger().i(
+                        "currentUser.value: " + currentUser.value.toString());
                     _loginContract.onFailure(
                         context,
                         AppLocalization.of(context)
@@ -313,14 +329,6 @@ class UserPresenter with ChangeNotifier {
 
               _myOverlayLoader.dismissDialog(context);
               _connectivity.onTimeout(context);
-            }).catchError((error) {
-              print(error);
-
-              _myOverlayLoader.dismissDialog(context);
-              _loginContract.onFailure(
-                  context,
-                  AppLocalization.of(context)
-                      .getTranslatedValue("failed_to_login"));
             });
           } else {
             _connectivity.onInactive(context);
@@ -936,5 +944,11 @@ class UserPresenter with ChangeNotifier {
     currentUser.notifyListeners();
 
     _sharedPreference.setCurrentUser(currentUser.value);
+  }
+
+  static bool isSuccessful(int code) {
+    final success = code >= 200 && code <= 206;
+    Logger().i("isSuccessful: $success");
+    return success;
   }
 }
