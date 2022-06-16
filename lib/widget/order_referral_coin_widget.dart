@@ -1,3 +1,6 @@
+import 'package:app/presenter/user_presenter.dart';
+import 'package:app/utils/my_flush_bar.dart';
+
 import '../utils/constants.dart';
 
 import '../model/coupon.dart';
@@ -6,13 +9,13 @@ import '../localization/app_localization.dart';
 import '../utils/size_config.dart';
 import 'package:flutter/material.dart';
 
-class OrderReferralCoinWidget extends StatefulWidget {
-  final Coupon coupon;
-  final void Function(String) onCouponSubmit;
-  final void Function() onCouponRemoval;
+import 'custom_dialog.dart';
 
-  OrderReferralCoinWidget(this.coupon,
-      {this.onCouponSubmit, this.onCouponRemoval});
+class OrderReferralCoinWidget extends StatefulWidget {
+  final void Function(double) onCoinSubmit;
+  final void Function() onCoinRemoval;
+
+  OrderReferralCoinWidget({this.onCoinSubmit, this.onCoinRemoval});
 
   @override
   _OrderReferralCoinWidgetState createState() =>
@@ -21,7 +24,7 @@ class OrderReferralCoinWidget extends StatefulWidget {
 
 class _OrderReferralCoinWidgetState extends State<OrderReferralCoinWidget>
     with ChangeNotifier {
-  TextEditingController _couponController = TextEditingController();
+  TextEditingController _coinController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +59,7 @@ class _OrderReferralCoinWidgetState extends State<OrderReferralCoinWidget>
               Text(
                 // AppLocalization.of(context)
                 //     .getTranslatedValue("delivery_address")
-                "Total: ${widget.coupon.discountAmount}",
+                "Total: ${currentUser.value.balance.toStringAsFixed(1)}",
                 style: Theme.of(context).textTheme.subtitle2.copyWith(
                       fontWeight: FontWeight.w400,
                     ),
@@ -89,7 +92,7 @@ class _OrderReferralCoinWidgetState extends State<OrderReferralCoinWidget>
                 child: SizedBox(
                   width: 68 * SizeConfig.widthSizeMultiplier,
                   child: TextField(
-                    controller: _couponController,
+                    controller: _coinController,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.done,
                     style: Theme.of(context).textTheme.bodyText2,
@@ -144,79 +147,6 @@ class _OrderReferralCoinWidgetState extends State<OrderReferralCoinWidget>
             ],
           ),
         ),
-        Visibility(
-          visible: widget.coupon != null &&
-              widget.coupon.code != null &&
-              widget.coupon.code.isNotEmpty,
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: 1.5 * SizeConfig.heightSizeMultiplier,
-              bottom: 1.5 * SizeConfig.heightSizeMultiplier,
-              left: 5.12 * SizeConfig.widthSizeMultiplier,
-              right: 5.12 * SizeConfig.widthSizeMultiplier,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.coupon != null &&
-                              widget.coupon.code != null &&
-                              widget.coupon.code.isNotEmpty
-                          ? widget.coupon.code
-                          : "",
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontSize: 2 * SizeConfig.textSizeMultiplier,
-                            color: Colors.black.withOpacity(.75),
-                          ),
-                    ),
-                    Text(
-                      widget.coupon != null &&
-                              widget.coupon.code != null &&
-                              widget.coupon.code.isNotEmpty
-                          ? (widget.coupon.discount.amount.round().toString() +
-                              (widget.coupon.discount.type ==
-                                      Constants.FLAT_DISCOUNT
-                                  ? (" " +
-                                      AppLocalization.of(context)
-                                          .getTranslatedValue("tk"))
-                                  : "%"))
-                          : "",
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontSize: 2 * SizeConfig.textSizeMultiplier,
-                            color: Colors.black.withOpacity(.75),
-                          ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: .8 * SizeConfig.heightSizeMultiplier,
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    _couponController.text = "";
-                    widget.onCouponRemoval();
-                  },
-                  child: Text(
-                    AppLocalization.of(context)
-                        .getTranslatedValue("remove_coupon"),
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
         Container(
           height: 2.5 * SizeConfig.heightSizeMultiplier,
           color: Theme.of(context).hintColor,
@@ -225,11 +155,31 @@ class _OrderReferralCoinWidgetState extends State<OrderReferralCoinWidget>
     );
   }
 
-  void _validate() {
+  void _validate() async {
     FocusScope.of(context).unfocus();
-
-    if (_couponController.text.isNotEmpty) {
-      widget.onCouponSubmit(_couponController.text);
+    if (currentUser.value.balance > double.parse(_coinController.text)) {
+      if (_coinController.text.isNotEmpty) {
+        await _showConfirmationDialog(
+          context,
+        );
+      }
+    } else {
+      MyFlushBar.show(context, "You don't have enough coin!");
     }
+  }
+
+  Future<Widget> _showConfirmationDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialog(
+            title: AppLocalization.of(context).getTranslatedValue("warning"),
+            message:
+                "Are you sure you want to use ${_coinController.text} coins?",
+            onPositiveButtonPress: () {
+              widget.onCoinSubmit(double.parse(_coinController.text));
+            },
+          );
+        });
   }
 }

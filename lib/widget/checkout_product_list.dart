@@ -11,11 +11,9 @@ import 'package:flutter/material.dart';
 class CheckoutProductList extends StatefulWidget {
   final List<CartItem> items;
   final void Function() onQuantityChange;
-  final bool removalActive;
   final void Function(int) deleteItem;
 
-  CheckoutProductList(this.items, this.removalActive,
-      {this.onQuantityChange, this.deleteItem});
+  CheckoutProductList(this.items, {this.onQuantityChange, this.deleteItem});
 
   @override
   _CheckoutProductListState createState() => _CheckoutProductListState();
@@ -56,7 +54,7 @@ class _CheckoutProductListState extends State<CheckoutProductList>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  flex: widget.removalActive ?82: 72,
+                  flex: 72,
                   child: Padding(
                     padding: EdgeInsets.only(
                       left: 5.12 * SizeConfig.widthSizeMultiplier,
@@ -308,40 +306,35 @@ class _CheckoutProductListState extends State<CheckoutProductList>
                     ),
                   ),
                 ),
-                Visibility(
-                          visible: !widget.removalActive,
-                                  child: Column(
-                    children: List.generate(
-                        200 ~/ 8,
-                        (index) => Expanded(
-                              child: Container(
-                                color: index % 2 == 0
-                                    ? Colors.transparent
-                                    : Colors.grey[400],
-                                width: .4 * SizeConfig.widthSizeMultiplier,
-                              ),
-                            )),
-                  ),
+                Column(
+                  children: List.generate(
+                      200 ~/ 8,
+                      (index) => Expanded(
+                            child: Container(
+                              color: index % 2 == 0
+                                  ? Colors.transparent
+                                  : Colors.grey[400],
+                              width: .4 * SizeConfig.widthSizeMultiplier,
+                            ),
+                          )),
                 ),
-                Visibility(
-                  visible: !widget.removalActive,
-                  child: Expanded(
-                    flex: 10,
-                    child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: .5 * SizeConfig.widthSizeMultiplier,
-                            ),
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-
-                                widget.deleteItem(index);
-                              },
-                              child: Icon(
-                                Icons.delete, size: 6.41 * SizeConfig.imageSizeMultiplier, color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
+                Expanded(
+                  flex: 10,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: .5 * SizeConfig.widthSizeMultiplier,
+                    ),
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        widget.deleteItem(index);
+                      },
+                      child: Icon(
+                        Icons.delete,
+                        size: 6.41 * SizeConfig.imageSizeMultiplier,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
                   ),
                 ),
               ],

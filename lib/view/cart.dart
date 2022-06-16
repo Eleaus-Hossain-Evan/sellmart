@@ -50,7 +50,6 @@ class _CartState extends State<Cart>
   Coupon _coupon = Coupon(discountAmount: 0.0);
 
   bool _isChecked = true;
-  bool _removalActive = true;
   bool _paymentIncomplete = false;
 
   SSLCommerzGateway _sslCommerzGateway = SSLCommerzGateway();
@@ -64,6 +63,8 @@ class _CartState extends State<Cart>
   Order _placedOrder;
 
   ScrollController _scrollController = ScrollController();
+
+  ValueNotifier<double> _usedCoin = ValueNotifier(0.0);
 
   @override
   void initState() {
@@ -101,7 +102,6 @@ class _CartState extends State<Cart>
                     enableButtons: false,
                     onBackPress: () {
                       _onBackPress();
-                      
                     },
                   ),
                   Expanded(
@@ -188,46 +188,32 @@ class _CartState extends State<Cart>
                                                 ],
                                               ),
                                             ),
-                                            GestureDetector(
-                                              behavior: HitTestBehavior.opaque,
-                                              onTap: () {
-                                                setState(() {
-                                                  _removalActive =
-                                                      !_removalActive;
-                                                });
-                                              },
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                  top: 2.5 *
-                                                      SizeConfig
-                                                          .heightSizeMultiplier,
-                                                  bottom: 2.5 *
-                                                      SizeConfig
-                                                          .heightSizeMultiplier,
-                                                ),
-                                                child: Text(
-                                                  !_removalActive
-                                                      ? AppLocalization.of(
-                                                              context)
-                                                          .getTranslatedValue(
-                                                              "remove_item")
-                                                      : AppLocalization.of(
-                                                              context)
-                                                          .getTranslatedValue(
-                                                              "i_am_done"),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText2
-                                                      .copyWith(
-                                                        fontSize: 2.1 *
-                                                            SizeConfig
-                                                                .textSizeMultiplier,
-                                                        color: Colors.black
-                                                            .withOpacity(.47),
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                ),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                top: 2.5 *
+                                                    SizeConfig
+                                                        .heightSizeMultiplier,
+                                                bottom: 2.5 *
+                                                    SizeConfig
+                                                        .heightSizeMultiplier,
+                                              ),
+                                              child: Text(
+                                               AppLocalization.of(
+                                                            context)
+                                                        .getTranslatedValue(
+                                                            "i_am_done"),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2
+                                                    .copyWith(
+                                                      fontSize: 2.1 *
+                                                          SizeConfig
+                                                              .textSizeMultiplier,
+                                                      color: Colors.black
+                                                          .withOpacity(.47),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
                                               ),
                                             ),
                                           ],
@@ -235,7 +221,7 @@ class _CartState extends State<Cart>
                                       ),
                                       CheckoutProductList(
                                         _items,
-                                        _removalActive,
+                                        
                                         deleteItem: (int index) {
                                           _removeItem(index, context);
                                         },
@@ -244,7 +230,8 @@ class _CartState extends State<Cart>
                                           _calculateSummary();
                                         },
                                       ),
-                                      OrderSummaryWidget(_coupon, _subTotal),
+                                      OrderSummaryWidget(
+                                          _coupon, _subTotal, _usedCoin),
                                       OrderDeliveryAddressWidget(),
                                       OrderCouponWidget(
                                         _coupon,
@@ -257,14 +244,13 @@ class _CartState extends State<Cart>
                                         },
                                       ),
                                       OrderReferralCoinWidget(
-                                        _coupon,
-                                        onCouponSubmit: (String code) {
-                                          _presenter.verifyCoupon(
-                                              context, code);
+                                        // _coupon,
+                                        onCoinSubmit: (double coin) {
+                                          setState(() {
+                                            _usedCoin.value = coin;
+                                          });
                                         },
-                                        onCouponRemoval: () {
-                                          _removeCoupon();
-                                        },
+                                        onCoinRemoval: () {},
                                       ),
                                       DeliveryPaymentOptionWidget(
                                         onSelected: () {
@@ -454,7 +440,8 @@ class _CartState extends State<Cart>
     } else if (order.value.paymentOption.id == Constants.ONLINE_PAYMENT) {
       order.value.sslCharge = (((_subTotal.round() +
                           order.value.vat.round() -
-                          _coupon.discountAmount.round() +
+                          _coupon.discountAmount.round() -
+                          _usedCoin.value.roundToDouble() +
                           order.value.deliveryFee.round())
                       .round() *
                   3) /
@@ -601,7 +588,8 @@ class _CartState extends State<Cart>
       _paymentIncomplete = true;
       _getPaymentConfirmation((_subTotal.round() +
               order.value.vat.round() -
-              _coupon.discountAmount.round() +
+              _coupon.discountAmount.round() -
+              _usedCoin.value +
               order.value.deliveryFee.round() +
               order.value.sslCharge.round())
           .roundToDouble());
