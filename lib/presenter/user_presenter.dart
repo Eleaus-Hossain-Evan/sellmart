@@ -217,7 +217,8 @@ class UserPresenter with ChangeNotifier {
               if (isSuccessful(response.statusCode)) {
                 if (jsonData['success']) {
                   _setUser(jsonData, jsonData['token'].toString());
-                  Logger().i("currentUser.value => ${currentUser.value}");
+                  Logger().i(
+                      "currentUser.value => ${currentUser.value.toString()}");
                   _registerContract.onSuccess();
                 }
               } else {

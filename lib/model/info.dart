@@ -2,7 +2,6 @@ import '../model/slider.dart';
 import '../utils/api_routes.dart';
 
 class Info {
-
   String id;
   String name;
   String aboutUs;
@@ -30,155 +29,148 @@ class Info {
   double deliveryChargeInsideDhaka;
   double deliveryChargeOutsideDhaka;
 
-  Info({this.id, this.name, this.aboutUs, this.address, this.email,
-    this.facebook, this.instagram, this.logo, this.phone, this.tagLine,
-    this.whyUs, this.invoiceLogo, this.badge, this.agentCodes, this.sliders});
+  Info(
+      {this.id,
+      this.name,
+      this.aboutUs,
+      this.address,
+      this.email,
+      this.facebook,
+      this.instagram,
+      this.logo,
+      this.phone,
+      this.tagLine,
+      this.whyUs,
+      this.invoiceLogo,
+      this.badge,
+      this.agentCodes,
+      this.sliders,
+      this.onlinePaymentActive = true,
+      this.androidUpdateMandatory,
+      this.appStoreUrl,
+      this.appVersionCode,
+      this.appVersionName,
+      this.deliveryChargeInsideDhaka,
+      this.deliveryChargeOutsideDhaka,
+      this.iosUpdateMandatory,
+      this.termsConditions,
+      this.privacyPolicy});
 
   Info.fromJson(Map<String, dynamic> json) {
-
     id = json['_id'];
 
     try {
       name = json['name'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       aboutUs = json['aboutUs'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       address = json['address'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       email = json['email'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       facebook = json['facebook'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       instagram = json['instagram'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       logo = APIRoute.BASE_URL + json['logo'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       phone = json['phone'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       tagLine = json['tagLine'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       whyUs = json['whyUs'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       invoiceLogo = APIRoute.BASE_URL + json['invoiceLogo'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       appVersionCode = json['appVersionCode'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       appVersionName = json['appVersionName'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       appStoreUrl = json['appStoreUrl'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       playStoreUrl = json['playStoreUrl'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       termsConditions = json['termsPrivacyAbout']['termsAndCondition'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       privacyPolicy = json['termsPrivacyAbout']['privacyPolicy'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       androidUpdateMandatory = json['androidUpdateMandatory'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       iosUpdateMandatory = json['iosUpdateMandatory'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       badge = json['badge'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       onlinePaymentActive = json['onlinePayment'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
-
       agentCodes = List();
 
       json['agentCode'].forEach((code) {
-
         agentCodes.add(code.toString());
       });
-    }
-    catch(error) {
-
+    } catch (error) {
       agentCodes = List();
     }
 
     try {
-
       sliders = List();
 
       json['sliders'].forEach((slider) {
-
         sliders.add(Slider.fromJson(slider));
       });
-    }
-    catch(error) {
-
+    } catch (error) {
       sliders = List();
     }
 
     try {
-      deliveryChargeInsideDhaka = double.parse(json['deliveryChargeInsideDhaka'].toString());
-    }
-    catch(error) {}
+      deliveryChargeInsideDhaka =
+          double.parse(json['deliveryChargeInsideDhaka'].toString());
+    } catch (error) {}
 
     try {
-      deliveryChargeOutsideDhaka = double.parse(json['deliveryChargeOutsideDhaka'].toString());
-    }
-    catch(error) {}
+      deliveryChargeOutsideDhaka =
+          double.parse(json['deliveryChargeOutsideDhaka'].toString());
+    } catch (error) {}
   }
 }
