@@ -759,6 +759,9 @@ class DataPresenter with ChangeNotifier {
               if (response.statusCode == 200 || response.statusCode == 201) {
                 if (jsonData['success']) {
                   SearchData searchData = SearchData.fromJson(jsonData['data']);
+                  debugPrint(
+                      'searchData: ${searchData.toString()} - ${searchData.products.list.length},${searchData.categories.list.length},${searchData.shops.list.length},${searchData.brands.list.length}');
+
                   _searchContract.onSuccess(searchData);
                 } else {
                   _searchContract.onFailure(context);

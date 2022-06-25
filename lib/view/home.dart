@@ -25,7 +25,6 @@ ValueNotifier<bool> isHomeLoaded = ValueNotifier(false);
 GlobalKey<_HomeState> homeKey = GlobalKey();
 
 class Home extends StatefulWidget {
-
   Home({Key key}) : super(key: key);
 
   @override
@@ -33,7 +32,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> implements Connectivity, HomeContract {
-
   DataPresenter _presenter;
 
   Connectivity _connectivity;
@@ -43,116 +41,162 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
 
   HomeData _homeData;
 
-
   @override
   void initState() {
-
     _connectivity = this;
     _contract = this;
     _presenter = DataPresenter(_connectivity, homeContract: _contract);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
       _presenter.getHomeData(context);
     });
 
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: _onBackPress,
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
           builder: (BuildContext context) {
-
             _context = context;
 
             return SafeArea(
               child: Column(
                 children: <Widget>[
-
                   HomeAppBar(),
-
                   Expanded(
-                    child: NotificationListener<OverscrollIndicatorNotification>(
+                    child:
+                        NotificationListener<OverscrollIndicatorNotification>(
                       onNotification: (overScroll) {
                         overScroll.disallowGlow();
                         return;
                       },
                       child: SingleChildScrollView(
-                        child: _homeData == null ? Container() : Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-
-                            _homeData != null && _homeData.info != null && _homeData.info.sliders != null ? SliderWidget(_homeData.info.sliders) : Container(),
-
-                            _divider(),
-
-                            _segmentHeader(context, AppLocalization.of(context).getTranslatedValue("category"), false, Constants.ALL_CATEGORY, ""),
-
-                            _homeData != null && _homeData.categories != null ? CategoryHorizontalListView(_homeData.categories) : Container(),
-
-                            Visibility(
-                              visible: _homeData != null && _homeData.hotSelling != null && _homeData.hotSelling.products.length > 0,
-                              child: Column(
-                                children: [
-
+                        child: _homeData == null
+                            ? Container()
+                            : Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: <Widget>[
+                                  _homeData != null &&
+                                          _homeData.info != null &&
+                                          _homeData.info.sliders != null
+                                      ? SliderWidget(_homeData.info.sliders)
+                                      : Container(),
                                   _divider(),
-
-                                  _segmentHeader(context, AppLocalization.of(context).getTranslatedValue("top_selling"), false, 0, ""),
-
-                                  _homeData != null && _homeData.hotSelling != null ? ProductGridView(_homeData.hotSelling.products, false) : Container(),
-                                ],
-                              ),
-                            ),
-
-                            Visibility(
-                              visible: _homeData != null && _homeData.flashSale != null && _homeData.flashSale.products.length > 0,
-                              child: Column(
-                                children: [
-
-                                  _divider(),
-
-                                  _segmentHeader(context, AppLocalization.of(context).getTranslatedValue("flash_sale"), true, Constants.ALL_DISCOUNTED, ""),
-
-                                  _homeData != null && _homeData.flashSale != null ? ProductGridView(_homeData.flashSale.products, false) : Container(),
-                                ],
-                              ),
-                            ),
-
-                            Visibility(
-                              visible: _homeData != null && _homeData.sections != null && _homeData.sections.length > 0,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: _homeData == null || _homeData.sections == null ? 0 : _homeData.sections.length,
-                                itemBuilder: (BuildContext context, int index) {
-
-                                  return Visibility(
-                                    visible: _homeData.sections[index].products.length > 0,
+                                  _segmentHeader(
+                                      context,
+                                      AppLocalization.of(context)
+                                          .getTranslatedValue("category"),
+                                      false,
+                                      Constants.ALL_CATEGORY,
+                                      ""),
+                                  _homeData != null &&
+                                          _homeData.categories != null
+                                      ? CategoryHorizontalListView(
+                                          _homeData.categories)
+                                      : Container(),
+                                  Visibility(
+                                    visible: _homeData != null &&
+                                        _homeData.hotSelling != null &&
+                                        _homeData.hotSelling.products.length >
+                                            0,
                                     child: Column(
-                                      children: <Widget>[
-
+                                      children: [
                                         _divider(),
-
-                                        _segmentHeader(context, _homeData.sections[index].title, true, Constants.HOME_CATEGORY, _homeData.sections[index].slug ?? ""),
-
-                                        ProductGridView(_homeData.sections[index].products, false),
+                                        _segmentHeader(
+                                            context,
+                                            AppLocalization.of(context)
+                                                .getTranslatedValue(
+                                                    "top_selling"),
+                                            false,
+                                            0,
+                                            ""),
+                                        _homeData != null &&
+                                                _homeData.hotSelling != null
+                                            ? ProductGridView(
+                                                _homeData.hotSelling.products,
+                                                false,
+                                                isHome: true,
+                                              )
+                                            : Container(),
                                       ],
                                     ),
-                                  );
-                                },
+                                  ),
+                                  Visibility(
+                                    visible: _homeData != null &&
+                                        _homeData.flashSale != null &&
+                                        _homeData.flashSale.products.length > 0,
+                                    child: Column(
+                                      children: [
+                                        _divider(),
+                                        _segmentHeader(
+                                            context,
+                                            AppLocalization.of(context)
+                                                .getTranslatedValue(
+                                                    "flash_sale"),
+                                            true,
+                                            Constants.ALL_DISCOUNTED,
+                                            ""),
+                                        _homeData != null &&
+                                                _homeData.flashSale != null
+                                            ? ProductGridView(
+                                                _homeData.flashSale.products,
+                                                false,
+                                                isHome: true,
+                                              )
+                                            : Container(),
+                                      ],
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: _homeData != null &&
+                                        _homeData.sections != null &&
+                                        _homeData.sections.length > 0,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: _homeData == null ||
+                                              _homeData.sections == null
+                                          ? 0
+                                          : _homeData.sections.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Visibility(
+                                          visible: _homeData.sections[index]
+                                                  .products.length >
+                                              0,
+                                          child: Column(
+                                            children: <Widget>[
+                                              _divider(),
+                                              _segmentHeader(
+                                                  context,
+                                                  _homeData
+                                                      .sections[index].title,
+                                                  true,
+                                                  Constants.HOME_CATEGORY,
+                                                  _homeData.sections[index]
+                                                          .slug ??
+                                                      ""),
+                                              ProductGridView(
+                                                _homeData
+                                                    .sections[index].products,
+                                                false,
+                                                isHome: true,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
                       ),
                     ),
                   ),
@@ -165,9 +209,7 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
     );
   }
 
-
   Widget _divider() {
-
     return Container(
       color: Theme.of(context).hintColor,
       height: 1.25 * SizeConfig.heightSizeMultiplier,
@@ -175,9 +217,8 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
     );
   }
 
-
-  Widget _segmentHeader(BuildContext context, String title, bool showAll, int type, String slug) {
-
+  Widget _segmentHeader(
+      BuildContext context, String title, bool showAll, int type, String slug) {
     return Padding(
       padding: EdgeInsets.only(
         top: .5 * SizeConfig.heightSizeMultiplier,
@@ -188,33 +229,37 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-
-            Text(title,
+            Text(
+              title,
               style: Theme.of(context).textTheme.subtitle2.copyWith(
-                color: Colors.black.withOpacity(.85),
-                fontWeight: FontWeight.w700,
-              ),
+                    color: Colors.black.withOpacity(.85),
+                    fontWeight: FontWeight.w700,
+                  ),
             ),
-
             Visibility(
               visible: showAll,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-
-                  _onSeeAllPress(type, context: context, title: title, slug: slug);
+                  _onSeeAllPress(type,
+                      context: context, title: title, slug: slug);
                 },
                 child: Container(
-                  padding: EdgeInsets.all(.625 * SizeConfig.heightSizeMultiplier),
+                  padding:
+                      EdgeInsets.all(.625 * SizeConfig.heightSizeMultiplier),
                   decoration: BoxDecoration(
                     color: Theme.of(context).accentColor,
-                    borderRadius: BorderRadius.circular(.4 * SizeConfig.heightSizeMultiplier),
+                    borderRadius: BorderRadius.circular(
+                        .4 * SizeConfig.heightSizeMultiplier),
                   ),
-                  child: Text(AppLocalization.of(context).getTranslatedValue("see_all").toUpperCase(),
+                  child: Text(
+                    AppLocalization.of(context)
+                        .getTranslatedValue("see_all")
+                        .toUpperCase(),
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontSize: 1.5 * SizeConfig.textSizeMultiplier,
-                      color: Colors.white,
-                    ),
+                          fontSize: 1.5 * SizeConfig.textSizeMultiplier,
+                          color: Colors.white,
+                        ),
                   ),
                 ),
               ),
@@ -225,11 +270,9 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
     );
   }
 
-
-  void _onSeeAllPress(int type, {BuildContext context, String title, String slug}) {
-
-    switch(type) {
-
+  void _onSeeAllPress(int type,
+      {BuildContext context, String title, String slug}) {
+    switch (type) {
       case Constants.ALL_BRAND:
         Navigator.of(context).pushNamed(RouteManager.ALL_BRAND);
         break;
@@ -239,7 +282,13 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
         break;
 
       case Constants.ALL_DISCOUNTED:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Products(showDiscountedProduct: true, discountTitle: AppLocalization.of(context).getTranslatedValue("flash_sale"))));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Products(
+                    showDiscountedProduct: true,
+                    discountTitle: AppLocalization.of(context)
+                        .getTranslatedValue("flash_sale"))));
         break;
 
       case Constants.HOME_CATEGORY:
@@ -248,106 +297,90 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
     }
   }
 
-
   void reloadPage() {
-
-    if(!isHomeLoaded.value) {
-
+    if (!isHomeLoaded.value) {
       _presenter.getHomeData(context);
     }
   }
 
-
   Future<bool> _onBackPress() {
-
     return Future(() => false);
   }
 
-
   @override
   void dispose() {
-
     _presenter.hideOverlayLoader();
     super.dispose();
   }
 
-
   @override
   void onInactive(BuildContext context) {
-
     isHomeLoaded.value = false;
 
-    if(mounted) {
-      _showErrorDialog(context, AppLocalization.of(context).getTranslatedValue("inactive_connection"));
+    if (mounted) {
+      _showErrorDialog(
+          context,
+          AppLocalization.of(context)
+              .getTranslatedValue("inactive_connection"));
     }
   }
-
 
   @override
   void onDisconnected(BuildContext context) {
-
     isHomeLoaded.value = false;
 
-    if(mounted) {
-      _showErrorDialog(context, AppLocalization.of(context).getTranslatedValue("not_connected"));
+    if (mounted) {
+      _showErrorDialog(context,
+          AppLocalization.of(context).getTranslatedValue("not_connected"));
     }
   }
-
 
   @override
   void onTimeout(BuildContext context) {
-
     isHomeLoaded.value = false;
 
-    if(mounted) {
-      _showErrorDialog(context, AppLocalization.of(context).getTranslatedValue("connection_time_out"));
+    if (mounted) {
+      _showErrorDialog(
+          context,
+          AppLocalization.of(context)
+              .getTranslatedValue("connection_time_out"));
     }
   }
-
 
   @override
   void onFailure(BuildContext context) {
-
     isHomeLoaded.value = false;
 
-    if(mounted) {
-      _showErrorDialog(context, AppLocalization.of(context).getTranslatedValue("could_not_load_data"));
+    if (mounted) {
+      _showErrorDialog(
+          context,
+          AppLocalization.of(context)
+              .getTranslatedValue("could_not_load_data"));
     }
   }
 
-
   @override
   void onSuccess(HomeData homeData) {
-
     info.value = homeData.info;
     UpdateCheck.checkForUpdate(_context);
 
-    if(homeData != null && homeData.hotSelling != null && homeData.hotSelling.products != null) {
-
+    if (homeData != null &&
+        homeData.hotSelling != null &&
+        homeData.hotSelling.products != null) {
       homeData.hotSelling.products.forEach((product) {
-
-        if(product.variationType == 0 || product.variationType == 1) {
-
-          if(product.variations.length > 0) {
-
+        if (product.variationType == 0 || product.variationType == 1) {
+          if (product.variations.length > 0) {
             product.price = product.variations[0].regularPrice;
             product.currentPrice = product.variations[0].discountPrice;
-          }
-          else {
-
+          } else {
             product.price = product.price;
             product.currentPrice = product.buyingPrice;
           }
-        }
-        else {
-
-          if(product.sizeInfos.length > 0) {
-
+        } else {
+          if (product.sizeInfos.length > 0) {
             product.price = product.sizeInfos[0].regularPrice;
             product.currentPrice = product.sizeInfos[0].discountPrice;
-          }
-          else {
-
+          } else {
             product.price = product.price;
             product.currentPrice = product.buyingPrice;
           }
@@ -355,32 +388,23 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
       });
     }
 
-    if(homeData != null && homeData.flashSale != null && homeData.flashSale.products != null) {
-
+    if (homeData != null &&
+        homeData.flashSale != null &&
+        homeData.flashSale.products != null) {
       homeData.flashSale.products.forEach((product) {
-
-        if(product.variationType == 0 || product.variationType == 1) {
-
-          if(product.variations.length > 0) {
-
+        if (product.variationType == 0 || product.variationType == 1) {
+          if (product.variations.length > 0) {
             product.price = product.variations[0].regularPrice;
             product.currentPrice = product.variations[0].discountPrice;
-          }
-          else {
-
+          } else {
             product.price = product.price;
             product.currentPrice = product.buyingPrice;
           }
-        }
-        else {
-
-          if(product.sizeInfos.length > 0) {
-
+        } else {
+          if (product.sizeInfos.length > 0) {
             product.price = product.sizeInfos[0].regularPrice;
             product.currentPrice = product.sizeInfos[0].discountPrice;
-          }
-          else {
-
+          } else {
             product.price = product.price;
             product.currentPrice = product.buyingPrice;
           }
@@ -388,34 +412,24 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
       });
     }
 
-    if(homeData != null && homeData.sections != null && homeData.sections.length > 0) {
-
+    if (homeData != null &&
+        homeData.sections != null &&
+        homeData.sections.length > 0) {
       homeData.sections.forEach((section) {
-
         section.products.forEach((product) {
-
-          if(product.variationType == 0 || product.variationType == 1) {
-
-            if(product.variations.length > 0) {
-
+          if (product.variationType == 0 || product.variationType == 1) {
+            if (product.variations.length > 0) {
               product.price = product.variations[0].regularPrice;
               product.currentPrice = product.variations[0].discountPrice;
-            }
-            else {
-
+            } else {
               product.price = product.price;
               product.currentPrice = product.buyingPrice;
             }
-          }
-          else {
-
-            if(product.sizeInfos.length > 0) {
-
+          } else {
+            if (product.sizeInfos.length > 0) {
               product.price = product.sizeInfos[0].regularPrice;
               product.currentPrice = product.sizeInfos[0].discountPrice;
-            }
-            else {
-
+            } else {
               product.price = product.price;
               product.currentPrice = product.buyingPrice;
             }
@@ -426,29 +440,25 @@ class _HomeState extends State<Home> implements Connectivity, HomeContract {
 
     this._homeData = homeData;
 
-    if(mounted) {
+    if (mounted) {
       setState(() {});
     }
 
     isHomeLoaded.value = true;
   }
 
-
-  Future<Widget> _showErrorDialog(BuildContext mainContext, String subTitle) async {
-
+  Future<Widget> _showErrorDialog(
+      BuildContext mainContext, String subTitle) async {
     return showDialog(
         context: mainContext,
         barrierDismissible: false,
         builder: (BuildContext context) {
-
           return MyErrorWidget(
             subTitle: subTitle,
             onPressed: () {
-
               _presenter.getHomeData(mainContext);
             },
           );
-        }
-    );
+        });
   }
 }

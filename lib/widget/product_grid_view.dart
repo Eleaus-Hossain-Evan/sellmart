@@ -13,9 +13,10 @@ class ProductGridView extends StatefulWidget {
   final bool campaignProduct;
   final String campaignSlug;
   final String campaignEndDate;
+  bool isHome;
 
   ProductGridView(this.products, this.campaignProduct,
-      {this.campaignSlug, this.campaignEndDate});
+      {this.campaignSlug, this.campaignEndDate, this.isHome = false});
 
   @override
   _ProductGridViewState createState() => _ProductGridViewState();
@@ -32,9 +33,9 @@ class _ProductGridViewState extends State<ProductGridView> {
         cacheExtent: 20,
         itemCount: widget.products == null
             ? 0
-            :
-            // widget.products.length
-            4,
+            : widget.isHome
+                ? 4
+                : widget.products.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 1 * SizeConfig.heightSizeMultiplier,

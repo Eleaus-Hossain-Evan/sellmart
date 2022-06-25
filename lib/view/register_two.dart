@@ -16,9 +16,9 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterTwo extends StatefulWidget {
-  final String phone;
+  final User user;
 
-  RegisterTwo(this.phone);
+  RegisterTwo(this.user);
 
   @override
   _RegisterTwoState createState() => _RegisterTwoState();
@@ -95,8 +95,8 @@ class _RegisterTwoState extends State<RegisterTwo>
                                 ? (AppLocalization.of(context)
                                         .getTranslatedValue("otp_title") +
                                     " " +
-                                    widget.phone)
-                                : widget.phone +
+                                    widget.user.phone)
+                                : widget.user.phone +
                                     " " +
                                     AppLocalization.of(context)
                                         .getTranslatedValue("otp_title"),
@@ -325,6 +325,9 @@ class _RegisterTwoState extends State<RegisterTwo>
                               SizedBox(
                                 height: 6.25 * SizeConfig.heightSizeMultiplier,
                               ),
+                              SizedBox(
+                                height: 6.25 * SizeConfig.heightSizeMultiplier,
+                              ),
                               MyButton(
                                 AppLocalization.of(context)
                                     .getTranslatedValue("sign_up")
@@ -403,7 +406,7 @@ class _RegisterTwoState extends State<RegisterTwo>
                     otp: _otpController.text,
                     password: _passwordController.text,
                     confirmPassword: _confirmPasswordController.text,
-                    phone: widget.phone);
+                    phone: widget.user.phone);
                 _presenter.signUp(context, user);
               }
             }

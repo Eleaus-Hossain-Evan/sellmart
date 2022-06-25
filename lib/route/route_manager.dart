@@ -1,3 +1,5 @@
+import 'package:app/model/user.dart';
+
 import '../view/select_delivery_address.dart';
 
 import '../view/order_success.dart';
@@ -97,7 +99,7 @@ class RouteManager {
         return MaterialPageRoute(builder: (_) => RegisterOne());
 
       case REGISTER_TWO:
-        return MaterialPageRoute(builder: (_) => RegisterTwo(args as String));
+        return MaterialPageRoute(builder: (_) => RegisterTwo(args as User));
 
       case FORGOT_PASSWORD:
         return MaterialPageRoute(builder: (_) => ForgotPassword());
