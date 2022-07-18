@@ -1,3 +1,7 @@
+import 'package:app/utils/constants.dart';
+import 'package:app/view/home.dart';
+import 'package:logger/logger.dart';
+
 import '../localization/app_localization.dart';
 import '../model/address.dart';
 import '../model/user.dart';
@@ -22,15 +26,29 @@ class AddressListView extends StatefulWidget {
 }
 
 class _AddressListViewState extends State<AddressListView> with ChangeNotifier {
-  ValueNotifier<int> addressIndex = ValueNotifier(0);
+  ValueNotifier<int> addressIndex = ValueNotifier(1);
   @override
   void initState() {
     init();
+    if (currentUser.value.addresses.list.length < 0) {
+      _onSelected(currentUser.value.addresses.list[1]);
+    }
     super.initState();
   }
 
   @override
+  void didChangeDependencies() {
+    if (currentUser.value.addresses.list.length < 0) {
+      _onSelected(currentUser.value.addresses.list[1]);
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // if (currentUser.value.addresses.list.length < 0) {
+    //   _onSelected(currentUser.value.addresses.list[addressIndex.value]);
+    // }
     return Padding(
       padding: EdgeInsets.only(
         bottom: .5 * SizeConfig.heightSizeMultiplier,
@@ -42,50 +60,82 @@ class _AddressListViewState extends State<AddressListView> with ChangeNotifier {
         },
         child: ValueListenableBuilder(
             valueListenable: order,
-            builder: (BuildContext context, Order order, _) {
+            builder: (BuildContext context, Order orderData, _) {
               return ValueListenableBuilder(
                 valueListenable: currentUser,
                 builder: (BuildContext context, User user, _) {
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: user.addresses.list.length,
-                    padding: EdgeInsets.only(
-                        // top: 1.25 * SizeConfig.heightSizeMultiplier,
-                        left: 2.9 * SizeConfig.widthSizeMultiplier,
-                        right: 2.9 * SizeConfig.widthSizeMultiplier),
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                          height: 2 * SizeConfig.heightSizeMultiplier);
-                    },
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            order.address = user.addresses.list[index];
-                            addressIndex.value = index;
-                          });
-                          print(user.addresses.list[index].division);
-                          print("order=> ${order.address.division}");
-                        },
-                        child: DeliveryAddressWidget(
-                          user.addresses.list[index],
-                          addressIndex.value == index,
-                          onEdit: (Address address) {
-                            widget.onEdit(address);
+                  return user.addresses.list.length > 1
+                      ? ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: user.addresses.list.length,
+                          padding: EdgeInsets.only(
+                              // top: 1.25 * SizeConfig.heightSizeMultiplier,
+                              left: 2.9 * SizeConfig.widthSizeMultiplier,
+                              right: 2.9 * SizeConfig.widthSizeMultiplier),
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                                height: 2 * SizeConfig.heightSizeMultiplier);
                           },
-                          onDelete: (String addressID) {
-                            _showConfirmationDialog(context, addressID);
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  addressIndex.value = index;
+                                  _onSelected(
+                                      user.addresses.list[addressIndex.value]);
+                                });
+                                // print(user.addresses.list[index].division);
+                                // print("order=> ${order.address.name}");
+                                // print(
+                                //     "order=> ${addressIndex.value} == ${index}");
+                              },
+                              child: DeliveryAddressWidget(
+                                user.addresses.list[index],
+                                addressIndex.value == index,
+                                onEdit: (Address address) {
+                                  widget.onEdit(address);
+                                },
+                                onDelete: (String addressID) {
+                                  _showConfirmationDialog(context, addressID);
+                                },
+                              ),
+                            );
                           },
-                        ),
-                      );
-                    },
-                  );
+                        )
+                      : Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: 2 * SizeConfig.widthSizeMultiplier,
+                            ),
+                            child: Text("No Address Added"),
+                          ),
+                        );
                 },
               );
             }),
       ),
     );
+  }
+
+  void _onSelected(Address address) {
+    order.value.address = address;
+
+    Logger().wtf(address.toString());
+
+    if (address.district.toLowerCase() == "dhaka" ||
+        address.district.toLowerCase() == "ঢাকা") {
+      order.value.deliveryFee = info.value.deliveryChargeInsideDhaka ?? 90;
+      order.value.deliveryType = Constants.INSIDE_DHAKA;
+      debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
+    } else {
+      order.value.deliveryFee = info.value.deliveryChargeOutsideDhaka ?? 150;
+      order.value.deliveryType = Constants.OUTSIDE_DHAKA;
+      debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
+    }
+
+    order.notifyListeners();
+    // Navigator.pop(context);
   }
 
   Future<Widget> _showConfirmationDialog(
@@ -105,8 +155,8 @@ class _AddressListViewState extends State<AddressListView> with ChangeNotifier {
   }
 
   void init() {
-    if (currentUser.value.addresses.list.length == 0) {
-      currentUser.value.addresses.list.add(Address());
-    }
+    // if (currentUser.value.addresses.list.length == 0) {
+    //   currentUser.value.addresses.list.add(Address());
+    // }
   }
 }

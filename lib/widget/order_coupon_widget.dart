@@ -102,7 +102,7 @@ class _OrderCouponWidgetState extends State<OrderCouponWidget>
               Container(
                 height: 5 * SizeConfig.heightSizeMultiplier,
                 child: SizedBox(
-                  width: 68 * SizeConfig.widthSizeMultiplier,
+                  width: 65 * SizeConfig.widthSizeMultiplier,
                   child: TextField(
                     controller: _couponController,
                     keyboardType: TextInputType.text,

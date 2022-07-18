@@ -16,7 +16,6 @@ import '../widget/my_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class AddAddress extends StatefulWidget {
-
   final List<Division> divisionList;
   final Address address;
 
@@ -26,8 +25,9 @@ class AddAddress extends StatefulWidget {
   _AddAddressState createState() => _AddAddressState();
 }
 
-class _AddAddressState extends State<AddAddress> with ChangeNotifier implements Connectivity, ProfileContract {
-
+class _AddAddressState extends State<AddAddress>
+    with ChangeNotifier
+    implements Connectivity, ProfileContract {
   UserPresenter _userPresenter;
 
   Connectivity _connectivity;
@@ -49,45 +49,42 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
 
-
   @override
   void initState() {
-
     _divisions = widget.divisionList;
     _init();
 
     _connectivity = this;
     _profileContract = this;
 
-    _userPresenter = UserPresenter(_connectivity, profileContract: _profileContract);
+    _userPresenter =
+        UserPresenter(_connectivity, profileContract: _profileContract);
 
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: _onBackPress,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Builder(
           builder: (BuildContext context) {
-
             return SafeArea(
               child: Column(
                 children: <Widget>[
-
-                  MyAppBar(widget.address == null ? AppLocalization.of(context).getTranslatedValue("add_address") :
-                  AppLocalization.of(context).getTranslatedValue("update_address"),
+                  MyAppBar(
+                    widget.address == null
+                        ? AppLocalization.of(context)
+                            .getTranslatedValue("add_address")
+                        : AppLocalization.of(context)
+                            .getTranslatedValue("update_address"),
                     onBackPress: () {
-
                       FocusManager.instance.primaryFocus?.unfocus();
                       _onBackPress();
                     },
                   ),
-
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(
@@ -95,7 +92,8 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
                         right: 5.12 * SizeConfig.widthSizeMultiplier,
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                      child: NotificationListener<OverscrollIndicatorNotification>(
+                      child:
+                          NotificationListener<OverscrollIndicatorNotification>(
                         onNotification: (overScroll) {
                           overScroll.disallowGlow();
                           return;
@@ -106,9 +104,9 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-
-                              SizedBox(height: 5 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 5 * SizeConfig.heightSizeMultiplier,
+                              ),
                               Container(
                                 height: 6 * SizeConfig.heightSizeMultiplier,
                                 child: TextField(
@@ -117,30 +115,50 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
                                   textInputAction: TextInputAction.next,
                                   style: Theme.of(context).textTheme.subtitle2,
                                   decoration: InputDecoration(
-                                    hintText: AppLocalization.of(context).getTranslatedValue("name"),
-                                    hintStyle: Theme.of(context).textTheme.subtitle2.copyWith(
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.grey[500],
-                                    ),
+                                    hintText: AppLocalization.of(context)
+                                        .getTranslatedValue("name"),
+                                    hintStyle: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.grey[500],
+                                        ),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                      borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                      borderRadius: BorderRadius.circular(
+                                          .3 * SizeConfig.heightSizeMultiplier),
+                                      borderSide: BorderSide(
+                                        width: .051 *
+                                            SizeConfig.widthSizeMultiplier,
+                                        color: Colors.black45,
+                                      ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                      borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                      borderRadius: BorderRadius.circular(
+                                          .3 * SizeConfig.heightSizeMultiplier),
+                                      borderSide: BorderSide(
+                                        width: .051 *
+                                            SizeConfig.widthSizeMultiplier,
+                                        color: Colors.black45,
+                                      ),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                      borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                      borderRadius: BorderRadius.circular(
+                                          .3 * SizeConfig.heightSizeMultiplier),
+                                      borderSide: BorderSide(
+                                        width: .051 *
+                                            SizeConfig.widthSizeMultiplier,
+                                        color: Colors.black45,
+                                      ),
                                     ),
-                                    contentPadding: EdgeInsets.all(1.5 * SizeConfig.heightSizeMultiplier),
+                                    contentPadding: EdgeInsets.all(
+                                        1.5 * SizeConfig.heightSizeMultiplier),
                                   ),
                                 ),
                               ),
-
-                              SizedBox(height: 3.25 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 3.25 * SizeConfig.heightSizeMultiplier,
+                              ),
                               Container(
                                 height: 6 * SizeConfig.heightSizeMultiplier,
                                 child: TextField(
@@ -149,63 +167,105 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
                                   textInputAction: TextInputAction.next,
                                   style: Theme.of(context).textTheme.subtitle2,
                                   decoration: InputDecoration(
-                                    hintText: AppLocalization.of(context).getTranslatedValue("mobile"),
-                                    hintStyle: Theme.of(context).textTheme.subtitle2.copyWith(
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.grey[500],
-                                    ),
+                                    hintText: AppLocalization.of(context)
+                                        .getTranslatedValue("mobile"),
+                                    hintStyle: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.grey[500],
+                                        ),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                      borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                      borderRadius: BorderRadius.circular(
+                                          .3 * SizeConfig.heightSizeMultiplier),
+                                      borderSide: BorderSide(
+                                        width: .051 *
+                                            SizeConfig.widthSizeMultiplier,
+                                        color: Colors.black45,
+                                      ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                      borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                      borderRadius: BorderRadius.circular(
+                                          .3 * SizeConfig.heightSizeMultiplier),
+                                      borderSide: BorderSide(
+                                        width: .051 *
+                                            SizeConfig.widthSizeMultiplier,
+                                        color: Colors.black45,
+                                      ),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                      borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                      borderRadius: BorderRadius.circular(
+                                          .3 * SizeConfig.heightSizeMultiplier),
+                                      borderSide: BorderSide(
+                                        width: .051 *
+                                            SizeConfig.widthSizeMultiplier,
+                                        color: Colors.black45,
+                                      ),
                                     ),
-                                    contentPadding: EdgeInsets.all(1.5 * SizeConfig.heightSizeMultiplier),
+                                    contentPadding: EdgeInsets.all(
+                                        1.5 * SizeConfig.heightSizeMultiplier),
                                   ),
                                 ),
                               ),
-
-                              SizedBox(height: 2.5 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 2.5 * SizeConfig.heightSizeMultiplier,
+                              ),
                               Padding(
-                                padding: EdgeInsets.only(left: .769 * SizeConfig.widthSizeMultiplier),
-                                child: Text(AppLocalization.of(context).getTranslatedValue("division"),
-                                  style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                    color: Colors.black.withOpacity(.75),
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                padding: EdgeInsets.only(
+                                    left:
+                                        .769 * SizeConfig.widthSizeMultiplier),
+                                child: Text(
+                                  AppLocalization.of(context)
+                                      .getTranslatedValue("division"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(
+                                        color: Colors.black.withOpacity(.75),
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                 ),
                               ),
-
-                              SizedBox(height: 1.25 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 1.25 * SizeConfig.heightSizeMultiplier,
+                              ),
                               DropdownButtonFormField(
                                 value: _divisionID,
                                 isExpanded: true,
                                 isDense: true,
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(1.25 * SizeConfig.heightSizeMultiplier),
+                                  contentPadding: EdgeInsets.all(
+                                      1.25 * SizeConfig.heightSizeMultiplier),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                 ),
                                 onChanged: (value) {
-
                                   setState(() {
                                     _divisionID = value;
                                   });
@@ -213,53 +273,81 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
                                   _onDivisionSelected();
                                 },
                                 items: _divisions.map((division) {
-
-                                  return DropdownMenuItem(child: Text(division.name, style: Theme.of(context).textTheme.subtitle2), value: division.id);
+                                  return DropdownMenuItem(
+                                      child: Text(division.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2),
+                                      value: division.id);
                                 }).toList(),
                               ),
-
-                              SizedBox(height: 2.5 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 2.5 * SizeConfig.heightSizeMultiplier,
+                              ),
                               Padding(
-                                padding: EdgeInsets.only(left: .769 * SizeConfig.widthSizeMultiplier),
-                                child: Text(AppLocalization.of(context).getTranslatedValue("district"),
-                                  style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                    color: Colors.black.withOpacity(.75),
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                padding: EdgeInsets.only(
+                                    left:
+                                        .769 * SizeConfig.widthSizeMultiplier),
+                                child: Text(
+                                  AppLocalization.of(context)
+                                      .getTranslatedValue("district"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(
+                                        color: Colors.black.withOpacity(.75),
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                 ),
                               ),
-
-                              SizedBox(height: 1.25 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 1.25 * SizeConfig.heightSizeMultiplier,
+                              ),
                               DropdownButtonFormField(
                                 value: _districtID,
                                 isExpanded: true,
                                 isDense: true,
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(1.25 * SizeConfig.heightSizeMultiplier),
+                                  contentPadding: EdgeInsets.all(
+                                      1.25 * SizeConfig.heightSizeMultiplier),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                 ),
                                 onTap: () {
-
-                                  if(_districts.length == 0) {
-
-                                    _showToast(AppLocalization.of(context).getTranslatedValue("select_division"), Toast.LENGTH_SHORT);
+                                  if (_districts.length == 0) {
+                                    _showToast(
+                                        AppLocalization.of(context)
+                                            .getTranslatedValue(
+                                                "select_division"),
+                                        Toast.LENGTH_SHORT);
                                   }
                                 },
                                 onChanged: (value) {
-
                                   setState(() {
                                     _districtID = value;
                                   });
@@ -267,53 +355,81 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
                                   _onDistrictSelected();
                                 },
                                 items: _districts.map((district) {
-
-                                  return DropdownMenuItem(child: Text(district.name, style: Theme.of(context).textTheme.subtitle2), value: district.id);
+                                  return DropdownMenuItem(
+                                      child: Text(district.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2),
+                                      value: district.id);
                                 }).toList(),
                               ),
-
-                              SizedBox(height: 2.5 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 2.5 * SizeConfig.heightSizeMultiplier,
+                              ),
                               Padding(
-                                padding: EdgeInsets.only(left: .769 * SizeConfig.widthSizeMultiplier),
-                                child: Text(AppLocalization.of(context).getTranslatedValue("upazila"),
-                                  style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                    color: Colors.black.withOpacity(.75),
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                padding: EdgeInsets.only(
+                                    left:
+                                        .769 * SizeConfig.widthSizeMultiplier),
+                                child: Text(
+                                  AppLocalization.of(context)
+                                      .getTranslatedValue("upazila"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(
+                                        color: Colors.black.withOpacity(.75),
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                 ),
                               ),
-
-                              SizedBox(height: 1.25 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 1.25 * SizeConfig.heightSizeMultiplier,
+                              ),
                               DropdownButtonFormField(
                                 value: _upazilaID,
                                 isExpanded: true,
                                 isDense: true,
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(1.25 * SizeConfig.heightSizeMultiplier),
+                                  contentPadding: EdgeInsets.all(
+                                      1.25 * SizeConfig.heightSizeMultiplier),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                 ),
                                 onTap: () {
-
-                                  if(_upazilas.length == 0) {
-
-                                    _showToast(AppLocalization.of(context).getTranslatedValue("select_district"), Toast.LENGTH_SHORT);
+                                  if (_upazilas.length == 0) {
+                                    _showToast(
+                                        AppLocalization.of(context)
+                                            .getTranslatedValue(
+                                                "select_district"),
+                                        Toast.LENGTH_SHORT);
                                   }
                                 },
                                 onChanged: (value) {
-
                                   setState(() {
                                     _upazilaID = value;
                                   });
@@ -321,61 +437,92 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
                                   _onUpazilaSelected();
                                 },
                                 items: _upazilas.map((upazila) {
-
-                                  return DropdownMenuItem(child: Text(upazila.name, style: Theme.of(context).textTheme.subtitle2), value: upazila.id);
+                                  return DropdownMenuItem(
+                                      child: Text(upazila.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2),
+                                      value: upazila.id);
                                 }).toList(),
                               ),
-
-                              SizedBox(height: 2.5 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 2.5 * SizeConfig.heightSizeMultiplier,
+                              ),
                               Padding(
-                                padding: EdgeInsets.only(left: .769 * SizeConfig.widthSizeMultiplier),
-                                child: Text(AppLocalization.of(context).getTranslatedValue("address"),
-                                  style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                    color: Colors.black.withOpacity(.75),
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                padding: EdgeInsets.only(
+                                    left:
+                                        .769 * SizeConfig.widthSizeMultiplier),
+                                child: Text(
+                                  AppLocalization.of(context)
+                                      .getTranslatedValue("address"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(
+                                        color: Colors.black.withOpacity(.75),
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                 ),
                               ),
-
-                              SizedBox(height: 1.25 * SizeConfig.heightSizeMultiplier,),
-
+                              SizedBox(
+                                height: 1.25 * SizeConfig.heightSizeMultiplier,
+                              ),
                               TextField(
                                 controller: _addressController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 style: Theme.of(context).textTheme.subtitle2,
                                 onSubmitted: (string) {
-
                                   FocusScope.of(context).unfocus();
                                 },
                                 decoration: InputDecoration(
-                                  hintText: AppLocalization.of(context).getTranslatedValue("enter_rd_sector"),
-                                  hintStyle: Theme.of(context).textTheme.subtitle2.copyWith(
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey[500],
-                                  ),
+                                  hintText: AppLocalization.of(context)
+                                      .getTranslatedValue("enter_rd_sector"),
+                                  hintStyle: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.grey[500],
+                                      ),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(.3 * SizeConfig.heightSizeMultiplier),
-                                    borderSide: BorderSide(width: .051 * SizeConfig.widthSizeMultiplier, color: Colors.black45,),
+                                    borderRadius: BorderRadius.circular(
+                                        .3 * SizeConfig.heightSizeMultiplier),
+                                    borderSide: BorderSide(
+                                      width:
+                                          .051 * SizeConfig.widthSizeMultiplier,
+                                      color: Colors.black45,
+                                    ),
                                   ),
-                                  contentPadding: EdgeInsets.all(1.6875 * SizeConfig.heightSizeMultiplier),
+                                  contentPadding: EdgeInsets.all(
+                                      1.6875 * SizeConfig.heightSizeMultiplier),
                                 ),
                               ),
-
-                              SizedBox(height: 8 * SizeConfig.heightSizeMultiplier,),
-
-                              MyButton(AppLocalization.of(context).getTranslatedValue("save_address"),
+                              SizedBox(
+                                height: 8 * SizeConfig.heightSizeMultiplier,
+                              ),
+                              MyButton(
+                                AppLocalization.of(context)
+                                    .getTranslatedValue("save_address"),
                                 onPressed: () {
-
                                   FocusScope.of(context).unfocus();
                                   _validate(context);
                                 },
@@ -395,32 +542,33 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
     );
   }
 
-
   void _init() {
-
-    if(widget.address != null && widget.address.id != null && widget.address.id.isNotEmpty) {
-
+    if (widget.address != null &&
+        widget.address.id != null &&
+        widget.address.id.isNotEmpty) {
       _nameController.text = widget.address.name ?? "";
       _phoneController.text = widget.address.phone ?? "";
 
-      for(int i=0; i<_divisions.length; i++) {
-
-        if(_divisions[i].name == widget.address.division || _divisions[i].bnName == widget.address.division) {
-
+      for (int i = 0; i < _divisions.length; i++) {
+        if (_divisions[i].name == widget.address.division ||
+            _divisions[i].bnName == widget.address.division) {
           _divisionID = _divisions[i].id;
           _divisionName = widget.address.division;
 
-          for(int j=0; j<_divisions[i].districtList.length; j++) {
-
-            if(_divisions[i].districtList[j].name == widget.address.district || _divisions[i].districtList[j].bnName == widget.address.district) {
-
+          for (int j = 0; j < _divisions[i].districtList.length; j++) {
+            if (_divisions[i].districtList[j].name == widget.address.district ||
+                _divisions[i].districtList[j].bnName ==
+                    widget.address.district) {
               _districtID = _divisions[i].districtList[j].id;
               _districtName = widget.address.district;
 
-              for(int k=0; k<_divisions[i].districtList[j].upazilaList.length; k++) {
-
-                if(_divisions[i].districtList[j].upazilaList[k].name == widget.address.upazila || _divisions[i].districtList[j].upazilaList[k].bnName == widget.address.upazila) {
-
+              for (int k = 0;
+                  k < _divisions[i].districtList[j].upazilaList.length;
+                  k++) {
+                if (_divisions[i].districtList[j].upazilaList[k].name ==
+                        widget.address.upazila ||
+                    _divisions[i].districtList[j].upazilaList[k].bnName ==
+                        widget.address.upazila) {
                   _upazilaID = _divisions[i].districtList[j].upazilaList[k].id;
                   _upazilaName = widget.address.upazila;
 
@@ -444,80 +592,69 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
     }
   }
 
-
   Future<bool> _onBackPress() {
-
     Navigator.pop(context);
     return Future(() => false);
   }
 
-
   @override
   void dispose() {
-
     _userPresenter.hideOverlayLoader();
     super.dispose();
   }
 
-
   @override
   void onDisconnected(BuildContext context) {
-
-    if(mounted) {
-      MyFlushBar.show(context, AppLocalization.of(context).getTranslatedValue("not_connected"));
+    if (mounted) {
+      MyFlushBar.show(context,
+          AppLocalization.of(context).getTranslatedValue("not_connected"));
     }
   }
-
 
   @override
   void onInactive(BuildContext context) {
-
-    if(mounted) {
-      MyFlushBar.show(context, AppLocalization.of(context).getTranslatedValue("inactive_connection"));
+    if (mounted) {
+      MyFlushBar.show(
+          context,
+          AppLocalization.of(context)
+              .getTranslatedValue("inactive_connection"));
     }
   }
-
 
   @override
   void onTimeout(BuildContext context) {
-
-    if(mounted) {
-      MyFlushBar.show(context, AppLocalization.of(context).getTranslatedValue("connection_time_out"));
+    if (mounted) {
+      MyFlushBar.show(
+          context,
+          AppLocalization.of(context)
+              .getTranslatedValue("connection_time_out"));
     }
   }
 
-
   @override
   void onFailed(BuildContext context, String message) {
-
     MyFlushBar.show(context, message);
   }
-
 
   @override
   void onProfileUpdated(BuildContext context, String message) {}
 
-
   @override
   void onAddressAdded(BuildContext context) {
-
-    MyFlushBar.show(context, AppLocalization.of(context).getTranslatedValue("address_added"));
+    MyFlushBar.show(context,
+        AppLocalization.of(context).getTranslatedValue("address_added"));
   }
-
 
   @override
   void onAddressDeleted(BuildContext context, int position) {}
 
-
   @override
   void onAddressUpdated(BuildContext context) {
-
-    MyFlushBar.show(context, AppLocalization.of(context).getTranslatedValue("address_updated"));
+    MyFlushBar.show(context,
+        AppLocalization.of(context).getTranslatedValue("address_updated"));
   }
 
-
   void _showToast(String message, Toast length) {
-
     Fluttertoast.showToast(
       msg: message,
       toastLength: length,
@@ -529,9 +666,7 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
     );
   }
 
-
   void _onDivisionSelected() {
-
     setState(() {
       _districtID = null;
       _upazilaID = null;
@@ -539,10 +674,8 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
       _upazilas = List();
     });
 
-    for(int i=0; i<_divisions.length; i++) {
-
-      if(_divisions[i].id == _divisionID) {
-
+    for (int i = 0; i < _divisions.length; i++) {
+      if (_divisions[i].id == _divisionID) {
         _divisionName = _divisions[i].name;
 
         setState(() {
@@ -555,18 +688,14 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
     }
   }
 
-
   void _onDistrictSelected() {
-
     setState(() {
       _upazilaID = null;
       _upazilas = List();
     });
 
-    for(int i=0; i<_districts.length; i++) {
-
-      if(_districts[i].id == _districtID) {
-
+    for (int i = 0; i < _districts.length; i++) {
+      if (_districts[i].id == _districtID) {
         _districtName = _districts[i].name;
 
         setState(() {
@@ -579,75 +708,74 @@ class _AddAddressState extends State<AddAddress> with ChangeNotifier implements 
     }
   }
 
-
   void _onUpazilaSelected() {
-
-    for(int i=0; i<_upazilas.length; i++) {
-
-      if(_upazilas[i].id == _upazilaID) {
-
+    for (int i = 0; i < _upazilas.length; i++) {
+      if (_upazilas[i].id == _upazilaID) {
         _upazilaName = _upazilas[i].name;
         break;
       }
     }
   }
 
-
   void _validate(BuildContext context) {
+    if (_nameController.text.isEmpty) {
+      _showToast(AppLocalization.of(context).getTranslatedValue("enter_name"),
+          Toast.LENGTH_SHORT);
+    } else {
+      if (_phoneController.text.isEmpty) {
+        _showToast(
+            AppLocalization.of(context).getTranslatedValue("enter_phone"),
+            Toast.LENGTH_SHORT);
+      } else {
+        if (_phoneController.text.length != 11) {
+          _showToast(
+              AppLocalization.of(context)
+                  .getTranslatedValue("must_be_11_digits"),
+              Toast.LENGTH_SHORT);
+        } else {
+          if (_divisionID == null || _divisionID.isEmpty) {
+            _showToast(
+                AppLocalization.of(context)
+                    .getTranslatedValue("select_division"),
+                Toast.LENGTH_SHORT);
+          } else {
+            if (_districtID == null || _districtID.isEmpty) {
+              _showToast(
+                  AppLocalization.of(context)
+                      .getTranslatedValue("select_district"),
+                  Toast.LENGTH_SHORT);
+            } else {
+              if (_upazilaID == null || _upazilaID.isEmpty) {
+                _showToast(
+                    AppLocalization.of(context)
+                        .getTranslatedValue("select_upazila"),
+                    Toast.LENGTH_SHORT);
+              } else {
+                if (_addressController.text.isEmpty) {
+                  _showToast(
+                      AppLocalization.of(context)
+                          .getTranslatedValue("enter_rd_block"),
+                      Toast.LENGTH_SHORT);
+                } else {
+                  Address address = Address(
+                      name: _nameController.text,
+                      phone: _phoneController.text,
+                      division: _divisionName,
+                      district: _districtName,
+                      upazila: _upazilaName,
+                      details: _addressController.text);
 
-    if(_nameController.text.isEmpty) {
-
-      _showToast(AppLocalization.of(context).getTranslatedValue("enter_name"), Toast.LENGTH_SHORT);
-    }
-    else {
-
-      if(_phoneController.text.isEmpty) {
-
-        _showToast(AppLocalization.of(context).getTranslatedValue("enter_phone"), Toast.LENGTH_SHORT);
-      }
-      else {
-
-        if(_phoneController.text.length != 11) {
-
-          _showToast(AppLocalization.of(context).getTranslatedValue("must_be_11_digits"), Toast.LENGTH_SHORT);
-        }
-        else {
-
-          if(_divisionID == null || _divisionID.isEmpty) {
-
-            _showToast(AppLocalization.of(context).getTranslatedValue("select_division"), Toast.LENGTH_SHORT);
-          }
-          else {
-
-            if(_districtID == null || _districtID.isEmpty) {
-
-              _showToast(AppLocalization.of(context).getTranslatedValue("select_district"), Toast.LENGTH_SHORT);
-            }
-            else {
-
-              if(_upazilaID == null || _upazilaID.isEmpty) {
-
-                _showToast(AppLocalization.of(context).getTranslatedValue("select_upazila"), Toast.LENGTH_SHORT);
-              }
-              else {
-
-                if(_addressController.text.isEmpty) {
-
-                  _showToast(AppLocalization.of(context).getTranslatedValue("enter_rd_block"), Toast.LENGTH_SHORT);
-                }
-                else {
-
-                  Address address = Address(name: _nameController.text, phone: _phoneController.text, division: _divisionName,
-                      district: _districtName, upazila: _upazilaName, details: _addressController.text);
-
-                  if(widget.address != null && widget.address.id != null && widget.address.id.isNotEmpty) {
-
+                  if (widget.address != null &&
+                      widget.address.id != null &&
+                      widget.address.id.isNotEmpty) {
                     address.id = widget.address.id;
                     _userPresenter.updateAddress(context, address);
-                  }
-                  else {
-
+                    // Future.delayed(Duration(milliseconds: 1000), () {
+                    //   Navigator.pop(context);
+                    // });
+                  } else {
                     _userPresenter.addNewAddress(context, address);
+                    // Navigator.pop(context);
                   }
                 }
               }

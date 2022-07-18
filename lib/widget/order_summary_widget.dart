@@ -249,7 +249,8 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                                     ),
                               ),
                               Text(
-                                "৳" + orderData.deliveryFee.round().toString(),
+                                "৳" +
+                                    order.value.deliveryFee.round().toString(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1

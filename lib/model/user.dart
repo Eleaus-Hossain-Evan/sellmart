@@ -23,7 +23,7 @@ class User {
   String email;
   String deliveryAddress;
   List<String> wishList;
-  Addresses addresses = Addresses(list: List());
+  Addresses addresses = Addresses(list: List<Address>());
   String referralCode;
 
   User(

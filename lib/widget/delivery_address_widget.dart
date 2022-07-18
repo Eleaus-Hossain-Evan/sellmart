@@ -22,6 +22,7 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
   @override
   Widget build(BuildContext context) {
     return Visibility(
+      // visible: true,
       visible: widget.address.id != null && widget.address.id.isNotEmpty,
       child: Card(
         elevation: !widget.isSelection ? widget.elevation : 4,
@@ -111,9 +112,15 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(
-                            width: .625 * SizeConfig.heightSizeMultiplier,
-                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: .625 * SizeConfig.heightSizeMultiplier,
+                    ),
+                    Flexible(
+                      child: Row(
+                        children: [
                           Text(
                             AppLocalization.of(context)
                                     .getTranslatedValue("upazila") +

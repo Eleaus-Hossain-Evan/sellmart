@@ -173,7 +173,9 @@ class _ProductWidgetState extends State<ProductWidget> {
                     ),
                   ),
                   Visibility(
-                    visible: (widget.product.variations != null &&widget.product.variations.isNotEmpty && isAllVariationOut),
+                    visible: (widget.product.variations != null &&
+                        widget.product.variations.isNotEmpty &&
+                        isAllVariationOut),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: ClipPath(
@@ -273,7 +275,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                                   .bodyText2
                                   .copyWith(
                                     fontSize:
-                                        1.5 * SizeConfig.textSizeMultiplier,
+                                        1.4 * SizeConfig.textSizeMultiplier,
                                     fontWeight: FontWeight.w400,
                                     color: Colors.grey[800],
                                     decoration: TextDecoration.lineThrough,

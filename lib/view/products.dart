@@ -20,6 +20,7 @@ import '../widget/product_filter.dart';
 import '../widget/product_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 
 class Products extends StatefulWidget {
   final Category category;
@@ -56,7 +57,7 @@ class _ProductsState extends State<Products>
 
   int _totalPage = 0, _currentPage = 0, _totalLength = 0;
 
-  ScrollController _scrollController = ScrollController();
+  ScrollController _scrollController;
 
   BuildContext _context;
 
@@ -83,9 +84,11 @@ class _ProductsState extends State<Products>
     _connectivity = this;
     _contract = this;
     _presenter = DataPresenter(_connectivity, productContract: _contract);
+    _scrollController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _init(context);
+      _startLazyLoader();
     });
 
     super.initState();
@@ -142,29 +145,49 @@ class _ProductsState extends State<Products>
                             return;
                           },
                           child: SingleChildScrollView(
+                            controller: _scrollController,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 ProductGridView(_products, false),
-                                Visibility(
-                                  visible: _currentPage != 0 &&
-                                      _currentPage != _totalPage &&
-                                      _products.length < _totalLength,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top:
-                                          2.5 * SizeConfig.heightSizeMultiplier,
-                                      bottom:
-                                          2.5 * SizeConfig.heightSizeMultiplier,
-                                    ),
-                                    child: CupertinoActivityIndicator(
-                                      radius: 1.875 *
-                                          SizeConfig.heightSizeMultiplier,
-                                    ),
-                                  ),
-                                ),
+                                _currentPage != 0 &&
+                                        _currentPage != _totalPage &&
+                                        _products.length < _totalLength
+                                    ? Visibility(
+                                        visible: _currentPage != 0 &&
+                                            _currentPage != _totalPage &&
+                                            _products.length < _totalLength,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            top: 2.5 *
+                                                SizeConfig.heightSizeMultiplier,
+                                            bottom: 2.5 *
+                                                SizeConfig.heightSizeMultiplier,
+                                          ),
+                                          child: CupertinoActivityIndicator(
+                                            radius: 1.875 *
+                                                SizeConfig.heightSizeMultiplier,
+                                          ),
+                                        ),
+                                      )
+                                    : Center(
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              bottom: 2 *
+                                                  SizeConfig
+                                                      .heightSizeMultiplier),
+                                          child: Text(
+                                            "No more product available....",
+                                            style: TextStyle(
+                                              // fontSize:
+                                              //     2.5 * SizeConfig.heightSizeMultiplier,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                               ],
                             ),
                           ),
@@ -269,6 +292,7 @@ class _ProductsState extends State<Products>
         _presenter.getProducts(context, Constants.BY_DISCOUNT, "",
             page: _currentPage + 1);
       }
+      Logger().e("API CALLED ...");
     } catch (error) {}
   }
 
@@ -355,9 +379,9 @@ class _ProductsState extends State<Products>
 
     _currentPage = _currentPage + 1;
 
-    if (_currentPage == 1) {
-      _startLazyLoader();
-    }
+    // if (_currentPage == 1) {
+    _startLazyLoader();
+    // }
   }
 
   @override
@@ -395,9 +419,9 @@ class _ProductsState extends State<Products>
 
     _currentPage = _currentPage + 1;
 
-    if (_currentPage == 1) {
-      _startLazyLoader();
-    }
+    // if (_currentPage == 1) {
+    _startLazyLoader();
+    // }
   }
 
   @override
@@ -434,9 +458,9 @@ class _ProductsState extends State<Products>
 
     _currentPage = _currentPage + 1;
 
-    if (_currentPage == 1) {
-      _startLazyLoader();
-    }
+    // if (_currentPage == 1) {
+    _startLazyLoader();
+    // }
   }
 
   @override
@@ -474,9 +498,9 @@ class _ProductsState extends State<Products>
 
     _currentPage = _currentPage + 1;
 
-    if (_currentPage == 1) {
-      _startLazyLoader();
-    }
+    // if (_currentPage == 1) {
+    _startLazyLoader();
+    // }
   }
 
   @override
@@ -514,9 +538,9 @@ class _ProductsState extends State<Products>
 
     _currentPage = _currentPage + 1;
 
-    if (_currentPage == 1) {
-      _startLazyLoader();
-    }
+    // if (_currentPage == 1) {
+    _startLazyLoader();
+    // }
   }
 
   @override
@@ -554,16 +578,23 @@ class _ProductsState extends State<Products>
 
     _currentPage = _currentPage + 1;
 
-    if (_currentPage == 1) {
-      _startLazyLoader();
-    }
+    // if (_currentPage == 1) {
+    _startLazyLoader();
+    // }
   }
 
   void _startLazyLoader() {
-    _scrollController.addListener(() {
+    _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (_currentPage < _totalPage) {
+          // Logger().w("Fired");
+          Logger().wtf(
+              '_scrollController.position.pixels: ${_scrollController.position.pixels}');
+          Logger().wtf(
+              '_scrollController.position.maxScrollExtent: ${_scrollController.position.maxScrollExtent}');
+          Logger().wtf('_currentPage: ${_currentPage}');
+          Logger().wtf('_totalPage: ${_totalPage}');
           _init(_context);
         }
       }

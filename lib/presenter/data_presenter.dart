@@ -946,6 +946,8 @@ class DataPresenter with ChangeNotifier {
 
             List<Map<String, dynamic>> products = [];
 
+            double totalGetTk = 0;
+
             items.forEach((item) {
               if (item != null && item.isChecked) {
                 Map<String, dynamic> map = Map();
@@ -972,6 +974,8 @@ class DataPresenter with ChangeNotifier {
                 map['quantity'] = item.product.quantity;
                 map['advancePayment'] = item.product.advancePayment;
 
+                totalGetTk = totalGetTk + item.product.advancePayment;
+
                 products.add(map);
               }
             });
@@ -994,6 +998,7 @@ class DataPresenter with ChangeNotifier {
             Map<String, dynamic> orderData = {
               'products': products,
               'customer': customerData,
+              'totalGetTk': totalGetTk,
               'phone': order.value.address.phone,
               'alternativePhone': order.value.alternativePhone ?? "",
               'paymentType': order.value.paymentOption.id,

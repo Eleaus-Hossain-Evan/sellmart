@@ -1,3 +1,6 @@
+import 'package:app/model/product.dart';
+import 'package:logger/logger.dart';
+
 import '../view/bottom_nav.dart';
 import '../utils/api_routes.dart';
 
@@ -129,7 +132,12 @@ class _CheckoutProductListState extends State<CheckoutProductList>
                                     ),
                               ),
                               SizedBox(
-                                height: 1.5 * SizeConfig.heightSizeMultiplier,
+                                height: .7 * SizeConfig.heightSizeMultiplier,
+                              ),
+                              _sizeAndColorRow(
+                                  widget.items[index].product, context),
+                              SizedBox(
+                                height: .7 * SizeConfig.heightSizeMultiplier,
                               ),
                               Row(
                                 mainAxisSize: MainAxisSize.max,
@@ -343,6 +351,60 @@ class _CheckoutProductListState extends State<CheckoutProductList>
         },
       ),
     );
+  }
+
+  Widget _sizeAndColorRow(Product product, BuildContext context) {
+    return (product.selectedSizeItem != null &&
+                product.selectedSizeItem.isNotEmpty) ||
+            (product.selectedVariation != null &&
+                product.selectedVariation.value1.isNotEmpty)
+        ? Row(
+            children: [
+              (product.selectedSizeItem != null &&
+                          product.selectedSizeItem.isNotEmpty) ||
+                      (product.selectedVariation != null &&
+                          product.selectedVariation.value2.isNotEmpty)
+                  ? Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(text: "Size: "),
+                          TextSpan(
+                              text: product.selectedSizeItem.isNotEmpty
+                                  ? product.selectedSizeItem
+                                  : product.selectedVariation.value2),
+                        ],
+                      ),
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            fontSize: 1.5 * SizeConfig.textSizeMultiplier,
+                            fontWeight: FontWeight.w400,
+                          ),
+                    )
+                  : SizedBox.shrink(),
+              (product.selectedSizeItem != null &&
+                          product.selectedSizeItem.isNotEmpty) ||
+                      (product.selectedVariation != null &&
+                          product.selectedVariation.value2.isNotEmpty)
+                  ? Spacer()
+                  : SizedBox.shrink(),
+              product.selectedVariation.value1.isNotEmpty
+                  ? Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(text: "Color: "),
+                          TextSpan(
+                            text: product.selectedVariation.value1,
+                          )
+                        ],
+                      ),
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            fontSize: 1.5 * SizeConfig.textSizeMultiplier,
+                            fontWeight: FontWeight.w400,
+                          ),
+                    )
+                  : SizedBox.shrink(),
+            ],
+          )
+        : SizedBox.shrink();
   }
 
   Future<void> _checkQuantity(CartItem item) async {

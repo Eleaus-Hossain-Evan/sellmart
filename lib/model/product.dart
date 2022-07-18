@@ -509,6 +509,11 @@ class Product {
           : selectedInfoSizeStock.toString(),
     };
   }
+
+  @override
+  String toString() {
+    return 'Product(id: $id, name: $name, thumbnail: $thumbnail, slug: $slug, sku: $sku, price: $price, buyingPrice: $buyingPrice, vat: $vat, advancePayment: $advancePayment, freeDelivery: $freeDelivery, status: $status, forOnline: $forOnline, featured: $featured, newArrival: $newArrival, topSelling: $topSelling, active: $active, description: $description, vendorId: $vendorId, vendorName: $vendorName, vendorImage: $vendorImage, vendorSlug: $vendorSlug, barCode: $barCode, sizes: $sizes, variations: $variations, expireDate: $expireDate, currentStock: $currentStock, images: $images, discount: $discount, category: $category, subCategory: $subCategory, subSubCategory: $subSubCategory, brand: $brand, quantity: $quantity, selectedSize: $selectedSize, variation1Values: $variation1Values, variation2Values: $variation2Values, selectedVariation: $selectedVariation, currentPrice: $currentPrice, campaignOffers: $campaignOffers, isCampaignOffer: $isCampaignOffer, variationOne: $variationOne, variationTwo: $variationTwo, salePrice: $salePrice, campaignOfferPrice: $campaignOfferPrice, campaignDiscountType: $campaignDiscountType, campaignOfferDiscount: $campaignOfferDiscount, campaignEndDate: $campaignEndDate, isWishListed: $isWishListed, rating: $rating, totalRating: $totalRating, totalReview: $totalReview, ratingAnalytic: $ratingAnalytic, latestReviews: $latestReviews, variationType: $variationType, sizeInfos: $sizeInfos, selectedSizeItem: $selectedSizeItem, selectedInfoSizeStock: $selectedInfoSizeStock)';
+  }
 }
 
 class ProductItems {
