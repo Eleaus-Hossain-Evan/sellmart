@@ -1,5 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-// import '../utils/fcm_setup.dart';
+
 import 'package:flutter/material.dart';
 
 import 'address.dart';
@@ -23,7 +24,7 @@ class User {
   String email;
   String deliveryAddress;
   List<String> wishList;
-  Addresses addresses = Addresses(list: List<Address>());
+  Addresses addresses;
   String referralCode;
 
   User(
@@ -136,5 +137,10 @@ class User {
       "password": newPassword == null ? "" : newPassword,
       "password_confirmation": confirmPassword == null ? "" : confirmPassword,
     };
+  }
+
+  @override
+  String toString() {
+    return 'User(id: $id, firstName: $firstName, lastName: $lastName, phone: $phone, token: $token, otp: $otp, password: $password, confirmPassword: $confirmPassword, newPassword: $newPassword, isBlocked: $isBlocked, balance: $balance, myReferCode: $myReferCode, image: $image, email: $email, deliveryAddress: $deliveryAddress, wishList: $wishList, referralCode: $referralCode)';
   }
 }

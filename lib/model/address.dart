@@ -99,4 +99,8 @@ class Addresses {
       list = List();
     }
   }
+
+  @override
+  String toString() =>
+      'Addresses(list: ${list.map((e) => e.toString()).join(', ')})';
 }

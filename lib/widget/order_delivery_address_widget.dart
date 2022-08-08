@@ -3,6 +3,9 @@ import 'package:app/model/upazilla.dart';
 import 'package:app/model/division.dart';
 
 import 'package:app/model/district.dart';
+import 'package:app/utils/constants.dart';
+import 'package:app/view/home.dart';
+import 'package:logger/logger.dart';
 
 import '../view/cart.dart';
 import '../widget/my_button.dart';
@@ -46,8 +49,8 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
 
   MySharedPreference _sharedPreference = MySharedPreference();
 
-  ValueNotifier<int> addressIndex = ValueNotifier(0);
-  ValueNotifier<Address> orderAddress = ValueNotifier(Address());
+  ValueNotifier<int> addressIndex = ValueNotifier(1);
+  // ValueNotifier<Address> orderAddress = ValueNotifier(Address());
 
   @override
   void initState() {
@@ -63,6 +66,8 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _dataPresenter.getLocations(context);
     });
+
+    init();
 
     super.initState();
   }
@@ -286,6 +291,39 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
         ),
       ],
     );
+  }
+
+  void init() {
+    // if (currentUser.value.addresses.list.length == 0) {
+    //   currentUser.value.addresses.list.add(Address());
+    // }
+
+    setState(() {
+      if (currentUser.value.addresses.list.length < 1) {
+        _onSelected(currentUser.value.addresses.list[addressIndex.value]);
+      }
+    });
+  }
+
+  void _onSelected(Address address) {
+    order.value.address = address;
+
+    Logger().wtf(address.toString());
+
+    if (address.district.toLowerCase() == "dhaka" ||
+        address.district.toLowerCase() == "ঢাকা") {
+      order.value.deliveryFee = info.value.deliveryChargeInsideDhaka ?? 90;
+      order.value.deliveryType = Constants.INSIDE_DHAKA;
+      debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
+    } else {
+      order.value.deliveryFee = info.value.deliveryChargeOutsideDhaka ?? 150;
+      order.value.deliveryType = Constants.OUTSIDE_DHAKA;
+      debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
+    }
+
+    currentUser.notifyListeners();
+    order.notifyListeners();
+    // Navigator.pop(context);
   }
 
   @override

@@ -1,5 +1,5 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import '../utils/api_routes.dart';
-
 import 'address.dart';
 import 'coupon.dart';
 import 'order_state.dart';
@@ -7,7 +7,6 @@ import 'payment_option.dart';
 import 'product.dart';
 
 class Order {
-
   String id;
   String userID;
   String name;
@@ -44,213 +43,203 @@ class Order {
   int moneyWithdrawalState;
   int returnRequestState;
 
-  Order({this.id, this.userID, this.name, this.phone, this.alternativePhone,
-    this.address, this.deliveryFee, this.paymentOption, this.coupon,
-    this.deliveryType, this.paymentType, this.vat, this.currentState, this.isOnline,
-    this.paymentStatus, this.sellerConfirmation, this.status,
-    this.cancelOrder, this.refundOrder, this.products, this.totalBill,
-    this.orderID, this.invoice, this.createdAt, this.updatedAt, this.justOrdered,
-    this.promoType, this.promoAmount, this.promoCode, this.sslCharge, this.states,
-    this.advancePayment, this.advancePaymentWithOutSSLCharge, this.moneyWithdrawalState});
+  Order(
+      {this.id,
+      this.userID,
+      this.name,
+      this.phone,
+      this.alternativePhone,
+      this.address,
+      this.deliveryFee,
+      this.paymentOption,
+      this.coupon,
+      this.deliveryType,
+      this.paymentType,
+      this.vat,
+      this.currentState,
+      this.isOnline,
+      this.paymentStatus,
+      this.sellerConfirmation,
+      this.status,
+      this.cancelOrder,
+      this.refundOrder,
+      this.products,
+      this.totalBill,
+      this.orderID,
+      this.invoice,
+      this.createdAt,
+      this.updatedAt,
+      this.justOrdered,
+      this.promoType,
+      this.promoAmount,
+      this.promoCode,
+      this.sslCharge,
+      this.states,
+      this.advancePayment,
+      this.advancePaymentWithOutSSLCharge,
+      this.moneyWithdrawalState});
 
   Order.fromJson(Map<String, dynamic> json) {
-
     try {
       id = json['_id'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       userID = json['customer']['_id'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       name = json['customer']['name'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
-      address = json['customer']['address'] == null ? Address() : Address.fromJson(json['customer']['address']);
-    }
-    catch(error) {}
+      address = json['customer']['address'] == null
+          ? Address()
+          : Address.fromJson(json['customer']['address']);
+    } catch (error) {}
 
     try {
       deliveryFee = double.parse(json['deliveryCharge'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       vat = double.parse(json['vat'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       currentState = int.parse(json['state'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       isOnline = json['isOnline'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       deliveryType = int.parse(json['deliveryType'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       paymentType = int.parse(json['paymentType'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       paymentStatus = int.parse(json['paymentStatus'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       sellerConfirmation = int.parse(json['sellerConfirmation'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       status = json['status'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       promoCode = json['promo']['code'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       promoType = json['promo']['type'];
-    }
-    catch(error) {
-
+    } catch (error) {
       try {
         promoType = int.parse(json['promo']['type']);
-      }
-      catch(error) {}
+      } catch (error) {}
     }
 
     try {
       promoAmount = double.parse(json['promo']['amount'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       cancelOrder = json['cancelOrder'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       refundOrder = json['refundOrder'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       totalBill = double.parse(json['totalBill'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       advancePayment = double.parse(json['advancePayment'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
-      advancePaymentWithOutSSLCharge = double.parse(json['advancedPaymentWithoutSslCharge'].toString());
-    }
-    catch(error) {}
+      advancePaymentWithOutSSLCharge =
+          double.parse(json['advancedPaymentWithoutSslCharge'].toString());
+    } catch (error) {}
 
     try {
       phone = json['phone'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       alternativePhone = json['alterNativePhone'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       orderID = json['orderId'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       invoice = APIRoute.BASE_URL + json['invoice'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       createdAt = json['createdAt'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       updatedAt = json['updatedAt'];
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
-
       products = List();
 
       json['products'].forEach((product) {
-
         products.add(Product.fromJson(product));
       });
-    }
-    catch(error) {
-
+    } catch (error) {
       products = List();
     }
 
     try {
-
       states = List();
 
       json['allOrderStatus'].forEach((state) {
-
         states.add(OrderState.fromJson(state));
       });
-    }
-    catch(error) {
-
+    } catch (error) {
       states = List();
     }
 
     try {
       moneyWithdrawalState = int.parse(json['moneyWithdrawal'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
 
     try {
       returnRequestState = int.parse(json['refundRequest'].toString());
-    }
-    catch(error) {}
+    } catch (error) {}
+  }
+
+  @override
+  String toString() {
+    return 'Order(id: $id, userID: $userID, name: $name, phone: $phone, alternativePhone: $alternativePhone, address: $address, deliveryFee: $deliveryFee, paymentOption: $paymentOption, coupon: $coupon, deliveryType: $deliveryType, paymentType: $paymentType, vat: $vat, sslCharge: $sslCharge, advancePayment: $advancePayment, advancePaymentWithOutSSLCharge: $advancePaymentWithOutSSLCharge, currentState: $currentState, isOnline: $isOnline, paymentStatus: $paymentStatus, sellerConfirmation: $sellerConfirmation, status: $status, cancelOrder: $cancelOrder, refundOrder: $refundOrder, products: $products, totalBill: $totalBill, orderID: $orderID, invoice: $invoice, createdAt: $createdAt, updatedAt: $updatedAt, justOrdered: $justOrdered, promoCode: $promoCode, promoType: $promoType, promoAmount: $promoAmount, states: $states, moneyWithdrawalState: $moneyWithdrawalState, returnRequestState: $returnRequestState)';
   }
 }
 
-
 class Orders {
-
   List<Order> list;
 
   Orders({this.list});
 
   Orders.fromJson(dynamic data) {
-
     list = List();
 
-    if(data != null) {
-
+    if (data != null) {
       data.forEach((order) {
-
         list.add(Order.fromJson(order));
       });
     }
