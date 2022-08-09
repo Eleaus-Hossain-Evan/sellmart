@@ -18,6 +18,7 @@ import '../widget/order_referral_coin_widget.dart';
 import '../widget/order_coupon_widget.dart';
 import '../widget/order_delivery_address_widget.dart';
 import '../widget/order_summary_widget.dart';
+import 'package:app/view/home.dart';
 
 import '../db/db_helper.dart';
 import '../localization/app_localization.dart';
@@ -25,6 +26,7 @@ import '../model/cart_item.dart';
 import '../route/route_manager.dart';
 import '../utils/size_config.dart';
 import '../widget/my_app_bar.dart';
+import '../presenter/user_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -99,8 +101,7 @@ class _CartState extends State<Cart>
 
   @override
   void initState() {
-    order.value =
-        Order(deliveryFee: 0.0, vat: 0.0, sslCharge: 0.0, advancePayment: 0.0);
+    initOrder();
 
     _getCartItems();
 
@@ -765,5 +766,30 @@ class _CartState extends State<Cart>
   @override
   void onSuccessBalanceReduced() {
     MyFlushBar.show(context, "Successfully added...");
+  }
+
+  initOrder() {
+    final address = currentUser.value.addresses.list[1];
+    double fee = 0;
+    int type = 0;
+
+    if (address.district.toLowerCase() == "dhaka" ||
+        address.district.toLowerCase() == "ঢাকা") {
+      fee = info.value.deliveryChargeInsideDhaka ?? 90;
+      type = Constants.INSIDE_DHAKA;
+      debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
+    } else {
+      fee = info.value.deliveryChargeOutsideDhaka ?? 150;
+      type = Constants.OUTSIDE_DHAKA;
+      debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
+    }
+    order.value = Order(
+      vat: 0.0,
+      sslCharge: 0.0,
+      advancePayment: 0.0,
+      address: currentUser.value.addresses.list[1],
+      deliveryType: type,
+      deliveryFee: fee,
+    );
   }
 }

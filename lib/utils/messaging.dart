@@ -51,7 +51,7 @@ class Messaging {
   }
 
   static Future<void> callSupport() async {
-    var url = "tel://${info.value.phone ?? ""}";
+    var url = "tel:+88${info.value.phone ?? ""}";
 
     if (await canLaunch(url)) {
       await launch(url);

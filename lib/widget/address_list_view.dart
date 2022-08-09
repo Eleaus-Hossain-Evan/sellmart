@@ -27,22 +27,6 @@ class AddressListView extends StatefulWidget {
 
 class _AddressListViewState extends State<AddressListView> with ChangeNotifier {
   ValueNotifier<int> addressIndex = ValueNotifier(1);
-  @override
-  void initState() {
-    init();
-    if (currentUser.value.addresses.list.length < 0) {
-      _onSelected(currentUser.value.addresses.list[1]);
-    }
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (currentUser.value.addresses.list.length < 0) {
-      _onSelected(currentUser.value.addresses.list[1]);
-    }
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
