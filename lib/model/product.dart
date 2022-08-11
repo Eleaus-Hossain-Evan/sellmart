@@ -75,65 +75,68 @@ class Product {
   String selectedSizeItem;
   int selectedInfoSizeStock;
   int stockOutQuantity;
+  List<String> youtubeVideo;
 
-  Product(
-      {this.id,
-      this.name,
-      this.thumbnail,
-      this.slug,
-      this.sku,
-      this.price,
-      this.vat,
-      this.freeDelivery,
-      this.status,
-      this.forOnline,
-      this.featured,
-      this.newArrival,
-      this.topSelling,
-      this.active,
-      this.description,
-      this.vendorId,
-      this.vendorName,
-      this.barCode,
-      this.sizes,
-      this.expireDate,
-      this.currentStock,
-      this.images,
-      this.discount,
-      this.category,
-      this.subCategory,
-      this.brand,
-      this.quantity,
-      this.selectedSize,
-      this.currentPrice,
-      this.subSubCategory,
-      this.variations,
-      this.selectedVariation,
-      this.variation1Values,
-      this.variation2Values,
-      this.campaignOffers,
-      this.buyingPrice,
-      this.isCampaignOffer,
-      this.variationOne,
-      this.variationTwo,
-      this.salePrice,
-      this.vendorImage,
-      this.vendorSlug,
-      this.advancePayment,
-      this.campaignOfferPrice,
-      this.campaignDiscountType,
-      this.campaignOfferDiscount,
-      this.campaignEndDate,
-      this.rating,
-      this.totalRating,
-      this.totalReview,
-      this.ratingAnalytic,
-      this.latestReviews,
-      this.sizeInfos,
-      this.variationType,
-      this.selectedSizeItem,
-      this.selectedInfoSizeStock,
-      this.stockOutQuantity});
+  Product({
+    this.id,
+    this.name,
+    this.thumbnail,
+    this.slug,
+    this.sku,
+    this.price,
+    this.vat,
+    this.freeDelivery,
+    this.status,
+    this.forOnline,
+    this.featured,
+    this.newArrival,
+    this.topSelling,
+    this.active,
+    this.description,
+    this.vendorId,
+    this.vendorName,
+    this.barCode,
+    this.sizes,
+    this.expireDate,
+    this.currentStock,
+    this.images,
+    this.discount,
+    this.category,
+    this.subCategory,
+    this.brand,
+    this.quantity,
+    this.selectedSize,
+    this.currentPrice,
+    this.subSubCategory,
+    this.variations,
+    this.selectedVariation,
+    this.variation1Values,
+    this.variation2Values,
+    this.campaignOffers,
+    this.buyingPrice,
+    this.isCampaignOffer,
+    this.variationOne,
+    this.variationTwo,
+    this.salePrice,
+    this.vendorImage,
+    this.vendorSlug,
+    this.advancePayment,
+    this.campaignOfferPrice,
+    this.campaignDiscountType,
+    this.campaignOfferDiscount,
+    this.campaignEndDate,
+    this.rating,
+    this.totalRating,
+    this.totalReview,
+    this.ratingAnalytic,
+    this.latestReviews,
+    this.sizeInfos,
+    this.variationType,
+    this.selectedSizeItem,
+    this.selectedInfoSizeStock,
+    this.stockOutQuantity,
+    this.youtubeVideo,
+  });
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -459,6 +462,14 @@ class Product {
     try {
       stockOutQuantity = json['stockOutQuantity'] ?? 0;
     } catch (error) {}
+    try {
+      youtubeVideo = List();
+      (json['youtubeVideo']).forEach((video) {
+        youtubeVideo.add(video);
+      });
+    } catch (error) {
+      youtubeVideo = List();
+    }
   }
 
   toJson() {
@@ -515,12 +526,13 @@ class Product {
           : selectedInfoSizeStock.toString(),
       'stockOutQuantity':
           stockOutQuantity == null ? "0" : stockOutQuantity.toString(),
+      'youtubeVideo': youtubeVideo == null ? "" : youtubeVideo,
     };
   }
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, thumbnail: $thumbnail, slug: $slug, sku: $sku, price: $price, buyingPrice: $buyingPrice, vat: $vat, advancePayment: $advancePayment, freeDelivery: $freeDelivery, status: $status, forOnline: $forOnline, featured: $featured, newArrival: $newArrival, topSelling: $topSelling, active: $active, description: $description, vendorId: $vendorId, vendorName: $vendorName, vendorImage: $vendorImage, vendorSlug: $vendorSlug, barCode: $barCode, sizes: $sizes, variations: $variations, expireDate: $expireDate, currentStock: $currentStock, images: $images, discount: $discount, category: $category, subCategory: $subCategory, subSubCategory: $subSubCategory, brand: $brand, quantity: $quantity, selectedSize: $selectedSize, variation1Values: $variation1Values, variation2Values: $variation2Values, selectedVariation: $selectedVariation, currentPrice: $currentPrice, campaignOffers: $campaignOffers, isCampaignOffer: $isCampaignOffer, variationOne: $variationOne, variationTwo: $variationTwo, salePrice: $salePrice, campaignOfferPrice: $campaignOfferPrice, campaignDiscountType: $campaignDiscountType, campaignOfferDiscount: $campaignOfferDiscount, campaignEndDate: $campaignEndDate, isWishListed: $isWishListed, rating: $rating, totalRating: $totalRating, totalReview: $totalReview, ratingAnalytic: $ratingAnalytic, latestReviews: $latestReviews, variationType: $variationType, sizeInfos: $sizeInfos, selectedSizeItem: $selectedSizeItem, selectedInfoSizeStock: $selectedInfoSizeStock, stockOutQuantity: $stockOutQuantity)';
+    return 'Product(id: $id, name: $name, thumbnail: $thumbnail, slug: $slug, sku: $sku, price: $price, buyingPrice: $buyingPrice, vat: $vat, advancePayment: $advancePayment, freeDelivery: $freeDelivery, status: $status, forOnline: $forOnline, featured: $featured, newArrival: $newArrival, topSelling: $topSelling, active: $active, description: $description, vendorId: $vendorId, vendorName: $vendorName, vendorImage: $vendorImage, vendorSlug: $vendorSlug, barCode: $barCode, sizes: $sizes, variations: $variations, expireDate: $expireDate, currentStock: $currentStock, images: $images, discount: $discount, category: $category, subCategory: $subCategory, subSubCategory: $subSubCategory, brand: $brand, quantity: $quantity, selectedSize: $selectedSize, variation1Values: $variation1Values, variation2Values: $variation2Values, selectedVariation: $selectedVariation, currentPrice: $currentPrice, campaignOffers: $campaignOffers, isCampaignOffer: $isCampaignOffer, variationOne: $variationOne, variationTwo: $variationTwo, salePrice: $salePrice, campaignOfferPrice: $campaignOfferPrice, campaignDiscountType: $campaignDiscountType, campaignOfferDiscount: $campaignOfferDiscount, campaignEndDate: $campaignEndDate, isWishListed: $isWishListed, rating: $rating, totalRating: $totalRating, totalReview: $totalReview, ratingAnalytic: $ratingAnalytic, latestReviews: $latestReviews, variationType: $variationType, sizeInfos: $sizeInfos, selectedSizeItem: $selectedSizeItem, selectedInfoSizeStock: $selectedInfoSizeStock, stockOutQuantity: $stockOutQuantity, youtubeVideo: $youtubeVideo)';
   }
 }
 

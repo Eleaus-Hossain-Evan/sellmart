@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:url_launcher/url_launcher.dart';
 import '../view/home.dart';
 
@@ -51,10 +53,22 @@ class Messaging {
   }
 
   static Future<void> callSupport() async {
-    var url = "tel:+88${info.value.phone ?? ""}";
+    var url = "tel://${info.value.phone ?? ""}";
 
-    if (await canLaunch(url)) {
-      await launch(url);
+    // if (await canLaunch(url)) {
+    //   await launch(url);
+    // }
+    await launch(url);
+  }
+
+  static Future<void> launchYoutube(String link) async {
+    if (!await launch(
+      link,
+      forceSafariVC: true,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $link';
     }
   }
 }

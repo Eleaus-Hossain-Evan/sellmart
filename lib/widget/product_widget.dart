@@ -41,7 +41,6 @@ class _ProductWidgetState extends State<ProductWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
-              flex: 10,
               child: Stack(
                 children: <Widget>[
                   Container(
@@ -217,101 +216,91 @@ class _ProductWidgetState extends State<ProductWidget> {
             SizedBox(
               height: 1.25 * SizeConfig.heightSizeMultiplier,
             ),
-            Expanded(
-              flex: 2,
+            Padding(
+              padding: EdgeInsets.only(
+                left: 2.56 * SizeConfig.widthSizeMultiplier,
+                right: 2.56 * SizeConfig.widthSizeMultiplier,
+              ),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  widget.product.name,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        fontSize: 1.55 * SizeConfig.textSizeMultiplier,
+                        fontWeight: FontWeight.w400,
+                      ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: EdgeInsets.only(
                   left: 2.56 * SizeConfig.widthSizeMultiplier,
                   right: 2.56 * SizeConfig.widthSizeMultiplier,
                 ),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    widget.product.name,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          fontSize: 1.55 * SizeConfig.textSizeMultiplier,
-                          fontWeight: FontWeight.w400,
-                        ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 2.56 * SizeConfig.widthSizeMultiplier,
-                    right: 2.56 * SizeConfig.widthSizeMultiplier,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            "৳" +
-                                widget.product.currentPrice.round().toString(),
-                            style:
-                                Theme.of(context).textTheme.bodyText2.copyWith(
-                                      fontSize:
-                                          1.75 * SizeConfig.textSizeMultiplier,
-                                      fontWeight: FontWeight.w700,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                          ),
-                          Visibility(
-                            visible: widget.product.currentPrice !=
-                                widget.product.price,
-                            child: Text(
-                              "৳" + widget.product.price.round().toString(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2
-                                  .copyWith(
-                                    fontSize:
-                                        1.4 * SizeConfig.textSizeMultiplier,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.grey[800],
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(
-                          top: .625 * SizeConfig.heightSizeMultiplier,
-                          bottom: .625 * SizeConfig.heightSizeMultiplier,
-                          left: 2.05 * SizeConfig.widthSizeMultiplier,
-                          right: 2.05 * SizeConfig.widthSizeMultiplier,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).accentColor,
-                          borderRadius: BorderRadius.circular(
-                              1.875 * SizeConfig.heightSizeMultiplier),
-                        ),
-                        child: Text(
-                          AppLocalization.of(context)
-                              .getTranslatedValue("buy_now"),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "৳" + widget.product.currentPrice.round().toString(),
                           style: Theme.of(context).textTheme.bodyText2.copyWith(
-                                fontSize: 1.55 * SizeConfig.textSizeMultiplier,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                                fontSize: 1.75 * SizeConfig.textSizeMultiplier,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context).primaryColor,
                               ),
                         ),
+                        Visibility(
+                          visible: widget.product.currentPrice !=
+                              widget.product.price,
+                          child: Text(
+                            "৳" + widget.product.price.round().toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .copyWith(
+                                  fontSize: 1.4 * SizeConfig.textSizeMultiplier,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey[800],
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: .625 * SizeConfig.heightSizeMultiplier,
+                        bottom: .625 * SizeConfig.heightSizeMultiplier,
+                        left: 2.05 * SizeConfig.widthSizeMultiplier,
+                        right: 2.05 * SizeConfig.widthSizeMultiplier,
                       ),
-                    ],
-                  ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(
+                            1.875 * SizeConfig.heightSizeMultiplier),
+                      ),
+                      child: Text(
+                        AppLocalization.of(context)
+                            .getTranslatedValue("buy_now"),
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              fontSize: 1.55 * SizeConfig.textSizeMultiplier,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

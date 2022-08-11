@@ -1,3 +1,5 @@
+import 'package:logger/logger.dart';
+
 import '../widget/product_details_footer.dart';
 import '../widget/product_rating_review.dart';
 
@@ -99,7 +101,7 @@ class _ProductDetailsState extends State<ProductDetails>
                                   ),
                                   child: CustomScrollView(
                                     slivers: <Widget>[
-                                      ProductSliverAppBar(_product.images),
+                                      ProductSliverAppBar(_product),
                                       SliverToBoxAdapter(
                                         child: Column(
                                           children: <Widget>[
@@ -353,6 +355,9 @@ class _ProductDetailsState extends State<ProductDetails>
       _product = product;
       _similarProducts = similarProducts;
     });
+
+    Logger().wtf(
+        "${_product.id}-${_product.name}-${_product.slug}-${_product.youtubeVideo}");
 
     _onImagesSelected();
   }
