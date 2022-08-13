@@ -68,10 +68,6 @@ dependencies:
   syncfusion_flutter_sliders: ^18.4.49-beta
   top_sheet: ^0.0.4
   url_launcher: ^5.4.10
-  ext_video_player:
-  better_player:
-  chewie:
-  video_player:
 
 dev_dependencies:
   flutter_test:

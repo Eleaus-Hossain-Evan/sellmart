@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../view/home.dart';
 
@@ -62,13 +63,14 @@ class Messaging {
   }
 
   static Future<void> launchYoutube(String link) async {
-    if (!await launch(
-      link,
-      forceSafariVC: true,
-      forceWebView: false,
-      headers: <String, String>{'my_header_key': 'my_header_value'},
-    )) {
-      throw 'Could not launch $link';
+    try {
+      await launch(
+        link,
+        forceSafariVC: true,
+        forceWebView: false,
+      );
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 }

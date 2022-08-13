@@ -1,10 +1,6 @@
 import 'package:app/model/product.dart';
 import 'package:app/utils/messaging.dart';
-import 'package:app/widget/video_player.dart';
-import 'package:better_player/better_player.dart';
-import 'package:ext_video_player/ext_video_player.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:photo_view/photo_view.dart';
@@ -93,48 +89,52 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
                       children: List.generate(
                           widget.product.youtubeVideo.length, (index) {
                         final youtubeVideo = widget.product.youtubeVideo[index];
-                        return InkWell(
-                          borderRadius: BorderRadius.circular(100),
-                          onTap: youtubeVideo.isNotEmpty
-                              ? () async {
-                                  await Messaging.launchYoutube(youtubeVideo);
-                                  Logger().wtf(
-                                      "length ${widget.product.youtubeVideo.length}, index $index, youtubeVideo ${widget.product.youtubeVideo.toString()}");
-                                }
-                              : null,
-                          child: Container(
-                            padding: EdgeInsets.all(
-                                2 * SizeConfig.widthSizeMultiplier),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              // color: Colors.amber,
-                              border: Border.all(
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(.6),
-                                width: .2 * SizeConfig.widthSizeMultiplier,
+                        return Visibility(
+                          visible: youtubeVideo.isNotEmpty,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(100),
+                            onTap: youtubeVideo.isNotEmpty
+                                ? () async {
+                                    await Messaging.launchYoutube(youtubeVideo);
+                                    Logger().wtf(
+                                        "length ${widget.product.youtubeVideo.length}, index $index, youtubeVideo ${widget.product.youtubeVideo.toString()}");
+                                  }
+                                : null,
+                            child: Container(
+                              padding: EdgeInsets.all(
+                                  2.5 * SizeConfig.widthSizeMultiplier),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                // color: Colors.amber,
+                                border: Border.all(
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(.6),
+                                  width: .2 * SizeConfig.widthSizeMultiplier,
+                                ),
+                                gradient: RadialGradient(
+                                  colors: [
+                                    Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.9),
+                                    Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.4),
+                                    Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.2),
+                                    Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.1),
+                                  ],
+                                  radius: .6,
+                                ),
                               ),
-                              gradient: RadialGradient(
-                                colors: [
-                                  Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.9),
-                                  Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.4),
-                                  Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.2),
-                                  Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.1),
-                                ],
-                                radius: .6,
+                              child: Icon(
+                                FontAwesomeIcons.youtube,
+                                color: Colors.white,
+                                size: 2.2 * SizeConfig.textSizeMultiplier,
                               ),
-                            ),
-                            child: Icon(
-                              FontAwesomeIcons.youtube,
-                              color: Colors.white,
                             ),
                           ),
                         );
@@ -325,25 +325,5 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
             ),
           );
         });
-  }
-
-  Future<void> _showVideoDialog(String controller) {
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        Logger().d(controller);
-
-        return AspectRatio(
-          aspectRatio: 16 / 9,
-          child: BetterPlayer.network(
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-            betterPlayerConfiguration: BetterPlayerConfiguration(
-              aspectRatio: 16 / 9,
-            ),
-          ),
-        );
-      },
-    );
   }
 }
