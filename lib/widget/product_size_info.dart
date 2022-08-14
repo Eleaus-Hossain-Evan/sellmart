@@ -15,8 +15,31 @@ class ProductSizeInfo extends StatefulWidget {
 }
 
 class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
+  final _selectedValue1 = ValueNotifier('');
+
+  @override
+  void initState() {
+    Logger().d(widget.product.selectedVariation);
+    _selectedValue1.value = widget.product.selectedVariation.value1;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final _value1 = widget.product.variations
+        .map((element) => element.value1)
+        .toSet()
+        .toList();
+    Logger().i(_value1.toString());
+    Logger().i('selectedValue: ${_selectedValue1.value}');
+
+    final _value2 = widget.product.variations
+        .where((element) => element.value1 == _selectedValue1.value)
+        .toSet()
+        .toList();
+    Logger().d('_value2: $_value2');
+    Logger().d('_value2: ${_value2.length}');
     return Column(
       children: [
         Visibility(
@@ -155,74 +178,51 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
                               widget.product.variations != null &&
                               widget.product.variations.length > 0 &&
                               widget.product.variations[0].id.isNotEmpty
-                          ? widget.product.variations
-                              .asMap()
-                              .map((index, item) => MapEntry(
-                                  index,
-                                  GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () {
-                                      _onVariationSelected(item);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.only(
-                                        top: .825 *
-                                            SizeConfig.heightSizeMultiplier,
-                                        bottom: .825 *
-                                            SizeConfig.heightSizeMultiplier,
-                                        left: 2.5 *
-                                            SizeConfig.widthSizeMultiplier,
-                                        right: 2.5 *
-                                            SizeConfig.widthSizeMultiplier,
-                                      ),
-                                      margin: EdgeInsets.only(
-                                        right:
-                                            3 * SizeConfig.widthSizeMultiplier,
-                                        bottom:
-                                            2 * SizeConfig.heightSizeMultiplier,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color:
-                                            widget.product.selectedVariation !=
-                                                        null &&
-                                                    widget
-                                                            .product
-                                                            .selectedVariation
-                                                            .id ==
-                                                        item.id
-                                                ? Theme.of(context).primaryColor
-                                                : Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(
-                                            .25 *
-                                                SizeConfig
-                                                    .heightSizeMultiplier),
-                                      ),
-                                      child: Text(
-                                        "${item.value1.isNotEmpty ? item.value1 : item.value2.isNotEmpty ? item.value2 : item.discountPrice.toStringAsFixed(0).isNotEmpty ? item.discountPrice : null}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            .copyWith(
-                                                color: widget.product
-                                                                .selectedSizeItem !=
-                                                            null &&
-                                                        widget
-                                                                .product
-                                                                .selectedVariation
-                                                                .id ==
-                                                            item.id
-                                                    ? Colors.white
-                                                    : Colors.black
-                                                        .withOpacity(.75),
-                                                fontSize: 1.75 *
-                                                    SizeConfig
-                                                        .textSizeMultiplier,
-                                                fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                  )))
-                              .values
-                              .toList()
+                          ? List.generate(_value1.length, (index) {
+                              final e = _value1[index];
+                              return GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  // _onVariationSelected(item);
+                                  _selectedValue1.value = e;
+                                  setState(() {});
+                                  print('_selectedValue1: $_selectedValue1');
+                                  _selectedValue1.notifyListeners();
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical:
+                                        .825 * SizeConfig.heightSizeMultiplier,
+                                    horizontal:
+                                        2.5 * SizeConfig.widthSizeMultiplier,
+                                  ),
+                                  margin: EdgeInsets.only(
+                                    right: 3 * SizeConfig.widthSizeMultiplier,
+                                    bottom: 2 * SizeConfig.heightSizeMultiplier,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _selectedValue1.value == e
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(
+                                        .25 * SizeConfig.heightSizeMultiplier),
+                                  ),
+                                  child: Text(
+                                    e,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(
+                                            color: _selectedValue1.value == e
+                                                ? Colors.white
+                                                : Colors.black.withOpacity(.75),
+                                            fontSize: 1.75 *
+                                                SizeConfig.textSizeMultiplier,
+                                            fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              );
+                            })
                           : List.generate(0, (index) {
                               return Container();
                             }),
@@ -233,120 +233,169 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
               SizedBox(
                 height: 1.875 * SizeConfig.heightSizeMultiplier,
               ),
-              Row(
-                children: [
-                  Visibility(
-                    visible: widget.product.variations[0].value1.isNotEmpty,
-                    child: Flexible(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                          vertical: .5 * SizeConfig.heightSizeMultiplier,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: .25 * SizeConfig.widthSizeMultiplier,
-                          ),
-                        ),
-                        child: Center(
-                            child: Text(
-                          "Value 1",
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: Colors.black.withOpacity(.75),
-                              fontSize: 2 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500),
-                        )),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: widget.product.variations[0].value2.isNotEmpty,
-                    child: Flexible(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                          vertical: .5 * SizeConfig.heightSizeMultiplier,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: .25 * SizeConfig.widthSizeMultiplier,
-                          ),
-                        ),
-                        child: Center(
-                            child: Text(
-                          'Value 2',
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: Colors.black.withOpacity(.75),
-                              fontSize: 2 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500),
-                        )),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: widget.product.variations[0].stock
-                        .toStringAsFixed(0)
-                        .isNotEmpty,
-                    child: Flexible(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                          vertical: .5 * SizeConfig.heightSizeMultiplier,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: .25 * SizeConfig.widthSizeMultiplier,
-                          ),
-                        ),
-                        child: Center(
-                            child: Text(
-                          "Stock",
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: Colors.black.withOpacity(.75),
-                              fontSize: 2 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500),
-                        )),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: widget.product.variations[0].discountPrice
-                        .toStringAsFixed(0)
-                        .isNotEmpty,
-                    child: Flexible(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                          vertical: .5 * SizeConfig.heightSizeMultiplier,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: .25 * SizeConfig.widthSizeMultiplier,
-                          ),
-                        ),
-                        child: Center(
-                            child: Text(
-                          "Price",
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: Colors.black.withOpacity(.75),
-                              fontSize: 2 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500),
-                        )),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Visibility(
+              //       visible: widget.product.variations[0].value1.isNotEmpty,
+              //       child: Flexible(
+              //         child: Container(
+              //           padding: EdgeInsets.symmetric(
+              //             horizontal: 1 * SizeConfig.widthSizeMultiplier,
+              //             vertical: .5 * SizeConfig.heightSizeMultiplier,
+              //           ),
+              //           decoration: BoxDecoration(
+              //             color: Colors.grey[300],
+              //             border: Border.all(
+              //               color: Theme.of(context).primaryColor,
+              //               width: .25 * SizeConfig.widthSizeMultiplier,
+              //             ),
+              //           ),
+              //           child: Center(
+              //               child: Text(
+              //             "Value 1",
+              //             style: Theme.of(context).textTheme.bodyText1.copyWith(
+              //                 color: Colors.black.withOpacity(.75),
+              //                 fontSize: 2 * SizeConfig.textSizeMultiplier,
+              //                 fontWeight: FontWeight.w500),
+              //           )),
+              //         ),
+              //       ),
+              //     ),
+              //     Visibility(
+              //       visible: widget.product.variations[0].value2.isNotEmpty,
+              //       child: Flexible(
+              //         child: Container(
+              //           padding: EdgeInsets.symmetric(
+              //             horizontal: 1 * SizeConfig.widthSizeMultiplier,
+              //             vertical: .5 * SizeConfig.heightSizeMultiplier,
+              //           ),
+              //           decoration: BoxDecoration(
+              //             color: Colors.grey[300],
+              //             border: Border.all(
+              //               color: Theme.of(context).primaryColor,
+              //               width: .25 * SizeConfig.widthSizeMultiplier,
+              //             ),
+              //           ),
+              //           child: Center(
+              //               child: Text(
+              //             'Value 2',
+              //             style: Theme.of(context).textTheme.bodyText1.copyWith(
+              //                 color: Colors.black.withOpacity(.75),
+              //                 fontSize: 2 * SizeConfig.textSizeMultiplier,
+              //                 fontWeight: FontWeight.w500),
+              //           )),
+              //         ),
+              //       ),
+              //     ),
+              //     Visibility(
+              //       visible: widget.product.variations[0].stock
+              //           .toStringAsFixed(0)
+              //           .isNotEmpty,
+              //       child: Flexible(
+              //         child: Container(
+              //           padding: EdgeInsets.symmetric(
+              //             horizontal: 1 * SizeConfig.widthSizeMultiplier,
+              //             vertical: .5 * SizeConfig.heightSizeMultiplier,
+              //           ),
+              //           decoration: BoxDecoration(
+              //             color: Colors.grey[300],
+              //             border: Border.all(
+              //               color: Theme.of(context).primaryColor,
+              //               width: .25 * SizeConfig.widthSizeMultiplier,
+              //             ),
+              //           ),
+              //           child: Center(
+              //               child: Text(
+              //             "Stock",
+              //             style: Theme.of(context).textTheme.bodyText1.copyWith(
+              //                 color: Colors.black.withOpacity(.75),
+              //                 fontSize: 2 * SizeConfig.textSizeMultiplier,
+              //                 fontWeight: FontWeight.w500),
+              //           )),
+              //         ),
+              //       ),
+              //     ),
+              //     Visibility(
+              //       visible: widget.product.variations[0].discountPrice
+              //           .toStringAsFixed(0)
+              //           .isNotEmpty,
+              //       child: Flexible(
+              //         child: Container(
+              //           padding: EdgeInsets.symmetric(
+              //             horizontal: 1 * SizeConfig.widthSizeMultiplier,
+              //             vertical: .5 * SizeConfig.heightSizeMultiplier,
+              //           ),
+              //           decoration: BoxDecoration(
+              //             color: Colors.grey[300],
+              //             border: Border.all(
+              //               color: Theme.of(context).primaryColor,
+              //               width: .25 * SizeConfig.widthSizeMultiplier,
+              //             ),
+              //           ),
+              //           child: Center(
+              //               child: Text(
+              //             "Price",
+              //             style: Theme.of(context).textTheme.bodyText1.copyWith(
+              //                 color: Colors.black.withOpacity(.75),
+              //                 fontSize: 2 * SizeConfig.textSizeMultiplier,
+              //                 fontWeight: FontWeight.w500),
+              //           )),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               widget.product.variations.isNotEmpty
-                  ? _buildVariation(widget.product.variations)
+                  ? Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Wrap(
+                        alignment: WrapAlignment.start,
+                        children: List.generate(_value2.length, (index) {
+                          final e = _value2[index];
+                          return GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              _onVariationSelected(e);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical:
+                                    .825 * SizeConfig.heightSizeMultiplier,
+                                horizontal:
+                                    2.5 * SizeConfig.widthSizeMultiplier,
+                              ),
+                              margin: EdgeInsets.only(
+                                right: 3 * SizeConfig.widthSizeMultiplier,
+                                bottom: 2 * SizeConfig.heightSizeMultiplier,
+                              ),
+                              decoration: BoxDecoration(
+                                color:
+                                    widget.product.selectedVariation.id == e.id
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.grey[300],
+                                borderRadius: BorderRadius.circular(
+                                    .25 * SizeConfig.heightSizeMultiplier),
+                              ),
+                              child: Text(
+                                e.value2,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
+                                        color: widget.product.selectedVariation
+                                                    .id ==
+                                                e.id
+                                            ? Colors.white
+                                            : Colors.black.withOpacity(.75),
+                                        fontSize: 1.75 *
+                                            SizeConfig.textSizeMultiplier,
+                                        fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                    )
                   : SizedBox.shrink(),
               SizedBox(
                 height: 1.875 * SizeConfig.heightSizeMultiplier,
@@ -445,7 +494,7 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
   }
 
   Widget _buildVariation(List<Variation> variations) {
-    Logger().i('variations: $variations');
+    // Logger().i('variations: $variations');
     return Table(
       border: TableBorder.all(
         color: Theme.of(context).primaryColor,
