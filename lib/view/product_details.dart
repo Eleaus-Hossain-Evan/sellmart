@@ -356,8 +356,8 @@ class _ProductDetailsState extends State<ProductDetails>
       _similarProducts = similarProducts;
     });
 
-    // Logger().wtf(
-    //     "${_product.id}-${_product.name}-${_product.slug}-${_product.youtubeVideo}");
+    Logger().wtf(
+        "${_product.id}-${_product.name}-${_product.slug}-${_product.youtubeVideo}");
 
     _onImagesSelected();
   }

@@ -354,7 +354,8 @@ class _RegisterOneState extends State<RegisterOne>
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(context);
+                                  Navigator.of(context)
+                                      .pushNamed(RouteManager.LOGIN);
                                 },
                                 child: Text(
                                   AppLocalization.of(context)
@@ -471,8 +472,7 @@ class _RegisterOneState extends State<RegisterOne>
 
   @override
   void onOTPSent(String phone) {
-    Navigator.of(context)
-        .pushNamed(RouteManager.REGISTER_TWO, arguments:  user);
+    Navigator.of(context).pushNamed(RouteManager.REGISTER_TWO, arguments: user);
   }
 
   @override

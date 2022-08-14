@@ -118,7 +118,8 @@ class _MyAppBarState extends State<MyAppBar> {
                             Navigator.of(context).pushNamed(RouteManager.CART);
                           } else {
                             // _showNotLoggedInDialog(context);
-                            Navigator.of(context).pushNamed(RouteManager.LOGIN);
+                            Navigator.of(context)
+                                .pushNamed(RouteManager.REGISTER_ONE);
                           }
                         },
                         child: Stack(

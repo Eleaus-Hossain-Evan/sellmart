@@ -15,31 +15,8 @@ class ProductSizeInfo extends StatefulWidget {
 }
 
 class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
-  final _selectedValue1 = ValueNotifier('');
-
-  @override
-  void initState() {
-    Logger().d(widget.product.selectedVariation);
-    _selectedValue1.value = widget.product.selectedVariation.value1;
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final _value1 = widget.product.variations
-        .map((element) => element.value1)
-        .toSet()
-        .toList();
-    Logger().i(_value1.toString());
-    Logger().i('selectedValue: ${_selectedValue1.value}');
-
-    final _value2 = widget.product.variations
-        .where((element) => element.value1 == _selectedValue1.value)
-        .toSet()
-        .toList();
-    Logger().d('_value2: $_value2');
-    Logger().d('_value2: ${_value2.length}');
     return Column(
       children: [
         Visibility(
@@ -160,248 +137,8 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
               widget.product.variations != null &&
               widget.product.variations.length > 0 &&
               widget.product.variations[0].id.isNotEmpty,
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 1.875 * SizeConfig.heightSizeMultiplier,
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Flexible(
-                    child: Wrap(
-                      children: widget.product != null &&
-                              widget.product.variationType != null &&
-                              widget.product.variationType == 1 &&
-                              widget.product.variations != null &&
-                              widget.product.variations.length > 0 &&
-                              widget.product.variations[0].id.isNotEmpty
-                          ? List.generate(_value1.length, (index) {
-                              final e = _value1[index];
-                              return GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () {
-                                  // _onVariationSelected(item);
-                                  _selectedValue1.value = e;
-                                  setState(() {});
-                                  print('_selectedValue1: $_selectedValue1');
-                                  _selectedValue1.notifyListeners();
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical:
-                                        .825 * SizeConfig.heightSizeMultiplier,
-                                    horizontal:
-                                        2.5 * SizeConfig.widthSizeMultiplier,
-                                  ),
-                                  margin: EdgeInsets.only(
-                                    right: 3 * SizeConfig.widthSizeMultiplier,
-                                    bottom: 2 * SizeConfig.heightSizeMultiplier,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: _selectedValue1.value == e
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(
-                                        .25 * SizeConfig.heightSizeMultiplier),
-                                  ),
-                                  child: Text(
-                                    e,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(
-                                            color: _selectedValue1.value == e
-                                                ? Colors.white
-                                                : Colors.black.withOpacity(.75),
-                                            fontSize: 1.75 *
-                                                SizeConfig.textSizeMultiplier,
-                                            fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              );
-                            })
-                          : List.generate(0, (index) {
-                              return Container();
-                            }),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 1.875 * SizeConfig.heightSizeMultiplier,
-              ),
-              // Row(
-              //   children: [
-              //     Visibility(
-              //       visible: widget.product.variations[0].value1.isNotEmpty,
-              //       child: Flexible(
-              //         child: Container(
-              //           padding: EdgeInsets.symmetric(
-              //             horizontal: 1 * SizeConfig.widthSizeMultiplier,
-              //             vertical: .5 * SizeConfig.heightSizeMultiplier,
-              //           ),
-              //           decoration: BoxDecoration(
-              //             color: Colors.grey[300],
-              //             border: Border.all(
-              //               color: Theme.of(context).primaryColor,
-              //               width: .25 * SizeConfig.widthSizeMultiplier,
-              //             ),
-              //           ),
-              //           child: Center(
-              //               child: Text(
-              //             "Value 1",
-              //             style: Theme.of(context).textTheme.bodyText1.copyWith(
-              //                 color: Colors.black.withOpacity(.75),
-              //                 fontSize: 2 * SizeConfig.textSizeMultiplier,
-              //                 fontWeight: FontWeight.w500),
-              //           )),
-              //         ),
-              //       ),
-              //     ),
-              //     Visibility(
-              //       visible: widget.product.variations[0].value2.isNotEmpty,
-              //       child: Flexible(
-              //         child: Container(
-              //           padding: EdgeInsets.symmetric(
-              //             horizontal: 1 * SizeConfig.widthSizeMultiplier,
-              //             vertical: .5 * SizeConfig.heightSizeMultiplier,
-              //           ),
-              //           decoration: BoxDecoration(
-              //             color: Colors.grey[300],
-              //             border: Border.all(
-              //               color: Theme.of(context).primaryColor,
-              //               width: .25 * SizeConfig.widthSizeMultiplier,
-              //             ),
-              //           ),
-              //           child: Center(
-              //               child: Text(
-              //             'Value 2',
-              //             style: Theme.of(context).textTheme.bodyText1.copyWith(
-              //                 color: Colors.black.withOpacity(.75),
-              //                 fontSize: 2 * SizeConfig.textSizeMultiplier,
-              //                 fontWeight: FontWeight.w500),
-              //           )),
-              //         ),
-              //       ),
-              //     ),
-              //     Visibility(
-              //       visible: widget.product.variations[0].stock
-              //           .toStringAsFixed(0)
-              //           .isNotEmpty,
-              //       child: Flexible(
-              //         child: Container(
-              //           padding: EdgeInsets.symmetric(
-              //             horizontal: 1 * SizeConfig.widthSizeMultiplier,
-              //             vertical: .5 * SizeConfig.heightSizeMultiplier,
-              //           ),
-              //           decoration: BoxDecoration(
-              //             color: Colors.grey[300],
-              //             border: Border.all(
-              //               color: Theme.of(context).primaryColor,
-              //               width: .25 * SizeConfig.widthSizeMultiplier,
-              //             ),
-              //           ),
-              //           child: Center(
-              //               child: Text(
-              //             "Stock",
-              //             style: Theme.of(context).textTheme.bodyText1.copyWith(
-              //                 color: Colors.black.withOpacity(.75),
-              //                 fontSize: 2 * SizeConfig.textSizeMultiplier,
-              //                 fontWeight: FontWeight.w500),
-              //           )),
-              //         ),
-              //       ),
-              //     ),
-              //     Visibility(
-              //       visible: widget.product.variations[0].discountPrice
-              //           .toStringAsFixed(0)
-              //           .isNotEmpty,
-              //       child: Flexible(
-              //         child: Container(
-              //           padding: EdgeInsets.symmetric(
-              //             horizontal: 1 * SizeConfig.widthSizeMultiplier,
-              //             vertical: .5 * SizeConfig.heightSizeMultiplier,
-              //           ),
-              //           decoration: BoxDecoration(
-              //             color: Colors.grey[300],
-              //             border: Border.all(
-              //               color: Theme.of(context).primaryColor,
-              //               width: .25 * SizeConfig.widthSizeMultiplier,
-              //             ),
-              //           ),
-              //           child: Center(
-              //               child: Text(
-              //             "Price",
-              //             style: Theme.of(context).textTheme.bodyText1.copyWith(
-              //                 color: Colors.black.withOpacity(.75),
-              //                 fontSize: 2 * SizeConfig.textSizeMultiplier,
-              //                 fontWeight: FontWeight.w500),
-              //           )),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              widget.product.variations.isNotEmpty
-                  ? Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Wrap(
-                        alignment: WrapAlignment.start,
-                        children: List.generate(_value2.length, (index) {
-                          final e = _value2[index];
-                          return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              _onVariationSelected(e);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical:
-                                    .825 * SizeConfig.heightSizeMultiplier,
-                                horizontal:
-                                    2.5 * SizeConfig.widthSizeMultiplier,
-                              ),
-                              margin: EdgeInsets.only(
-                                right: 3 * SizeConfig.widthSizeMultiplier,
-                                bottom: 2 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              decoration: BoxDecoration(
-                                color:
-                                    widget.product.selectedVariation.id == e.id
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.grey[300],
-                                borderRadius: BorderRadius.circular(
-                                    .25 * SizeConfig.heightSizeMultiplier),
-                              ),
-                              child: Text(
-                                e.value2,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(
-                                        color: widget.product.selectedVariation
-                                                    .id ==
-                                                e.id
-                                            ? Colors.white
-                                            : Colors.black.withOpacity(.75),
-                                        fontSize: 1.75 *
-                                            SizeConfig.textSizeMultiplier,
-                                        fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                    )
-                  : SizedBox.shrink(),
-              SizedBox(
-                height: 1.875 * SizeConfig.heightSizeMultiplier,
-              ),
-              _divider(),
-            ],
+          child: _VariationItems(
+            product: widget.product,
           ),
         ),
       ],
@@ -493,154 +230,154 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
     );
   }
 
-  Widget _buildVariation(List<Variation> variations) {
-    // Logger().i('variations: $variations');
-    return Table(
-      border: TableBorder.all(
-        color: Theme.of(context).primaryColor,
-        width: .25 * SizeConfig.widthSizeMultiplier,
-      ),
-      defaultColumnWidth: IntrinsicColumnWidth(flex: 1),
-      children: List.generate(
-        variations.length,
-        (index) {
-          final e = variations[index];
-          // final isTop = index == 0;
-          return TableRow(
-            decoration: BoxDecoration(
-              color: widget.product.selectedVariation != null &&
-                      widget.product.selectedVariation.id == e.id
-                  ? Theme.of(context).primaryColor
-                  : Colors.grey[300],
-            ),
-            children: [
-              GestureDetector(
-                child: Row(
-                  children: [
-                    Visibility(
-                      visible: e.value1.isNotEmpty,
-                      child: Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                            vertical: .5 * SizeConfig.heightSizeMultiplier,
-                          ),
-                          child: Center(
-                              child: Text(
-                            e.value1,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(
-                                    color: widget.product.selectedVariation !=
-                                                null &&
-                                            widget.product.selectedVariation
-                                                    .id ==
-                                                e.id
-                                        ? Colors.white
-                                        : Colors.black.withOpacity(.75),
-                                    fontSize: 2 * SizeConfig.textSizeMultiplier,
-                                    fontWeight: FontWeight.w500),
-                          )),
-                        ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: e.value2.isNotEmpty,
-                      child: Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                            vertical: .5 * SizeConfig.heightSizeMultiplier,
-                          ),
-                          child: Center(
-                              child: Text(
-                            e.value2,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(
-                                    color: widget.product.selectedVariation !=
-                                                null &&
-                                            widget.product.selectedVariation
-                                                    .id ==
-                                                e.id
-                                        ? Colors.white
-                                        : Colors.black.withOpacity(.75),
-                                    fontSize: 2 * SizeConfig.textSizeMultiplier,
-                                    fontWeight: FontWeight.w500),
-                          )),
-                        ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: e.stock.toString().isNotEmpty,
-                      child: Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                            vertical: .5 * SizeConfig.heightSizeMultiplier,
-                          ),
-                          child: Center(
-                              child: Text(
-                            e.stock.toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(
-                                    color: widget.product.selectedVariation !=
-                                                null &&
-                                            widget.product.selectedVariation
-                                                    .id ==
-                                                e.id
-                                        ? Colors.white
-                                        : Colors.black.withOpacity(.75),
-                                    fontSize: 2 * SizeConfig.textSizeMultiplier,
-                                    fontWeight: FontWeight.w500),
-                          )),
-                        ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: e.discountPrice.toStringAsFixed(0).isNotEmpty,
-                      child: Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                            vertical: .5 * SizeConfig.heightSizeMultiplier,
-                          ),
-                          child: Center(
-                              child: Text(
-                            e.discountPrice.toStringAsFixed(0),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(
-                                    color: widget.product.selectedVariation !=
-                                                null &&
-                                            widget.product.selectedVariation
-                                                    .id ==
-                                                e.id
-                                        ? Colors.white
-                                        : Colors.black.withOpacity(.75),
-                                    fontSize: 2 * SizeConfig.textSizeMultiplier,
-                                    fontWeight: FontWeight.w500),
-                          )),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  _onVariationSelected(e);
-                },
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
+  // Widget _buildVariation(List<Variation> variations) {
+  //   // Logger().i('variations: $variations');
+  //   return Table(
+  //     border: TableBorder.all(
+  //       color: Theme.of(context).primaryColor,
+  //       width: .25 * SizeConfig.widthSizeMultiplier,
+  //     ),
+  //     defaultColumnWidth: IntrinsicColumnWidth(flex: 1),
+  //     children: List.generate(
+  //       variations.length,
+  //       (index) {
+  //         final e = variations[index];
+  //         // final isTop = index == 0;
+  //         return TableRow(
+  //           decoration: BoxDecoration(
+  //             color: widget.product.selectedVariation != null &&
+  //                     widget.product.selectedVariation.id == e.id
+  //                 ? Theme.of(context).primaryColor
+  //                 : Colors.grey[300],
+  //           ),
+  //           children: [
+  //             GestureDetector(
+  //               child: Row(
+  //                 children: [
+  //                   Visibility(
+  //                     visible: e.value1.isNotEmpty,
+  //                     child: Flexible(
+  //                       child: Padding(
+  //                         padding: EdgeInsets.symmetric(
+  //                           horizontal: 1 * SizeConfig.widthSizeMultiplier,
+  //                           vertical: .5 * SizeConfig.heightSizeMultiplier,
+  //                         ),
+  //                         child: Center(
+  //                             child: Text(
+  //                           e.value1,
+  //                           style: Theme.of(context)
+  //                               .textTheme
+  //                               .bodyText1
+  //                               .copyWith(
+  //                                   color: widget.product.selectedVariation !=
+  //                                               null &&
+  //                                           widget.product.selectedVariation
+  //                                                   .id ==
+  //                                               e.id
+  //                                       ? Colors.white
+  //                                       : Colors.black.withOpacity(.75),
+  //                                   fontSize: 2 * SizeConfig.textSizeMultiplier,
+  //                                   fontWeight: FontWeight.w500),
+  //                         )),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Visibility(
+  //                     visible: e.value2.isNotEmpty,
+  //                     child: Flexible(
+  //                       child: Padding(
+  //                         padding: EdgeInsets.symmetric(
+  //                           horizontal: 1 * SizeConfig.widthSizeMultiplier,
+  //                           vertical: .5 * SizeConfig.heightSizeMultiplier,
+  //                         ),
+  //                         child: Center(
+  //                             child: Text(
+  //                           e.value2,
+  //                           style: Theme.of(context)
+  //                               .textTheme
+  //                               .bodyText1
+  //                               .copyWith(
+  //                                   color: widget.product.selectedVariation !=
+  //                                               null &&
+  //                                           widget.product.selectedVariation
+  //                                                   .id ==
+  //                                               e.id
+  //                                       ? Colors.white
+  //                                       : Colors.black.withOpacity(.75),
+  //                                   fontSize: 2 * SizeConfig.textSizeMultiplier,
+  //                                   fontWeight: FontWeight.w500),
+  //                         )),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Visibility(
+  //                     visible: e.stock.toString().isNotEmpty,
+  //                     child: Flexible(
+  //                       child: Padding(
+  //                         padding: EdgeInsets.symmetric(
+  //                           horizontal: 1 * SizeConfig.widthSizeMultiplier,
+  //                           vertical: .5 * SizeConfig.heightSizeMultiplier,
+  //                         ),
+  //                         child: Center(
+  //                             child: Text(
+  //                           e.stock.toString(),
+  //                           style: Theme.of(context)
+  //                               .textTheme
+  //                               .bodyText1
+  //                               .copyWith(
+  //                                   color: widget.product.selectedVariation !=
+  //                                               null &&
+  //                                           widget.product.selectedVariation
+  //                                                   .id ==
+  //                                               e.id
+  //                                       ? Colors.white
+  //                                       : Colors.black.withOpacity(.75),
+  //                                   fontSize: 2 * SizeConfig.textSizeMultiplier,
+  //                                   fontWeight: FontWeight.w500),
+  //                         )),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Visibility(
+  //                     visible: e.discountPrice.toStringAsFixed(0).isNotEmpty,
+  //                     child: Flexible(
+  //                       child: Padding(
+  //                         padding: EdgeInsets.symmetric(
+  //                           horizontal: 1 * SizeConfig.widthSizeMultiplier,
+  //                           vertical: .5 * SizeConfig.heightSizeMultiplier,
+  //                         ),
+  //                         child: Center(
+  //                             child: Text(
+  //                           e.discountPrice.toStringAsFixed(0),
+  //                           style: Theme.of(context)
+  //                               .textTheme
+  //                               .bodyText1
+  //                               .copyWith(
+  //                                   color: widget.product.selectedVariation !=
+  //                                               null &&
+  //                                           widget.product.selectedVariation
+  //                                                   .id ==
+  //                                               e.id
+  //                                       ? Colors.white
+  //                                       : Colors.black.withOpacity(.75),
+  //                                   fontSize: 2 * SizeConfig.textSizeMultiplier,
+  //                                   fontWeight: FontWeight.w500),
+  //                         )),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               onTap: () {
+  //                 _onVariationSelected(e);
+  //               },
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget _divider() {
     return Container(
@@ -676,6 +413,164 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
         }
       }
     }
+  }
+}
+
+class _VariationItems extends StatefulWidget {
+  _VariationItems({
+    Key key,
+    @required this.product,
+  }) : super(key: key);
+
+  final Product product;
+
+  @override
+  __VariationItemsState createState() => __VariationItemsState();
+}
+
+class __VariationItemsState extends State<_VariationItems> {
+  final _selectedValue1 = ValueNotifier('');
+
+  var _value1 = <String>[];
+
+  var _value2 = <Variation>[];
+
+  @override
+  void initState() {
+    _selectedValue1.value = widget.product.selectedVariation != null
+        ? widget.product.selectedVariation.value1
+        : '';
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _value1 = widget.product.variations
+        .map((element) => element.value1)
+        .toSet()
+        .toList();
+    Logger().i(_value1.toString());
+    Logger().i('selectedValue: ${_selectedValue1.value}');
+
+    _value2 = widget.product.variations
+        .where((element) => element.value1 == _selectedValue1.value)
+        .toSet()
+        .toList();
+    Logger().d('_value2: $_value2');
+    Logger().d('_value2: ${_value2.length}');
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 1.875 * SizeConfig.heightSizeMultiplier,
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Flexible(
+              child: Wrap(
+                children: widget.product.variations[0].id.isNotEmpty
+                    ? List.generate(_value1.length, (index) {
+                        final e = _value1[index];
+                        return GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            // _onVariationSelected(item);
+                            _selectedValue1.value = e;
+                            setState(() {});
+                            print('_selectedValue1: $_selectedValue1');
+                            _selectedValue1.notifyListeners();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: .825 * SizeConfig.heightSizeMultiplier,
+                              horizontal: 2.5 * SizeConfig.widthSizeMultiplier,
+                            ),
+                            margin: EdgeInsets.only(
+                              right: 3 * SizeConfig.widthSizeMultiplier,
+                              bottom: 2 * SizeConfig.heightSizeMultiplier,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _selectedValue1.value == e
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.grey[300],
+                              borderRadius: BorderRadius.circular(
+                                  .25 * SizeConfig.heightSizeMultiplier),
+                            ),
+                            child: Text(
+                              e,
+                              style:
+                                  Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .copyWith(
+                                          color: _selectedValue1.value == e
+                                              ? Colors.white
+                                              : Colors.black.withOpacity(.75),
+                                          fontSize: 1.75 *
+                                              SizeConfig.textSizeMultiplier,
+                                          fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        );
+                      })
+                    : List.generate(0, (index) {
+                        return Container();
+                      }),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 1.875 * SizeConfig.heightSizeMultiplier,
+        ),
+        widget.product.variations.isNotEmpty
+            ? Align(
+                alignment: Alignment.bottomLeft,
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  children: List.generate(_value2.length, (index) {
+                    final e = _value2[index];
+                    return GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => _onVariationSelected(e),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: .825 * SizeConfig.heightSizeMultiplier,
+                          horizontal: 2.5 * SizeConfig.widthSizeMultiplier,
+                        ),
+                        margin: EdgeInsets.only(
+                          right: 3 * SizeConfig.widthSizeMultiplier,
+                          bottom: 2 * SizeConfig.heightSizeMultiplier,
+                        ),
+                        decoration: BoxDecoration(
+                          color: widget.product.selectedVariation.id == e.id
+                              ? Theme.of(context).primaryColor
+                              : Colors.grey[300],
+                          borderRadius: BorderRadius.circular(
+                              .25 * SizeConfig.heightSizeMultiplier),
+                        ),
+                        child: Text(
+                          e.value2,
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                              color: widget.product.selectedVariation.id == e.id
+                                  ? Colors.white
+                                  : Colors.black.withOpacity(.75),
+                              fontSize: 1.75 * SizeConfig.textSizeMultiplier,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              )
+            : SizedBox.shrink(),
+        SizedBox(
+          height: 1.875 * SizeConfig.heightSizeMultiplier,
+        ),
+      ],
+    );
   }
 
   void _onVariationSelected(Variation variation) {

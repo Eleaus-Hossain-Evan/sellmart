@@ -285,7 +285,8 @@ class _ProductDetailsFooterState extends State<ProductDetailsFooter>
         currentUser.value.id.isNotEmpty) {
       _addToCart(context, true);
     } else {
-      _showNotLoggedInDialog(context);
+      // _showNotLoggedInDialog(context);
+      Navigator.of(context).pushNamed(RouteManager.REGISTER_ONE);
     }
   }
 
