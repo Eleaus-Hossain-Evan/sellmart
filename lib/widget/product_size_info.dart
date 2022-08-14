@@ -198,7 +198,7 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
                                                     .heightSizeMultiplier),
                                       ),
                                       child: Text(
-                                        item.value1,
+                                        "${item.value1.isNotEmpty ? item.value1 : item.value2.isNotEmpty ? item.value2 : item.discountPrice.toStringAsFixed(0).isNotEmpty ? item.discountPrice : null}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText1
@@ -235,96 +235,112 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
               ),
               Row(
                 children: [
-                  Flexible(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                        vertical: .5 * SizeConfig.heightSizeMultiplier,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                          width: .25 * SizeConfig.widthSizeMultiplier,
+                  Visibility(
+                    visible: widget.product.variations[0].value1.isNotEmpty,
+                    child: Flexible(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
+                          vertical: .5 * SizeConfig.heightSizeMultiplier,
                         ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          border: Border.all(
+                            color: Theme.of(context).primaryColor,
+                            width: .25 * SizeConfig.widthSizeMultiplier,
+                          ),
+                        ),
+                        child: Center(
+                            child: Text(
+                          "Value 1",
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                              color: Colors.black.withOpacity(.75),
+                              fontSize: 2 * SizeConfig.textSizeMultiplier,
+                              fontWeight: FontWeight.w500),
+                        )),
                       ),
-                      child: Center(
-                          child: Text(
-                        "Value 1",
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            color: Colors.black.withOpacity(.75),
-                            fontSize: 2 * SizeConfig.textSizeMultiplier,
-                            fontWeight: FontWeight.w500),
-                      )),
                     ),
                   ),
-                  Flexible(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                        vertical: .5 * SizeConfig.heightSizeMultiplier,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                          width: .25 * SizeConfig.widthSizeMultiplier,
+                  Visibility(
+                    visible: widget.product.variations[0].value2.isNotEmpty,
+                    child: Flexible(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
+                          vertical: .5 * SizeConfig.heightSizeMultiplier,
                         ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          border: Border.all(
+                            color: Theme.of(context).primaryColor,
+                            width: .25 * SizeConfig.widthSizeMultiplier,
+                          ),
+                        ),
+                        child: Center(
+                            child: Text(
+                          'Value 2',
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                              color: Colors.black.withOpacity(.75),
+                              fontSize: 2 * SizeConfig.textSizeMultiplier,
+                              fontWeight: FontWeight.w500),
+                        )),
                       ),
-                      child: Center(
-                          child: Text(
-                        'Value 2',
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            color: Colors.black.withOpacity(.75),
-                            fontSize: 2 * SizeConfig.textSizeMultiplier,
-                            fontWeight: FontWeight.w500),
-                      )),
                     ),
                   ),
-                  Flexible(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                        vertical: .5 * SizeConfig.heightSizeMultiplier,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                          width: .25 * SizeConfig.widthSizeMultiplier,
+                  Visibility(
+                    visible: widget.product.variations[0].stock
+                        .toStringAsFixed(0)
+                        .isNotEmpty,
+                    child: Flexible(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
+                          vertical: .5 * SizeConfig.heightSizeMultiplier,
                         ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          border: Border.all(
+                            color: Theme.of(context).primaryColor,
+                            width: .25 * SizeConfig.widthSizeMultiplier,
+                          ),
+                        ),
+                        child: Center(
+                            child: Text(
+                          "Stock",
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                              color: Colors.black.withOpacity(.75),
+                              fontSize: 2 * SizeConfig.textSizeMultiplier,
+                              fontWeight: FontWeight.w500),
+                        )),
                       ),
-                      child: Center(
-                          child: Text(
-                        "Stock",
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            color: Colors.black.withOpacity(.75),
-                            fontSize: 2 * SizeConfig.textSizeMultiplier,
-                            fontWeight: FontWeight.w500),
-                      )),
                     ),
                   ),
-                  Flexible(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                        vertical: .5 * SizeConfig.heightSizeMultiplier,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                          width: .25 * SizeConfig.widthSizeMultiplier,
+                  Visibility(
+                    visible: widget.product.variations[0].discountPrice
+                        .toStringAsFixed(0)
+                        .isNotEmpty,
+                    child: Flexible(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
+                          vertical: .5 * SizeConfig.heightSizeMultiplier,
                         ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          border: Border.all(
+                            color: Theme.of(context).primaryColor,
+                            width: .25 * SizeConfig.widthSizeMultiplier,
+                          ),
+                        ),
+                        child: Center(
+                            child: Text(
+                          "Price",
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                              color: Colors.black.withOpacity(.75),
+                              fontSize: 2 * SizeConfig.textSizeMultiplier,
+                              fontWeight: FontWeight.w500),
+                        )),
                       ),
-                      child: Center(
-                          child: Text(
-                        "Price",
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            color: Colors.black.withOpacity(.75),
-                            fontSize: 2 * SizeConfig.textSizeMultiplier,
-                            fontWeight: FontWeight.w500),
-                      )),
                     ),
                   ),
                 ],
@@ -452,84 +468,116 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
               GestureDetector(
                 child: Row(
                   children: [
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                          vertical: .5 * SizeConfig.heightSizeMultiplier,
+                    Visibility(
+                      visible: e.value1.isNotEmpty,
+                      child: Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 1 * SizeConfig.widthSizeMultiplier,
+                            vertical: .5 * SizeConfig.heightSizeMultiplier,
+                          ),
+                          child: Center(
+                              child: Text(
+                            e.value1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(
+                                    color: widget.product.selectedVariation !=
+                                                null &&
+                                            widget.product.selectedVariation
+                                                    .id ==
+                                                e.id
+                                        ? Colors.white
+                                        : Colors.black.withOpacity(.75),
+                                    fontSize: 2 * SizeConfig.textSizeMultiplier,
+                                    fontWeight: FontWeight.w500),
+                          )),
                         ),
-                        child: Center(
-                            child: Text(
-                          e.value1,
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: widget.product.selectedVariation != null &&
-                                      widget.product.selectedVariation.id ==
-                                          e.id
-                                  ? Colors.white
-                                  : Colors.black.withOpacity(.75),
-                              fontSize: 2 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500),
-                        )),
                       ),
                     ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                          vertical: .5 * SizeConfig.heightSizeMultiplier,
+                    Visibility(
+                      visible: e.value2.isNotEmpty,
+                      child: Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 1 * SizeConfig.widthSizeMultiplier,
+                            vertical: .5 * SizeConfig.heightSizeMultiplier,
+                          ),
+                          child: Center(
+                              child: Text(
+                            e.value2,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(
+                                    color: widget.product.selectedVariation !=
+                                                null &&
+                                            widget.product.selectedVariation
+                                                    .id ==
+                                                e.id
+                                        ? Colors.white
+                                        : Colors.black.withOpacity(.75),
+                                    fontSize: 2 * SizeConfig.textSizeMultiplier,
+                                    fontWeight: FontWeight.w500),
+                          )),
                         ),
-                        child: Center(
-                            child: Text(
-                          e.value2,
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: widget.product.selectedVariation != null &&
-                                      widget.product.selectedVariation.id ==
-                                          e.id
-                                  ? Colors.white
-                                  : Colors.black.withOpacity(.75),
-                              fontSize: 2 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500),
-                        )),
                       ),
                     ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                          vertical: .5 * SizeConfig.heightSizeMultiplier,
+                    Visibility(
+                      visible: e.stock.toString().isNotEmpty,
+                      child: Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 1 * SizeConfig.widthSizeMultiplier,
+                            vertical: .5 * SizeConfig.heightSizeMultiplier,
+                          ),
+                          child: Center(
+                              child: Text(
+                            e.stock.toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(
+                                    color: widget.product.selectedVariation !=
+                                                null &&
+                                            widget.product.selectedVariation
+                                                    .id ==
+                                                e.id
+                                        ? Colors.white
+                                        : Colors.black.withOpacity(.75),
+                                    fontSize: 2 * SizeConfig.textSizeMultiplier,
+                                    fontWeight: FontWeight.w500),
+                          )),
                         ),
-                        child: Center(
-                            child: Text(
-                          e.stock.toString(),
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: widget.product.selectedVariation != null &&
-                                      widget.product.selectedVariation.id ==
-                                          e.id
-                                  ? Colors.white
-                                  : Colors.black.withOpacity(.75),
-                              fontSize: 2 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500),
-                        )),
                       ),
                     ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 1 * SizeConfig.widthSizeMultiplier,
-                          vertical: .5 * SizeConfig.heightSizeMultiplier,
+                    Visibility(
+                      visible: e.discountPrice.toStringAsFixed(0).isNotEmpty,
+                      child: Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 1 * SizeConfig.widthSizeMultiplier,
+                            vertical: .5 * SizeConfig.heightSizeMultiplier,
+                          ),
+                          child: Center(
+                              child: Text(
+                            e.discountPrice.toStringAsFixed(0),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(
+                                    color: widget.product.selectedVariation !=
+                                                null &&
+                                            widget.product.selectedVariation
+                                                    .id ==
+                                                e.id
+                                        ? Colors.white
+                                        : Colors.black.withOpacity(.75),
+                                    fontSize: 2 * SizeConfig.textSizeMultiplier,
+                                    fontWeight: FontWeight.w500),
+                          )),
                         ),
-                        child: Center(
-                            child: Text(
-                          e.discountPrice.toStringAsFixed(0),
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: widget.product.selectedVariation != null &&
-                                      widget.product.selectedVariation.id ==
-                                          e.id
-                                  ? Colors.white
-                                  : Colors.black.withOpacity(.75),
-                              fontSize: 2 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500),
-                        )),
                       ),
                     ),
                   ],
