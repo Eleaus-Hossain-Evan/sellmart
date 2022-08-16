@@ -1,4 +1,5 @@
 import 'package:app/contract/balance_contract.dart';
+import 'package:app/model/payment_option.dart';
 
 import '../view/web_view.dart';
 
@@ -34,33 +35,33 @@ import 'bottom_nav.dart';
 import 'package:sslcommerz_flutter/model/SSLCTransactionInfoModel.dart';
 import 'package:logger/logger.dart';
 
-var logger = Logger(
-  printer: PrettyPrinter(),
-);
+// var logger = Logger(
+//   printer: PrettyPrinter(),
+// );
 
-var loggerNoStack = Logger(
-  printer: PrettyPrinter(methodCount: 0),
-);
+// var loggerNoStack = Logger(
+//   printer: PrettyPrinter(methodCount: 0),
+// );
 
-void main() {
-  print(
-      'Run with either `dart example/main.dart` or `dart --enable-asserts example/main.dart`.');
-  demo();
-}
+// void main() {
+//   print(
+//       'Run with either `dart example/main.dart` or `dart --enable-asserts example/main.dart`.');
+//   demo();
+// }
 
-void demo() {
-  logger.d('Log message with 2 methods');
+// void demo() {
+//   logger.d('Log message with 2 methods');
 
-  loggerNoStack.i('Info message');
+//   loggerNoStack.i('Info message');
 
-  loggerNoStack.w('Just a warning!');
+//   loggerNoStack.w('Just a warning!');
 
-  logger.e('Error! Something bad happened', 'Test Error');
+//   logger.e('Error! Something bad happened', 'Test Error');
 
-  loggerNoStack.v({'key': 5, 'value': 'something'});
+//   loggerNoStack.v({'key': 5, 'value': 'something'});
 
-  Logger(printer: SimplePrinter(colors: true)).v('boom');
-}
+//   Logger(printer: SimplePrinter(colors: true)).v('boom');
+// }
 
 ValueNotifier<Order> order = ValueNotifier(Order());
 
@@ -784,12 +785,12 @@ class _CartState extends State<Cart>
       debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
     }
     order.value = Order(
-      vat: 0.0,
-      sslCharge: 0.0,
-      advancePayment: 0.0,
-      address: currentUser.value.addresses.list[1],
-      deliveryType: type,
-      deliveryFee: fee,
-    );
+        vat: 0.0,
+        sslCharge: 0.0,
+        advancePayment: 0.0,
+        address: currentUser.value.addresses.list[1],
+        deliveryType: type,
+        deliveryFee: fee,
+        paymentOption: PaymentOption.init());
   }
 }

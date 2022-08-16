@@ -355,7 +355,7 @@ class _RegisterOneState extends State<RegisterOne>
                               GestureDetector(
                                 onTap: () {
                                   Navigator.of(context)
-                                      .pushNamed(RouteManager.LOGIN);
+                                      .pushReplacementNamed(RouteManager.LOGIN);
                                 },
                                 child: Text(
                                   AppLocalization.of(context)

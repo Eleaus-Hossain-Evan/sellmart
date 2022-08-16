@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:logger/logger.dart';
 import 'package:sslcommerz_flutter/model/SSLCTransactionInfoModel.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import '../view/cart.dart';
@@ -1361,6 +1362,8 @@ class DataPresenter with ChangeNotifier {
               if (response.statusCode == 200 || response.statusCode == 201) {
                 if (jsonData['success']) {
                   Orders orders = Orders.fromJson(jsonData['data']);
+                  Logger().d(orders.toString());
+                  Logger().d(orders.list[0].products[0].toString());
                   _orderContract.showAllOrders(orders.list);
                 } else {
                   _orderContract.failedToGetAllOrders(context);

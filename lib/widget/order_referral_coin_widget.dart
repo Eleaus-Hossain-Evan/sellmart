@@ -1,10 +1,6 @@
 import 'package:app/presenter/user_presenter.dart';
 import 'package:app/utils/my_flush_bar.dart';
 
-import '../utils/constants.dart';
-
-import '../model/coupon.dart';
-
 import '../localization/app_localization.dart';
 import '../utils/size_config.dart';
 import 'package:flutter/material.dart';

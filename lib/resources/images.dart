@@ -1,5 +1,4 @@
 class Images {
-
   Images._();
 
   static final String appIcon = "assets/images/logo.png";
@@ -11,7 +10,9 @@ class Images {
   static final String card = "assets/images/card.png";
   static final String cardWhite = "assets/images/card_white.png";
   static final String confirmation = "assets/images/confirmation.png";
-  static final String confirmationWhite = "assets/images/confirmation_white.png";
+  static final String confirmationWhite =
+      "assets/images/confirmation_white.png";
+  static final String coin = "assets/images/coin.png";
   static final String userIcon = "assets/images/user_icon.png";
   static final String cash = "assets/images/cash.png";
   static final String onlinePayment = "assets/images/online_payment.png";

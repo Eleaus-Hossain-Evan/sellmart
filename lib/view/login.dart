@@ -286,7 +286,9 @@ class _LoginState extends State<Login> implements Connectivity, LoginContract {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.of(context).pop();
+                                      Navigator.of(context)
+                                          .pushReplacementNamed(
+                                              RouteManager.REGISTER_ONE);
                                     },
                                     child: Text(
                                       AppLocalization.of(context)

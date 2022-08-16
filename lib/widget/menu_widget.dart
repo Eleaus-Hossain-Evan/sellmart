@@ -80,6 +80,36 @@ class _MenuWidgetState extends State<MenuWidget> with ChangeNotifier {
             Visibility(
               visible: user != null && user.id != null && user.id.isNotEmpty,
               child: ListTile(
+                onTap: () {},
+                dense: true,
+                leading: Image.asset(
+                  Images.coin,
+                  height: 3.125 * SizeConfig.heightSizeMultiplier,
+                  width: 6.41 * SizeConfig.widthSizeMultiplier,
+                  fit: BoxFit.fill,
+                ),
+                title: Text(
+                  "Coin",
+                  style: Theme.of(context).textTheme.subtitle2.copyWith(
+                        fontWeight: FontWeight.w400,
+                      ),
+                ),
+                trailing: Padding(
+                    padding: EdgeInsets.only(
+                        left: 1.5 * SizeConfig.widthSizeMultiplier),
+                    child: Text(
+                      user != null && user.id != null && user.id.isNotEmpty
+                          ? user.balance
+                          : "",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )),
+              ),
+            ),
+            Visibility(
+              visible: user != null && user.id != null && user.id.isNotEmpty,
+              child: ListTile(
                 onTap: () {
                   _onItemClick(Constants.WISH_LIST_MENU);
                 },
@@ -306,7 +336,7 @@ class _MenuWidgetState extends State<MenuWidget> with ChangeNotifier {
                   fit: BoxFit.fill,
                 ),
                 title: Text(
-                  AppLocalization.of(context).getTranslatedValue("login"),
+                  AppLocalization.of(context).getTranslatedValue("register"),
                   style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontWeight: FontWeight.w400,
                       ),
@@ -414,7 +444,7 @@ class _MenuWidgetState extends State<MenuWidget> with ChangeNotifier {
   }
 
   Future<void> _login() async {
-    Navigator.of(context).pushNamed(RouteManager.LOGIN);
+    Navigator.of(context).pushNamed(RouteManager.REGISTER_ONE);
   }
 
   Future<void> _logOut() async {

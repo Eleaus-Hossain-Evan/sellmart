@@ -36,30 +36,30 @@ class _OrderCouponWidgetState extends State<OrderCouponWidget>
           height: 2.5 * SizeConfig.heightSizeMultiplier,
           color: Theme.of(context).hintColor,
         ),
-        SizedBox(
-          height: 2.5 * SizeConfig.heightSizeMultiplier,
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: 5.12 * SizeConfig.widthSizeMultiplier,
-            right: 5.12 * SizeConfig.widthSizeMultiplier,
-          ),
-          child: Text(
-            // AppLocalization.of(context)
-            //     .getTranslatedValue("delivery_address")
-            "Apply Promo Code",
-            style: Theme.of(context).textTheme.subtitle2.copyWith(
-                  fontWeight: FontWeight.w400,
-                ),
-          ),
-        ),
-        SizedBox(
-          height: 2.5 * SizeConfig.heightSizeMultiplier,
-        ),
-        Container(
-          height: .25 * SizeConfig.heightSizeMultiplier,
-          color: Theme.of(context).hintColor,
-        ),
+        // SizedBox(
+        //   height: 2.5 * SizeConfig.heightSizeMultiplier,
+        // ),
+        // Padding(
+        //   padding: EdgeInsets.only(
+        //     left: 5.12 * SizeConfig.widthSizeMultiplier,
+        //     right: 5.12 * SizeConfig.widthSizeMultiplier,
+        //   ),
+        //   child: Text(
+        //     // AppLocalization.of(context)
+        //     //     .getTranslatedValue("delivery_address")
+        //     "Apply Promo Code",
+        //     style: Theme.of(context).textTheme.subtitle2.copyWith(
+        //           fontWeight: FontWeight.w400,
+        //         ),
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: 2.5 * SizeConfig.heightSizeMultiplier,
+        // ),
+        // Container(
+        //   height: .25 * SizeConfig.heightSizeMultiplier,
+        //   color: Theme.of(context).hintColor,
+        // ),
         Container(
           width: double.infinity,
           height: 8 * SizeConfig.heightSizeMultiplier,
@@ -112,7 +112,7 @@ class _OrderCouponWidgetState extends State<OrderCouponWidget>
                       FocusScope.of(context).unfocus();
                     },
                     decoration: InputDecoration(
-                      hintText: "Enter promo code to apply",
+                      hintText: "Apply promo code (if you have)",
                       hintStyle: TextStyle(
                         fontSize: 2.15 * SizeConfig.textSizeMultiplier,
                         fontWeight: FontWeight.w400,
@@ -232,10 +232,10 @@ class _OrderCouponWidgetState extends State<OrderCouponWidget>
             ),
           ),
         ),
-        Container(
-          height: 2.5 * SizeConfig.heightSizeMultiplier,
-          color: Theme.of(context).hintColor,
-        ),
+        // Container(
+        //   height: 2.5 * SizeConfig.heightSizeMultiplier,
+        //   color: Theme.of(context).hintColor,
+        // ),
       ],
     );
   }

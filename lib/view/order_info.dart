@@ -487,6 +487,7 @@ class _OrderInfoState extends State<OrderInfo>
                               color: Colors.black.withOpacity(.75),
                             ),
                       ),
+                      _sizeAndColorRow(product, context),
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -640,6 +641,47 @@ class _OrderInfoState extends State<OrderInfo>
                   ),
             ),
           ]),
+    );
+  }
+
+  Widget _sizeAndColorRow(Product product, BuildContext context) {
+    return Row(
+      children: [
+        (product.variationOne != null && product.variationOne.isNotEmpty)
+            ? Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(text: product.variationOne),
+                    product.variationOne.isNotEmpty
+                        ? TextSpan(text: ",")
+                        : TextSpan(),
+                  ],
+                ),
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      fontSize: 1.5 * SizeConfig.textSizeMultiplier,
+                      fontWeight: FontWeight.w400,
+                    ),
+              )
+            : SizedBox.shrink(),
+        (product.variationTwo != null && product.variationTwo.isNotEmpty)
+            ? Spacer()
+            : SizedBox.shrink(),
+        (product.variationTwo != null && product.variationTwo.isNotEmpty)
+            ? Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: product.variationTwo,
+                    )
+                  ],
+                ),
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      fontSize: 1.5 * SizeConfig.textSizeMultiplier,
+                      fontWeight: FontWeight.w400,
+                    ),
+              )
+            : SizedBox.shrink(),
+      ],
     );
   }
 

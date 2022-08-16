@@ -13,37 +13,34 @@ import 'package:flutter/material.dart';
 import 'cart.dart';
 
 class SelectDeliveryAddress extends StatefulWidget {
-
   @override
   _SelectDeliveryAddressState createState() => _SelectDeliveryAddressState();
 }
 
-class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> with ChangeNotifier {
-
+class _SelectDeliveryAddressState extends State<SelectDeliveryAddress>
+    with ChangeNotifier {
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: _onBackPress,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Builder(
           builder: (BuildContext context) {
-
             return SafeArea(
               child: Column(
                 children: <Widget>[
-
-                  MyAppBar(AppLocalization.of(context).getTranslatedValue("select_delivery_address"),
+                  MyAppBar(
+                    AppLocalization.of(context)
+                        .getTranslatedValue("select_delivery_address"),
                     onBackPress: () {
-
                       FocusManager.instance.primaryFocus?.unfocus();
                       _onBackPress();
                     },
                   ),
-
                   Expanded(
-                    child: NotificationListener<OverscrollIndicatorNotification>(
+                    child:
+                        NotificationListener<OverscrollIndicatorNotification>(
                       onNotification: (overScroll) {
                         overScroll.disallowGlow();
                         return;
@@ -51,27 +48,24 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> with Chan
                       child: ValueListenableBuilder(
                         valueListenable: currentUser,
                         builder: (BuildContext context, User user, _) {
-
                           return ListView.separated(
                             itemCount: user.addresses.list.length,
                             padding: EdgeInsets.only(
                                 top: 1.25 * SizeConfig.heightSizeMultiplier,
                                 left: 2.9 * SizeConfig.widthSizeMultiplier,
-                                right: 2.9 * SizeConfig.widthSizeMultiplier
-                            ),
+                                right: 2.9 * SizeConfig.widthSizeMultiplier),
                             separatorBuilder: (context, index) {
-
-                              return SizedBox(height: 2 * SizeConfig.heightSizeMultiplier);
+                              return SizedBox(
+                                  height: 2 * SizeConfig.heightSizeMultiplier);
                             },
                             itemBuilder: (context, index) {
-
                               return GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-
                                   _onSelected(user.addresses.list[index]);
                                 },
-                                child: DeliveryAddressWidget(user.addresses.list[index], true),
+                                child: DeliveryAddressWidget(
+                                    user.addresses.list[index], true),
                               );
                             },
                           );
@@ -88,25 +82,19 @@ class _SelectDeliveryAddressState extends State<SelectDeliveryAddress> with Chan
     );
   }
 
-
   Future<bool> _onBackPress() {
-
     Navigator.pop(context);
     return Future(() => false);
   }
 
-
   void _onSelected(Address address) {
-
     order.value.address = address;
 
-    if(address.district.toLowerCase() == "dhaka" || address.district.toLowerCase() == "ঢাকা") {
-
+    if (address.district.toLowerCase() == "dhaka" ||
+        address.district.toLowerCase() == "ঢাকা") {
       order.value.deliveryFee = info.value.deliveryChargeOutsideDhaka ?? 90;
       order.value.deliveryType = Constants.INSIDE_DHAKA;
-    }
-    else {
-
+    } else {
       order.value.deliveryFee = info.value.deliveryChargeOutsideDhaka ?? 150;
       order.value.deliveryType = Constants.OUTSIDE_DHAKA;
     }

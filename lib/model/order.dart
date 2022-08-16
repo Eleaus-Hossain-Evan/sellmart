@@ -244,4 +244,7 @@ class Orders {
       });
     }
   }
+
+  @override
+  String toString() => 'Orders(list: ${list.map((e) => e.toString())} )';
 }
