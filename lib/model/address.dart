@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class Address {
+import 'package:equatable/equatable.dart';
+
+class Address extends Equatable {
   String id;
   String name;
   String phone;
@@ -18,6 +20,8 @@ class Address {
       this.district,
       this.division,
       this.upazila});
+
+  factory Address.init() => Address();
 
   Address.fromJson(Map<String, dynamic> json) {
     try {
@@ -61,7 +65,7 @@ class Address {
     };
   }
 
-  toAddUpdate() {
+  Map<String, dynamic> toAddUpdate() {
     return {
       "name": name == null ? "" : name,
       "phone": phone == null ? "" : phone,
@@ -75,6 +79,19 @@ class Address {
   @override
   String toString() {
     return 'Address(id: $id, name: $name, phone: $phone, details: $details, district: $district, division: $division, upazila: $upazila)';
+  }
+
+  @override
+  List<Object> get props {
+    return [
+      id,
+      name,
+      phone,
+      details,
+      district,
+      division,
+      upazila,
+    ];
   }
 }
 

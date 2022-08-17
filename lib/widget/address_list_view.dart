@@ -26,7 +26,8 @@ class AddressListView extends StatefulWidget {
 }
 
 class _AddressListViewState extends State<AddressListView> with ChangeNotifier {
-  ValueNotifier<int> addressIndex = ValueNotifier(1);
+  ValueNotifier<Address> _address =
+      ValueNotifier(currentUser.value.addresses.list[1]);
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +66,8 @@ class _AddressListViewState extends State<AddressListView> with ChangeNotifier {
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  addressIndex.value = index;
-                                  _onSelected(
-                                      user.addresses.list[addressIndex.value]);
+                                  _address.value = user.addresses.list[index];
+                                  _onSelected(_address.value);
                                 });
                                 // print(user.addresses.list[index].division);
                                 // print("order=> ${order.address.name}");
@@ -76,7 +76,7 @@ class _AddressListViewState extends State<AddressListView> with ChangeNotifier {
                               },
                               child: DeliveryAddressWidget(
                                 user.addresses.list[index],
-                                addressIndex.value == index,
+                                _address.value == user.addresses.list[index],
                                 onEdit: (Address address) {
                                   widget.onEdit(address);
                                 },

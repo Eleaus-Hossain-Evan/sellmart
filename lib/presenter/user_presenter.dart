@@ -753,6 +753,7 @@ class UserPresenter with ChangeNotifier {
                 if (jsonData['success']) {
                   _setUser(jsonData, currentUser.value.token);
                   _profileContract.onAddressUpdated(context);
+                  Navigator.pop(context);
                 }
               } else {
                 _profileContract.onFailed(
@@ -945,6 +946,7 @@ class UserPresenter with ChangeNotifier {
     currentUser.notifyListeners();
 
     _sharedPreference.setCurrentUser(currentUser.value);
+    notifyListeners();
   }
 
   static bool isSuccessful(int code) {

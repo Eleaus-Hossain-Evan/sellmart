@@ -81,7 +81,7 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
       children: <Widget>[
         ValueListenableBuilder(
           valueListenable: order,
-          builder: (BuildContext context, Order order, _) {
+          builder: (BuildContext context, Order orderData, _) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -324,6 +324,7 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
     currentUser.notifyListeners();
     order.notifyListeners();
     // Navigator.pop(context);
+    notifyListeners();
   }
 
   @override

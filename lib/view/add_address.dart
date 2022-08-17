@@ -1,3 +1,4 @@
+import 'package:app/view/cart.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../widget/my_button.dart';
 
@@ -524,6 +525,7 @@ class _AddAddressState extends State<AddAddress>
                                     .getTranslatedValue("save_address"),
                                 onPressed: () {
                                   FocusScope.of(context).unfocus();
+                                  order.value.address = Address.init();
                                   _validate(context);
                                 },
                               ),
@@ -652,6 +654,7 @@ class _AddAddressState extends State<AddAddress>
   void onAddressUpdated(BuildContext context) {
     MyFlushBar.show(context,
         AppLocalization.of(context).getTranslatedValue("address_updated"));
+    Navigator.pop(context);
   }
 
   void _showToast(String message, Toast length) {

@@ -35,34 +35,6 @@ import 'bottom_nav.dart';
 import 'package:sslcommerz_flutter/model/SSLCTransactionInfoModel.dart';
 import 'package:logger/logger.dart';
 
-// var logger = Logger(
-//   printer: PrettyPrinter(),
-// );
-
-// var loggerNoStack = Logger(
-//   printer: PrettyPrinter(methodCount: 0),
-// );
-
-// void main() {
-//   print(
-//       'Run with either `dart example/main.dart` or `dart --enable-asserts example/main.dart`.');
-//   demo();
-// }
-
-// void demo() {
-//   logger.d('Log message with 2 methods');
-
-//   loggerNoStack.i('Info message');
-
-//   loggerNoStack.w('Just a warning!');
-
-//   logger.e('Error! Something bad happened', 'Test Error');
-
-//   loggerNoStack.v({'key': 5, 'value': 'something'});
-
-//   Logger(printer: SimplePrinter(colors: true)).v('boom');
-// }
-
 ValueNotifier<Order> order = ValueNotifier(Order());
 
 class Cart extends StatefulWidget {
@@ -789,8 +761,20 @@ class _CartState extends State<Cart>
         sslCharge: 0.0,
         advancePayment: 0.0,
         address: currentUser.value.addresses.list[1],
-        deliveryType: type,
-        deliveryFee: fee,
+        deliveryType: (currentUser.value.addresses.list[1].district
+                        .toLowerCase() ==
+                    "dhaka" ||
+                currentUser.value.addresses.list[1].district.toLowerCase() ==
+                    "ঢাকা")
+            ? Constants.INSIDE_DHAKA
+            : Constants.OUTSIDE_DHAKA,
+        deliveryFee: (currentUser.value.addresses.list[1].district
+                        .toLowerCase() ==
+                    "dhaka" ||
+                currentUser.value.addresses.list[1].district.toLowerCase() ==
+                    "ঢাকা")
+            ? info.value.deliveryChargeInsideDhaka ?? 90
+            : info.value.deliveryChargeOutsideDhaka ?? 150,
         paymentOption: PaymentOption.init());
   }
 }
