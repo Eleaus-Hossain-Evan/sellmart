@@ -1,4 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
+
 import '../utils/api_routes.dart';
 import 'address.dart';
 import 'coupon.dart';
@@ -43,41 +47,43 @@ class Order {
   int moneyWithdrawalState;
   int returnRequestState;
 
-  Order(
-      {this.id,
-      this.userID,
-      this.name,
-      this.phone,
-      this.alternativePhone,
-      this.address,
-      this.deliveryFee,
-      this.paymentOption,
-      this.coupon,
-      this.deliveryType,
-      this.paymentType,
-      this.vat,
-      this.currentState,
-      this.isOnline,
-      this.paymentStatus,
-      this.sellerConfirmation,
-      this.status,
-      this.cancelOrder,
-      this.refundOrder,
-      this.products,
-      this.totalBill,
-      this.orderID,
-      this.invoice,
-      this.createdAt,
-      this.updatedAt,
-      this.justOrdered,
-      this.promoType,
-      this.promoAmount,
-      this.promoCode,
-      this.sslCharge,
-      this.states,
-      this.advancePayment,
-      this.advancePaymentWithOutSSLCharge,
-      this.moneyWithdrawalState});
+  Order({
+    this.id,
+    this.userID,
+    this.name,
+    this.phone,
+    this.alternativePhone,
+    this.address,
+    this.deliveryFee,
+    this.paymentOption,
+    this.coupon,
+    this.deliveryType,
+    this.paymentType,
+    this.vat,
+    this.sslCharge,
+    this.advancePayment,
+    this.advancePaymentWithOutSSLCharge,
+    this.currentState,
+    this.isOnline,
+    this.paymentStatus,
+    this.sellerConfirmation,
+    this.status,
+    this.cancelOrder,
+    this.refundOrder,
+    this.products,
+    this.totalBill,
+    this.orderID,
+    this.invoice,
+    this.createdAt,
+    this.updatedAt,
+    this.justOrdered,
+    this.promoCode,
+    this.promoType,
+    this.promoAmount,
+    this.states,
+    this.moneyWithdrawalState,
+    this.returnRequestState,
+  });
 
   Order.fromJson(Map<String, dynamic> json) {
     try {
@@ -227,6 +233,46 @@ class Order {
   @override
   String toString() {
     return 'Order(id: $id, userID: $userID, name: $name, phone: $phone, alternativePhone: $alternativePhone, address: $address, deliveryFee: $deliveryFee, paymentOption: $paymentOption, coupon: $coupon, deliveryType: $deliveryType, paymentType: $paymentType, vat: $vat, sslCharge: $sslCharge, advancePayment: $advancePayment, advancePaymentWithOutSSLCharge: $advancePaymentWithOutSSLCharge, currentState: $currentState, isOnline: $isOnline, paymentStatus: $paymentStatus, sellerConfirmation: $sellerConfirmation, status: $status, cancelOrder: $cancelOrder, refundOrder: $refundOrder, products: $products, totalBill: $totalBill, orderID: $orderID, invoice: $invoice, createdAt: $createdAt, updatedAt: $updatedAt, justOrdered: $justOrdered, promoCode: $promoCode, promoType: $promoType, promoAmount: $promoAmount, states: $states, moneyWithdrawalState: $moneyWithdrawalState, returnRequestState: $returnRequestState)';
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'userID': userID,
+      'name': name,
+      'phone': phone,
+      'alternativePhone': alternativePhone,
+      'address': address,
+      'deliveryFee': deliveryFee,
+      'paymentOption': paymentOption,
+      'coupon': coupon,
+      'deliveryType': deliveryType,
+      'paymentType': paymentType,
+      'vat': vat,
+      'sslCharge': sslCharge,
+      'advancePayment': advancePayment,
+      'advancePaymentWithOutSSLCharge': advancePaymentWithOutSSLCharge,
+      'currentState': currentState,
+      'isOnline': isOnline,
+      'paymentStatus': paymentStatus,
+      'sellerConfirmation': sellerConfirmation,
+      'status': status,
+      'cancelOrder': cancelOrder,
+      'refundOrder': refundOrder,
+      'products': products,
+      'totalBill': totalBill,
+      'orderID': orderID,
+      'invoice': invoice,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'justOrdered': justOrdered,
+      'promoCode': promoCode,
+      'promoType': promoType,
+      'promoAmount': promoAmount,
+      'states': states,
+      'moneyWithdrawalState': moneyWithdrawalState,
+      'returnRequestState': returnRequestState,
+    };
   }
 }
 

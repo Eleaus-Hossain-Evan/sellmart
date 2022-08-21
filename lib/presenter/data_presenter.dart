@@ -1517,6 +1517,7 @@ class DataPresenter with ChangeNotifier {
                   message: response.body);
 
               var jsonData = json.decode(response.body);
+              Logger().v(jsonData);
 
               _myOverlayLoader.dismissDialog(context);
 
@@ -1528,8 +1529,10 @@ class DataPresenter with ChangeNotifier {
               } else {
                 _orderContract.onFailedCancelOrder(
                     context,
-                    AppLocalization.of(context)
-                        .getTranslatedValue("failed_to_cancel_order"));
+                    jsonData['message'] != null
+                        ? jsonData['message']
+                        : AppLocalization.of(context)
+                            .getTranslatedValue("failed_to_cancel_order"));
               }
             }).timeout(Duration(seconds: Constants.timeoutSeconds),
                     onTimeout: () {

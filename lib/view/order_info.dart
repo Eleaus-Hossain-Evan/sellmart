@@ -1,3 +1,5 @@
+import 'package:logger/logger.dart';
+
 import '../widget/order_issues.dart';
 import 'package:sslcommerz_flutter/model/SSLCTransactionInfoModel.dart';
 
@@ -50,6 +52,7 @@ class _OrderInfoState extends State<OrderInfo>
     _orderContract = this;
 
     _presenter = DataPresenter(_connectivity, orderContract: _orderContract);
+    Logger().v(widget.order.toString());
 
     super.initState();
   }

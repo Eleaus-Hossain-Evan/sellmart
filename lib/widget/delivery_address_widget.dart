@@ -27,7 +27,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
       child: Card(
         elevation: !widget.isSelection ? widget.elevation : 4,
         // elevation: widget.elevation ,
-        color: !widget.isSelection ? Colors.white : Colors.grey[100],
+        color: !widget.isSelection
+            ? Colors.white
+            : Theme.of(context).colorScheme.secondary,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -50,7 +52,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                             style:
                                 Theme.of(context).textTheme.subtitle1.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(.7),
+                                      color: !widget.isSelection
+                                          ? Colors.black
+                                          : Colors.white,
                                     ),
                             textAlign: TextAlign.start,
                             maxLines: 1,
@@ -61,7 +65,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                             style:
                                 Theme.of(context).textTheme.bodyText2.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(.55),
+                                      color: !widget.isSelection
+                                          ? Colors.black
+                                          : Colors.white,
                                     ),
                             textAlign: TextAlign.start,
                             maxLines: 2,
@@ -75,7 +81,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                             style:
                                 Theme.of(context).textTheme.bodyText2.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(.55),
+                                      color: !widget.isSelection
+                                          ? Colors.black
+                                          : Colors.white,
                                     ),
                             textAlign: TextAlign.start,
                             maxLines: 1,
@@ -95,7 +103,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                             style:
                                 Theme.of(context).textTheme.bodyText2.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(.55),
+                                      color: !widget.isSelection
+                                          ? Colors.black.withOpacity(.55)
+                                          : Colors.white,
                                     ),
                             textAlign: TextAlign.start,
                             maxLines: 2,
@@ -106,7 +116,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                             style:
                                 Theme.of(context).textTheme.bodyText2.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(.55),
+                                      color: !widget.isSelection
+                                          ? Colors.black.withOpacity(.55)
+                                          : Colors.white,
                                     ),
                             textAlign: TextAlign.start,
                             maxLines: 2,
@@ -129,7 +141,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                             style:
                                 Theme.of(context).textTheme.bodyText2.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(.55),
+                                      color: !widget.isSelection
+                                          ? Colors.black.withOpacity(.55)
+                                          : Colors.white,
                                     ),
                             textAlign: TextAlign.start,
                             maxLines: 1,
@@ -152,7 +166,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                             style:
                                 Theme.of(context).textTheme.bodyText2.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(.55),
+                                      color: !widget.isSelection
+                                          ? Colors.black.withOpacity(.55)
+                                          : Colors.white,
                                     ),
                             textAlign: TextAlign.start,
                             maxLines: 1,
@@ -180,7 +196,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                             style:
                                 Theme.of(context).textTheme.bodyText2.copyWith(
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(.55),
+                                      color: !widget.isSelection
+                                          ? Colors.black.withOpacity(.55)
+                                          : Colors.white,
                                     ),
                             textAlign: TextAlign.start,
                             maxLines: 1,
@@ -221,7 +239,9 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
                       },
                       icon: Icon(
                         Icons.edit,
-                        color: Theme.of(context).accentColor,
+                        color: !widget.isSelection
+                            ? Theme.of(context).accentColor
+                            : Colors.white,
                       ),
 
                       // Padding(
