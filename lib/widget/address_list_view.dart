@@ -26,8 +26,11 @@ class AddressListView extends StatefulWidget {
 }
 
 class _AddressListViewState extends State<AddressListView> with ChangeNotifier {
-  ValueNotifier<Address> _address =
-      ValueNotifier(currentUser.value.addresses.list[1]);
+  ValueNotifier<Address> _address = ValueNotifier(
+      currentUser.value.addresses.list.isNotEmpty &&
+              currentUser.value.addresses.list.length > 1
+          ? currentUser.value.addresses.list[1]
+          : Address.init());
 
   @override
   Widget build(BuildContext context) {

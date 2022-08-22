@@ -1041,14 +1041,16 @@ class DataPresenter with ChangeNotifier {
                 } else {
                   _orderContract.onFailedToPlaceOrder(
                       context,
-                      AppLocalization.of(context)
-                          .getTranslatedValue("failed_to_place_order"));
+                      jsonData['validation'] ??
+                          AppLocalization.of(context)
+                              .getTranslatedValue("failed_to_place_order"));
                 }
               } else {
                 _orderContract.onFailedToPlaceOrder(
                     context,
-                    AppLocalization.of(context)
-                        .getTranslatedValue("failed_to_place_order"));
+                    jsonData['message'] ??
+                        AppLocalization.of(context)
+                            .getTranslatedValue("failed_to_place_order"));
               }
             }).timeout(Duration(seconds: Constants.timeoutSeconds),
                     onTimeout: () {
@@ -1354,6 +1356,8 @@ class DataPresenter with ChangeNotifier {
                   trace: CustomTrace(StackTrace.current),
                   tag: "My Orders",
                   message: response.body);
+              Logger()
+                  .v(Uri.encodeFull(APIRoute.MY_ORDERS + currentUser.value.id));
 
               var jsonData = json.decode(response.body);
 
@@ -1362,8 +1366,8 @@ class DataPresenter with ChangeNotifier {
               if (response.statusCode == 200 || response.statusCode == 201) {
                 if (jsonData['success']) {
                   Orders orders = Orders.fromJson(jsonData['data']);
-                  Logger().d(orders.toString());
-                  Logger().d(orders.list[0].products[0].toString());
+                  // Logger().d(orders.toString());
+                  // Logger().d(orders.list[0].products[0].toString());
                   _orderContract.showAllOrders(orders.list);
                 } else {
                   _orderContract.failedToGetAllOrders(context);

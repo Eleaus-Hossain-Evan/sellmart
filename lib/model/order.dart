@@ -18,6 +18,8 @@ class Order {
   String alternativePhone;
   Address address;
   double deliveryFee;
+  double discountAmount;
+  double advancePaymentBKash;
   PaymentOption paymentOption;
   Coupon coupon;
   int deliveryType;
@@ -83,6 +85,8 @@ class Order {
     this.states,
     this.moneyWithdrawalState,
     this.returnRequestState,
+    this.discountAmount,
+    this.advancePaymentBKash,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -106,6 +110,15 @@ class Order {
 
     try {
       deliveryFee = double.parse(json['deliveryCharge'].toString());
+    } catch (error) {}
+
+    try {
+      discountAmount = double.parse(json['discountAmount'].toString());
+    } catch (error) {}
+
+    try {
+      advancePaymentBKash =
+          double.parse(json['advancePaymentBKash'].toString());
     } catch (error) {}
 
     try {
@@ -232,7 +245,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, userID: $userID, name: $name, phone: $phone, alternativePhone: $alternativePhone, address: $address, deliveryFee: $deliveryFee, paymentOption: $paymentOption, coupon: $coupon, deliveryType: $deliveryType, paymentType: $paymentType, vat: $vat, sslCharge: $sslCharge, advancePayment: $advancePayment, advancePaymentWithOutSSLCharge: $advancePaymentWithOutSSLCharge, currentState: $currentState, isOnline: $isOnline, paymentStatus: $paymentStatus, sellerConfirmation: $sellerConfirmation, status: $status, cancelOrder: $cancelOrder, refundOrder: $refundOrder, products: $products, totalBill: $totalBill, orderID: $orderID, invoice: $invoice, createdAt: $createdAt, updatedAt: $updatedAt, justOrdered: $justOrdered, promoCode: $promoCode, promoType: $promoType, promoAmount: $promoAmount, states: $states, moneyWithdrawalState: $moneyWithdrawalState, returnRequestState: $returnRequestState)';
+    return 'Order(id: $id, userID: $userID, name: $name, phone: $phone, alternativePhone: $alternativePhone, address: $address, deliveryFee: $deliveryFee, discountAmount: $discountAmount, partialPaidAmount: $advancePaymentBKash, paymentOption: $paymentOption, coupon: $coupon, deliveryType: $deliveryType, paymentType: $paymentType, vat: $vat, sslCharge: $sslCharge, advancePayment: $advancePayment, advancePaymentWithOutSSLCharge: $advancePaymentWithOutSSLCharge, currentState: $currentState, isOnline: $isOnline, paymentStatus: $paymentStatus, sellerConfirmation: $sellerConfirmation, status: $status, cancelOrder: $cancelOrder, refundOrder: $refundOrder, products: $products, totalBill: $totalBill, orderID: $orderID, invoice: $invoice, createdAt: $createdAt, updatedAt: $updatedAt, justOrdered: $justOrdered, promoCode: $promoCode, promoType: $promoType, promoAmount: $promoAmount, states: $states, moneyWithdrawalState: $moneyWithdrawalState, returnRequestState: $returnRequestState)';
   }
 
   Map<String, dynamic> toMap() {
@@ -244,6 +257,8 @@ class Order {
       'alternativePhone': alternativePhone,
       'address': address,
       'deliveryFee': deliveryFee,
+      'discountAmount': discountAmount,
+      'partialPaidAmount': advancePaymentBKash,
       'paymentOption': paymentOption,
       'coupon': coupon,
       'deliveryType': deliveryType,

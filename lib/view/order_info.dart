@@ -271,6 +271,10 @@ class _OrderInfoState extends State<OrderInfo>
 
                               _summaryTestWidget(
                                   AppLocalization.of(context)
+                                      .getTranslatedValue("discount"),
+                                  widget.order.discountAmount.round()),
+                              _summaryTestWidget(
+                                  AppLocalization.of(context)
                                       .getTranslatedValue("coupon_discount"),
                                   _couponDiscount.round()),
 
@@ -288,6 +292,10 @@ class _OrderInfoState extends State<OrderInfo>
                                   AppLocalization.of(context)
                                       .getTranslatedValue("total"),
                                   widget.order.totalBill.round()),
+                              _summaryTestWidget(
+                                  AppLocalization.of(context)
+                                      .getTranslatedValue("advance_payment"),
+                                  widget.order.advancePaymentBKash.round()),
 
                               Visibility(
                                 visible: widget.order.paymentType ==

@@ -261,6 +261,7 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
                     },
                   ),
                 ),
+
                 SizedBox(
                   height: 2 * SizeConfig.heightSizeMultiplier,
                 ),

@@ -24,6 +24,7 @@ import 'package:app/view/home.dart';
 import '../db/db_helper.dart';
 import '../localization/app_localization.dart';
 import '../model/cart_item.dart';
+import '../model/address.dart';
 import '../route/route_manager.dart';
 import '../utils/size_config.dart';
 import '../widget/my_app_bar.dart';
@@ -522,7 +523,8 @@ class _CartState extends State<Cart>
 
   void _validate() {
     if (_items.length > 0) {
-      if (order.value.address == null) {
+      if (order.value.address == null &&
+          currentUser.value.addresses.list.length > 1) {
         _showToast(
             AppLocalization.of(context)
                 .getTranslatedValue("select_delivery_address"),
@@ -742,39 +744,31 @@ class _CartState extends State<Cart>
   }
 
   initOrder() {
-    final address = currentUser.value.addresses.list[1];
+    Address address = Address.init();
     double fee = 0;
     int type = 0;
+    if (currentUser.value.addresses.list.isNotEmpty &&
+        currentUser.value.addresses.list.length > 1) {
+      address = currentUser.value.addresses.list[1];
 
-    if (address.district.toLowerCase() == "dhaka" ||
-        address.district.toLowerCase() == "ঢাকা") {
-      fee = info.value.deliveryChargeInsideDhaka ?? 90;
-      type = Constants.INSIDE_DHAKA;
-      debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
-    } else {
-      fee = info.value.deliveryChargeOutsideDhaka ?? 150;
-      type = Constants.OUTSIDE_DHAKA;
-      debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
+      if (address.district.toLowerCase() == "dhaka" ||
+          address.district.toLowerCase() == "ঢাকা") {
+        fee = info.value.deliveryChargeInsideDhaka ?? 90;
+        type = Constants.INSIDE_DHAKA;
+        debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
+      } else {
+        fee = info.value.deliveryChargeOutsideDhaka ?? 150;
+        type = Constants.OUTSIDE_DHAKA;
+        debugPrint('order.value.deliveryType: ${order.value.deliveryType}');
+      }
     }
     order.value = Order(
         vat: 0.0,
         sslCharge: 0.0,
         advancePayment: 0.0,
-        address: currentUser.value.addresses.list[1],
-        deliveryType: (currentUser.value.addresses.list[1].district
-                        .toLowerCase() ==
-                    "dhaka" ||
-                currentUser.value.addresses.list[1].district.toLowerCase() ==
-                    "ঢাকা")
-            ? Constants.INSIDE_DHAKA
-            : Constants.OUTSIDE_DHAKA,
-        deliveryFee: (currentUser.value.addresses.list[1].district
-                        .toLowerCase() ==
-                    "dhaka" ||
-                currentUser.value.addresses.list[1].district.toLowerCase() ==
-                    "ঢাকা")
-            ? info.value.deliveryChargeInsideDhaka ?? 90
-            : info.value.deliveryChargeOutsideDhaka ?? 150,
+        address: address,
+        deliveryType: type,
+        deliveryFee: fee,
         paymentOption: PaymentOption.init());
   }
 }

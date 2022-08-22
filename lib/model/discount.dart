@@ -1,34 +1,29 @@
 class Discount {
-
   double amount;
   int type;
 
   Discount({this.amount, this.type});
 
   Discount.fromJson(Map<String, dynamic> json) {
-
     try {
-      amount = double.parse(json['amount'].toString());
-    }
-    catch(error) {}
+      if (json['amount'] != null) {
+        amount = double.parse(json['amount'].toString());
+      }
+    } catch (error) {}
 
     try {
       type = json['type'];
-    }
-    catch(error) {
-
+    } catch (error) {
       try {
         type = int.parse(json['type']);
-      }
-      catch(error) {}
+      } catch (error) {}
     }
   }
 
   toJson() {
-
     return {
-      "amount" : amount == null ? "" : amount.toString(),
-      "type" : type == null ? "" : type.toString(),
+      "amount": amount == null ? "" : amount.toString(),
+      "type": type == null ? "" : type.toString(),
     };
   }
 }
