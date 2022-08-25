@@ -59,7 +59,6 @@ class _SearchState extends State<Search>
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
           builder: (BuildContext context) {
-            Logger().i('build - - _categories: $_categories');
             return SafeArea(
               child: Column(
                 children: <Widget>[

@@ -1,4 +1,5 @@
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 import '../widget/product_details_footer.dart';
 import '../widget/product_rating_review.dart';
@@ -27,6 +28,8 @@ import '../widget/product_size_info.dart';
 import '../widget/product_sliver_app_bar.dart';
 import '../widget/similar_products.dart';
 import 'package:flutter/material.dart';
+
+Variation onSelectedVariation = Variation();
 
 class ProductDetails extends StatefulWidget {
   final String productSlug;
@@ -267,7 +270,10 @@ class _ProductDetailsState extends State<ProductDetails>
     if ((product.variationType == 0 || product.variationType == 1) &&
         product.variations.length > 0) {
       product.selectedVariation = product.variations[0];
+
       product.images = product.variations[0].images;
+
+      onSelectedVariation = product.variations[0];
 
       if (product.selectedVariation != null) {
         if (product.selectedVariation.regularPrice ==
@@ -358,6 +364,8 @@ class _ProductDetailsState extends State<ProductDetails>
 
     Logger().wtf(
         "${_product.id}-${_product.name}-${_product.slug}-${_product.youtubeVideo}");
+    Logger().v('product.selectedVariation: ${product.selectedVariation}');
+    Logger().v('onSelectedVariation: ${onSelectedVariation}');
 
     _onImagesSelected();
   }

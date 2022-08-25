@@ -1,3 +1,5 @@
+import 'package:app/view/product_details.dart';
+
 import '../utils/api_routes.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -37,9 +39,13 @@ class _ProductInfoState extends State<ProductInfo> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              widget.product != null && widget.product.currentPrice != null
-                  ? ("৳ " + widget.product.currentPrice.round().toString())
-                  : "",
+              (widget.product != null)
+                  ? ("৳ " +
+                      onSelectedVariation.discountPrice.round().toString())
+                  : widget.product != null &&
+                          widget.product.currentPrice != null
+                      ? ("৳ " + widget.product.currentPrice.round().toString())
+                      : "",
               style: Theme.of(context).textTheme.headline3.copyWith(
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context).primaryColor,

@@ -1,4 +1,5 @@
 import 'package:app/model/variation.dart';
+import 'package:app/view/product_details.dart';
 import 'package:logger/logger.dart';
 
 import '../model/product.dart';
@@ -449,15 +450,15 @@ class __VariationItemsState extends State<_VariationItems> {
         .map((element) => element.value1)
         .toSet()
         .toList();
-    Logger().i(_value1.toString());
-    Logger().i('selectedValue: ${_selectedValue1.value}');
+    // Logger().i(_value1.toString());
+    // Logger().i('selectedValue: ${_selectedValue1.value}');
 
     _value2 = widget.product.variations
         .where((element) => element.value1 == _selectedValue1.value)
         .toSet()
         .toList();
-    Logger().d('_value2: $_value2');
-    Logger().d('_value2: ${_value2.length}');
+    // Logger().d('_value2: $_value2');
+    // Logger().d('_value2: ${_value2.length}');
     return Column(
       children: <Widget>[
         SizedBox(
@@ -577,8 +578,11 @@ class __VariationItemsState extends State<_VariationItems> {
     if (variation.id != widget.product.selectedVariation.id) {
       setState(() {
         widget.product.selectedVariation = variation;
+        onSelectedVariation = variation;
       });
 
+      // onSelectedVariation.notifyListeners();
+      Logger().v('onSelectedVariation: ${onSelectedVariation}');
       for (int i = 1; i < widget.product.variations.length; i++) {
         if (widget.product.variations[i].id == variation.id) {
           if (widget.product.variations[i].stock > 0) {

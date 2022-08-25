@@ -95,7 +95,6 @@ class _OrderInfoState extends State<OrderInfo>
                               SizedBox(
                                 height: 1.5 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
@@ -137,7 +136,6 @@ class _OrderInfoState extends State<OrderInfo>
                                   ),
                                 ],
                               ),
-
                               Visibility(
                                 visible: widget.order.currentState !=
                                     Constants.CANCELLED,
@@ -145,35 +143,28 @@ class _OrderInfoState extends State<OrderInfo>
                                   height: 3.5 * SizeConfig.heightSizeMultiplier,
                                 ),
                               ),
-
                               Visibility(
                                 visible: widget.order.currentState !=
                                     Constants.CANCELLED,
                                 child: CurrentOrderStatus(
                                     widget.order.currentState),
                               ),
-
                               SizedBox(
                                 height: 3.5 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               Text(
                                 AppLocalization.of(context)
                                     .getTranslatedValue("order_timeline")
                                     .toUpperCase(),
                                 style: Theme.of(context).textTheme.subtitle1,
                               ),
-
                               SizedBox(
                                 height: 3.5 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               OrderStateHistory(widget.order.states),
-
                               SizedBox(
                                 height: 3.5 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               Text(
                                 AppLocalization.of(context)
                                     .getTranslatedValue("products"),
@@ -184,11 +175,9 @@ class _OrderInfoState extends State<OrderInfo>
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
-
                               SizedBox(
                                 height: 2.5 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               ListView.separated(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
@@ -205,11 +194,9 @@ class _OrderInfoState extends State<OrderInfo>
                                       context, widget.order.products[index]);
                                 },
                               ),
-
                               SizedBox(
                                 height: 6 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               OrderIssues(
                                 widget.order,
                                 onCancelOrder: () async {
@@ -243,7 +230,6 @@ class _OrderInfoState extends State<OrderInfo>
                                       context, widget.order.orderID);
                                 },
                               ),
-
                               Text(
                                 AppLocalization.of(context)
                                     .getTranslatedValue("order_summary"),
@@ -254,21 +240,17 @@ class _OrderInfoState extends State<OrderInfo>
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
-
                               SizedBox(
                                 height: 1.875 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               _summaryTestWidget(
                                   AppLocalization.of(context)
                                       .getTranslatedValue("product_total"),
                                   _subTotal.truncate()),
-
                               _summaryTestWidget(
                                   AppLocalization.of(context)
                                       .getTranslatedValue("total_vat"),
                                   widget.order.vat.round()),
-
                               _summaryTestWidget(
                                   AppLocalization.of(context)
                                       .getTranslatedValue("discount"),
@@ -277,17 +259,14 @@ class _OrderInfoState extends State<OrderInfo>
                                   AppLocalization.of(context)
                                       .getTranslatedValue("coupon_discount"),
                                   _couponDiscount.round()),
-
                               _summaryTestWidget(
                                   AppLocalization.of(context)
                                       .getTranslatedValue("sub_total"),
                                   (_subTotal - _couponDiscount).round()),
-
                               _summaryTestWidget(
                                   AppLocalization.of(context)
                                       .getTranslatedValue("delivery_charge"),
                                   widget.order.deliveryFee.round()),
-
                               _summaryTestWidget(
                                   AppLocalization.of(context)
                                       .getTranslatedValue("total"),
@@ -296,7 +275,6 @@ class _OrderInfoState extends State<OrderInfo>
                                   AppLocalization.of(context)
                                       .getTranslatedValue("advance_payment"),
                                   widget.order.advancePaymentBKash.round()),
-
                               Visibility(
                                 visible: widget.order.paymentType ==
                                         Constants.CASH_ON_DELIVERY &&
@@ -320,7 +298,6 @@ class _OrderInfoState extends State<OrderInfo>
                                   ],
                                 ),
                               ),
-
                               Visibility(
                                 visible: widget.order.paymentType ==
                                         Constants.CASH_ON_DELIVERY &&
@@ -350,7 +327,6 @@ class _OrderInfoState extends State<OrderInfo>
                                   ],
                                 ),
                               ),
-
                               Visibility(
                                 visible: widget.order.paymentType ==
                                         Constants.ONLINE_PAYMENT &&
@@ -368,11 +344,9 @@ class _OrderInfoState extends State<OrderInfo>
                                   ],
                                 ),
                               ),
-
                               SizedBox(
                                 height: 5 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               Text(
                                 AppLocalization.of(context)
                                     .getTranslatedValue("billing_address"),
@@ -383,33 +357,23 @@ class _OrderInfoState extends State<OrderInfo>
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
-
                               SizedBox(
                                 height: 2.5 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               _textWidget(
                                   AppLocalization.of(context)
                                       .getTranslatedValue("name"),
                                   widget.order.name),
-
                               SizedBox(
                                 height: 1 * SizeConfig.heightSizeMultiplier,
                               ),
-
                               _textWidget(
                                   AppLocalization.of(context)
                                       .getTranslatedValue("phone"),
                                   widget.order.phone),
-
                               SizedBox(
                                 height: 1 * SizeConfig.heightSizeMultiplier,
                               ),
-
-                              //_textWidget(AppLocalization.of(context).getTranslatedValue("alt_mobile"), widget.order.alternativePhone),
-
-                              //SizedBox(height: 1 * SizeConfig.heightSizeMultiplier,),
-
                               _textWidget(
                                   AppLocalization.of(context)
                                       .getTranslatedValue("address"),
@@ -420,7 +384,6 @@ class _OrderInfoState extends State<OrderInfo>
                                       widget.order.address.district +
                                       ", " +
                                       widget.order.address.division),
-
                               SizedBox(
                                 height: 3.5 * SizeConfig.heightSizeMultiplier,
                               ),
@@ -547,7 +510,6 @@ class _OrderInfoState extends State<OrderInfo>
           ),
         ),
         Visibility(
-          //visible: false,
           visible: widget.order.currentState == Constants.DELIVERED,
           child: Column(
             mainAxisSize: MainAxisSize.min,
