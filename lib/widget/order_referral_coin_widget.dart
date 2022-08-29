@@ -89,7 +89,7 @@ class _OrderReferralCoinWidgetState extends State<OrderReferralCoinWidget>
                   width: 65 * SizeConfig.widthSizeMultiplier,
                   child: TextField(
                     controller: _coinController,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.done,
                     style: Theme.of(context).textTheme.bodyText2,
                     onSubmitted: (value) {

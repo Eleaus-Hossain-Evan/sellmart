@@ -1,5 +1,4 @@
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 
 import '../widget/product_details_footer.dart';
 import '../widget/product_rating_review.dart';
@@ -23,13 +22,14 @@ import '../presenter/user_presenter.dart';
 import '../widget/error_widget.dart';
 import '../widget/product_description.dart';
 import '../widget/product_info.dart';
-import '../widget/product_variation_info.dart';
 import '../widget/product_size_info.dart';
 import '../widget/product_sliver_app_bar.dart';
 import '../widget/similar_products.dart';
 import 'package:flutter/material.dart';
 
-Variation onSelectedVariation = Variation();
+import 'dart:developer';
+
+ValueNotifier<Variation> onSelectedVariation = ValueNotifier(Variation());
 
 class ProductDetails extends StatefulWidget {
   final String productSlug;
@@ -235,25 +235,28 @@ class _ProductDetailsState extends State<ProductDetails>
 
   @override
   void onSuccess(Product product, List<Product> similarProducts) {
-    similarProducts.forEach((product) {
-      if (product.variationType == 0 || product.variationType == 1) {
-        if (product.variations.length > 0) {
-          product.price = product.variations[0].regularPrice;
-          product.currentPrice = product.variations[0].discountPrice;
-        } else {
-          product.price = product.price;
-          product.currentPrice = product.buyingPrice;
-        }
-      } else {
-        if (product.sizeInfos.length > 0) {
-          product.price = product.sizeInfos[0].regularPrice;
-          product.currentPrice = product.sizeInfos[0].discountPrice;
-        } else {
-          product.price = product.price;
-          product.currentPrice = product.buyingPrice;
-        }
-      }
-    });
+    log(
+      product.toString(),
+    );
+    // similarProducts.forEach((product) {
+    //   if (product.variationType == 0 || product.variationType == 1) {
+    //     if (product.variations.length > 0) {
+    //       product.price = product.variations[0].regularPrice;
+    //       product.currentPrice = product.variations[0].discountPrice;
+    //     } else {
+    //       product.price = product.price;
+    //       product.currentPrice = product.buyingPrice;
+    //     }
+    //   } else {
+    //     if (product.sizeInfos.length > 0) {
+    //       product.price = product.sizeInfos[0].regularPrice;
+    //       product.currentPrice = product.sizeInfos[0].discountPrice;
+    //     } else {
+    //       product.price = product.price;
+    //       product.currentPrice = product.buyingPrice;
+    //     }
+    //   }
+    // });
 
     product.quantity = 1;
     product.isWishListed = false;
@@ -273,9 +276,14 @@ class _ProductDetailsState extends State<ProductDetails>
 
       product.images = product.variations[0].images;
 
-      onSelectedVariation = product.variations[0];
-
+      for (var i = 0; i < product.variations.length; i++) {
+        if (product.variations[i].value1.isNotEmpty) {
+          onSelectedVariation.value = product.variations[i];
+          break;
+        }
+      }
       if (product.selectedVariation != null) {
+        product.selectedVariation = onSelectedVariation.value;
         if (product.selectedVariation.regularPrice ==
             product.selectedVariation.discountPrice) {
           setState(() {
@@ -295,10 +303,9 @@ class _ProductDetailsState extends State<ProductDetails>
                     "%";
           }
 
-          setState(() {});
-
           product.price = product.selectedVariation.regularPrice;
-          product.currentPrice = product.selectedVariation.discountPrice;
+          product.currentPrice = onSelectedVariation.value.discountPrice;
+          setState(() {});
         }
       }
 
@@ -345,6 +352,7 @@ class _ProductDetailsState extends State<ProductDetails>
           _strDiscount = "";
         });
       } else {
+        product.currentPrice = product.sizeInfos[0].discountPrice;
         if (product.sizeInfos[0].discountType == PriceCalculator.AMOUNT) {
           _strDiscount =
               "৳" + product.sizeInfos[0].discountAmount.round().toString();
@@ -366,6 +374,8 @@ class _ProductDetailsState extends State<ProductDetails>
         "${_product.id}-${_product.name}-${_product.slug}-${_product.youtubeVideo}");
     Logger().v('product.selectedVariation: ${product.selectedVariation}');
     Logger().v('onSelectedVariation: ${onSelectedVariation}');
+    Logger().v('sizeinfo: ${product.sizeInfos}');
+    Logger().v('currentPrice: ${product.currentPrice}');
 
     _onImagesSelected();
   }

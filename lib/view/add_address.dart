@@ -778,7 +778,7 @@ class _AddAddressState extends State<AddAddress>
                     // });
                   } else {
                     _userPresenter.addNewAddress(context, address);
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
                   }
                 }
               }

@@ -284,13 +284,11 @@ class UserPresenter with ChangeNotifier {
 
               Logger().i("message: $jsonData");
 
-              if (true) {
-                if (jsonData['success'] == true) {
-                  _setUser(jsonData, jsonData['token'].toString());
-                  _loginContract.onLoginSuccess();
-                  Logger()
-                      .i("currentUser.value: " + currentUser.value.toString());
-                }
+              if (jsonData['success'] == true) {
+                _setUser(jsonData, jsonData['token'].toString());
+                _loginContract.onLoginSuccess();
+                Logger()
+                    .i("currentUser.value: " + currentUser.value.toString());
               } else {
                 if (jsonData['success'] == false) {
                   if (jsonData['message'] == Constants.INCORRECT_PHONE) {
@@ -748,6 +746,7 @@ class UserPresenter with ChangeNotifier {
               var jsonData = json.decode(response.body);
 
               _myOverlayLoader.dismissDialog(context);
+              // Navigator.pop(context);
 
               if (response.statusCode == 200 || response.statusCode == 201) {
                 if (jsonData['success']) {

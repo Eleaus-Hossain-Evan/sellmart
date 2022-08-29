@@ -1,3 +1,4 @@
+import 'package:app/model/variation.dart';
 import 'package:app/view/product_details.dart';
 
 import '../utils/api_routes.dart';
@@ -38,19 +39,278 @@ class _ProductInfoState extends State<ProductInfo> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              (widget.product != null)
-                  ? ("৳ " +
-                      onSelectedVariation.discountPrice.round().toString())
-                  : widget.product != null &&
-                          widget.product.currentPrice != null
-                      ? ("৳ " + widget.product.currentPrice.round().toString())
-                      : "",
-              style: Theme.of(context).textTheme.headline3.copyWith(
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColor,
+            widget.product.variationType == 2
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.product != null &&
+                                widget.product.currentPrice != null
+                            ? ("৳ " +
+                                widget.product.currentPrice.round().toString())
+                            : "",
+                        style: Theme.of(context).textTheme.headline3.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                      ),
+                      SizedBox(width: 10),
+                      Visibility(
+                        visible: widget.product != null &&
+                            (widget.product.currentPrice <
+                                widget.product.sizeInfos[0].regularPrice),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: 1.5 * SizeConfig.heightSizeMultiplier,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: widget.product != null &&
+                                    widget.product.currentPrice != null &&
+                                    widget.product.price != null &&
+                                    (widget.product.currentPrice !=
+                                        widget.product.price),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    right:
+                                        2.56 * SizeConfig.widthSizeMultiplier,
+                                  ),
+                                  child: Text(
+                                    widget.product != null &&
+                                            widget.product.price != null
+                                        ? ("৳ " +
+                                            widget.product.sizeInfos[0]
+                                                .regularPrice
+                                                .round()
+                                                .toString())
+                                        : "",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black.withOpacity(.35),
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: widget.strDiscount.isNotEmpty,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    right:
+                                        2.56 * SizeConfig.widthSizeMultiplier,
+                                  ),
+                                  child: Text(
+                                    "-" + widget.strDiscount,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2
+                                        .copyWith(
+                                          fontSize: 1.75 *
+                                              SizeConfig.textSizeMultiplier,
+                                          fontWeight: FontWeight.w500,
+                                          color: Theme.of(context).errorColor,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: widget.product != null &&
+                                    widget.product.vat != null &&
+                                    widget.product.vat != 0.0,
+                                child: Container(
+                                  color: Theme.of(context).primaryColor,
+                                  padding: EdgeInsets.only(
+                                    top: .5 * SizeConfig.heightSizeMultiplier,
+                                    bottom:
+                                        .5 * SizeConfig.heightSizeMultiplier,
+                                    left: 1.79 * SizeConfig.widthSizeMultiplier,
+                                    right:
+                                        1.79 * SizeConfig.widthSizeMultiplier,
+                                  ),
+                                  margin: EdgeInsets.only(
+                                      right: 5.12 *
+                                          SizeConfig.widthSizeMultiplier),
+                                  child: Text(
+                                    widget.product != null &&
+                                            widget.product.vat != null &&
+                                            widget.product.vat != 0.0
+                                        ? (AppLocalization.of(context)
+                                                .getTranslatedValue("vat") +
+                                            " " +
+                                            widget.product.vat
+                                                .round()
+                                                .toString() +
+                                            "%")
+                                        : "",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2
+                                        .copyWith(
+                                          color: Colors.white,
+                                          fontSize: 1.75 *
+                                              SizeConfig.textSizeMultiplier,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : ValueListenableBuilder<Variation>(
+                    valueListenable: onSelectedVariation,
+                    builder: (context, variation, child) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            (widget.product != null)
+                                ? ("৳ " +
+                                    variation.discountPrice.round().toString())
+                                : widget.product != null &&
+                                        widget.product.currentPrice != null
+                                    ? ("৳ " +
+                                        widget.product.currentPrice
+                                            .round()
+                                            .toString())
+                                    : "",
+                            style:
+                                Theme.of(context).textTheme.headline3.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                          ),
+                          SizedBox(width: 10),
+                          Visibility(
+                            visible: widget.product != null &&
+                                (onSelectedVariation.value.discountPrice <
+                                    onSelectedVariation.value.regularPrice),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                top: 1.5 * SizeConfig.heightSizeMultiplier,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Visibility(
+                                    visible: widget.product != null &&
+                                        widget.product.currentPrice != null &&
+                                        widget.product.price != null &&
+                                        (widget.product.currentPrice !=
+                                            widget.product.price),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        right: 2.56 *
+                                            SizeConfig.widthSizeMultiplier,
+                                      ),
+                                      child: Text(
+                                        widget.product != null &&
+                                                widget.product.price != null
+                                            ? ("৳ " +
+                                                onSelectedVariation
+                                                    .value.regularPrice
+                                                    .round()
+                                                    .toString())
+                                            : "",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2
+                                            .copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              color:
+                                                  Colors.black.withOpacity(.35),
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: widget.strDiscount.isNotEmpty,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        right: 2.56 *
+                                            SizeConfig.widthSizeMultiplier,
+                                      ),
+                                      child: Text(
+                                        "-" + widget.strDiscount,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2
+                                            .copyWith(
+                                              fontSize: 1.75 *
+                                                  SizeConfig.textSizeMultiplier,
+                                              fontWeight: FontWeight.w500,
+                                              color:
+                                                  Theme.of(context).errorColor,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: widget.product != null &&
+                                        widget.product.vat != null &&
+                                        widget.product.vat != 0.0,
+                                    child: Container(
+                                      color: Theme.of(context).primaryColor,
+                                      padding: EdgeInsets.only(
+                                        top: .5 *
+                                            SizeConfig.heightSizeMultiplier,
+                                        bottom: .5 *
+                                            SizeConfig.heightSizeMultiplier,
+                                        left: 1.79 *
+                                            SizeConfig.widthSizeMultiplier,
+                                        right: 1.79 *
+                                            SizeConfig.widthSizeMultiplier,
+                                      ),
+                                      margin: EdgeInsets.only(
+                                          right: 5.12 *
+                                              SizeConfig.widthSizeMultiplier),
+                                      child: Text(
+                                        widget.product != null &&
+                                                widget.product.vat != null &&
+                                                widget.product.vat != 0.0
+                                            ? (AppLocalization.of(context)
+                                                    .getTranslatedValue("vat") +
+                                                " " +
+                                                widget.product.vat
+                                                    .round()
+                                                    .toString() +
+                                                "%")
+                                            : "",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2
+                                            .copyWith(
+                                              color: Colors.white,
+                                              fontSize: 1.75 *
+                                                  SizeConfig.textSizeMultiplier,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
-            ),
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -100,94 +360,6 @@ class _ProductInfoState extends State<ProductInfo> {
               ],
             ),
           ],
-        ),
-        Visibility(
-          visible: widget.product != null &&
-              ((widget.product.currentPrice != null &&
-                      widget.product.price != null &&
-                      (widget.product.currentPrice != widget.product.price)) ||
-                  widget.strDiscount.isNotEmpty ||
-                  (widget.product.vat != null && widget.product.vat != 0.0)),
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: 1.5 * SizeConfig.heightSizeMultiplier,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Visibility(
-                  visible: widget.product != null &&
-                      widget.product.currentPrice != null &&
-                      widget.product.price != null &&
-                      (widget.product.currentPrice != widget.product.price),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      right: 2.56 * SizeConfig.widthSizeMultiplier,
-                    ),
-                    child: Text(
-                      widget.product != null && widget.product.price != null
-                          ? ("৳ " + widget.product.price.round().toString())
-                          : "",
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black.withOpacity(.35),
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: widget.strDiscount.isNotEmpty,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      right: 2.56 * SizeConfig.widthSizeMultiplier,
-                    ),
-                    child: Text(
-                      "-" + widget.strDiscount,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontSize: 1.75 * SizeConfig.textSizeMultiplier,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: widget.product != null &&
-                      widget.product.vat != null &&
-                      widget.product.vat != 0.0,
-                  child: Container(
-                    color: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.only(
-                      top: .5 * SizeConfig.heightSizeMultiplier,
-                      bottom: .5 * SizeConfig.heightSizeMultiplier,
-                      left: 1.79 * SizeConfig.widthSizeMultiplier,
-                      right: 1.79 * SizeConfig.widthSizeMultiplier,
-                    ),
-                    margin: EdgeInsets.only(
-                        right: 5.12 * SizeConfig.widthSizeMultiplier),
-                    child: Text(
-                      widget.product != null &&
-                              widget.product.vat != null &&
-                              widget.product.vat != 0.0
-                          ? (AppLocalization.of(context)
-                                  .getTranslatedValue("vat") +
-                              " " +
-                              widget.product.vat.round().toString() +
-                              "%")
-                          : "",
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: Colors.white,
-                            fontSize: 1.75 * SizeConfig.textSizeMultiplier,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
         SizedBox(
           height: 1.5 * SizeConfig.heightSizeMultiplier,

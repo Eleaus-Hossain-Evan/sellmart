@@ -419,6 +419,7 @@
   "set_new_password": "Set new Password",
   "created_at": "Created at",
   "add_address": "Add address",
+  "adding_address": "Please add address",
   "update_address": "Update address",
   "add_coupon_code": "Add coupon code",
   "remove_coupon": "Remove coupon",

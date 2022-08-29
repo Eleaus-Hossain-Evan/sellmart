@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:logger/logger.dart';
 import 'package:sslcommerz_flutter/model/SSLCTransactionInfoModel.dart';
@@ -565,8 +566,9 @@ class DataPresenter with ChangeNotifier {
               if (response.statusCode == 200 || response.statusCode == 201) {
                 if (jsonData['success']) {
                   Product product = Product.fromJson(jsonData['data']);
-                  Products similarProducts =
-                      Products.fromJson(jsonData['similerProducts']);
+                  log(jsonData['data'].toString());
+                  Products similarProducts = Products(list: []);
+                  // Products.fromJson(jsonData['similerProducts']);
 
                   _productDetailContract.onSuccess(
                       product, similarProducts.list);
@@ -983,16 +985,16 @@ class DataPresenter with ChangeNotifier {
 
             List<Map<String, dynamic>> addresses = [
               {
-                'division': order.value.address.division,
-                'district': order.value.address.district,
-                'upazila': order.value.address.upazila,
-                'details': order.value.address.details,
+                'division': order.value.address.division.toString(),
+                'district': order.value.address.district.toString(),
+                'upazila': order.value.address.upazila.toString(),
+                'details': order.value.address.details.toString(),
               }
             ];
 
             Map<String, dynamic> customerData = {
               '_id': user.id,
-              'name': order.value.address.name,
+              'name': order.value.address.name.toString(),
               'address': addresses,
             };
 
@@ -1000,7 +1002,7 @@ class DataPresenter with ChangeNotifier {
               'products': products,
               'customer': customerData,
               'totalGetTk': totalGetTk,
-              'phone': order.value.address.phone,
+              'phone': order.value.address.phone.toString(),
               'alternativePhone': order.value.alternativePhone ?? "",
               'paymentType': order.value.paymentOption.id,
               'deliveryType': order.value.deliveryType,
@@ -1041,16 +1043,14 @@ class DataPresenter with ChangeNotifier {
                 } else {
                   _orderContract.onFailedToPlaceOrder(
                       context,
-                      jsonData['validation'] ??
-                          AppLocalization.of(context)
-                              .getTranslatedValue("failed_to_place_order"));
+                      AppLocalization.of(context)
+                          .getTranslatedValue("failed_to_place_order"));
                 }
               } else {
                 _orderContract.onFailedToPlaceOrder(
                     context,
-                    jsonData['message'] ??
-                        AppLocalization.of(context)
-                            .getTranslatedValue("failed_to_place_order"));
+                    AppLocalization.of(context)
+                        .getTranslatedValue("failed_to_place_order"));
               }
             }).timeout(Duration(seconds: Constants.timeoutSeconds),
                     onTimeout: () {

@@ -191,17 +191,23 @@ class _DeliveryPaymentOptionWidgetState
   }
 
   void _onPaymentOptionSelected(PaymentOption option) {
-    if (order.value.paymentOption == option) {
-      order.value.paymentOption = PaymentOption.init();
-    } else {
-      order.value.paymentOption = option;
-    }
+    setState(() {
+      if (order.value.paymentOption == option) {
+        order.value.paymentOption = PaymentOption.init();
+        paymentOption.value = false;
+      } else {
+        order.value.paymentOption = option;
+        paymentOption.value = true;
+      }
+    });
     // order.value.paymentOption = option;
 
     order.notifyListeners();
 
     widget.onSelected();
-    Logger().d(order.value.paymentOption.toString());
+    Logger().d(order.value.paymentOption.toString() +
+        '--' +
+        paymentOption.value.toString());
   }
 
   void _init() {

@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class PaymentOption {
+class PaymentOption extends Equatable {
   int id;
   String name;
   Widget icon;
@@ -15,4 +16,7 @@ class PaymentOption {
 
   @override
   String toString() => 'PaymentOption(id: $id, name: $name, icon: $icon)';
+
+  @override
+  List<Object> get props => [id, name, icon];
 }

@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:equatable/equatable.dart';
+
 import '../utils/api_routes.dart';
 
-class Variation {
+class Variation extends Equatable {
   String id;
   int stock;
   int discountType;
@@ -84,6 +86,20 @@ class Variation {
   String toString() {
     return 'Variation(id: $id, stock: $stock, discountType: $discountType, discountAmount: $discountAmount, regularPrice: $regularPrice, discountPrice: $discountPrice, images: $images, value1: $value1, value2: $value2)';
   }
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [
+        id,
+        stock,
+        discountType,
+        discountAmount,
+        discountPrice,
+        regularPrice,
+        images,
+        value1,
+        value2,
+      ];
 }
 
 class Variations {

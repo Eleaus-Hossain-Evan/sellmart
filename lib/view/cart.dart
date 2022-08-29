@@ -37,6 +37,7 @@ import 'package:sslcommerz_flutter/model/SSLCTransactionInfoModel.dart';
 import 'package:logger/logger.dart';
 
 ValueNotifier<Order> order = ValueNotifier(Order());
+ValueNotifier<bool> paymentOption = ValueNotifier(true);
 
 class Cart extends StatefulWidget {
   @override
@@ -522,32 +523,42 @@ class _CartState extends State<Cart>
   }
 
   void _validate() {
-    if (_items.length > 0) {
-      if (order.value.address == null &&
-          currentUser.value.addresses.list.length > 1) {
-        _showToast(
-            AppLocalization.of(context)
-                .getTranslatedValue("select_delivery_address"),
-            Toast.LENGTH_SHORT);
-      } else {
-        if (order.value.paymentOption == null) {
+    Logger().wtf(order.value);
+    print(currentUser.value.addresses.list.length);
+    if (currentUser.value.addresses.list.length <= 1) {
+      _showToast(
+          AppLocalization.of(context).getTranslatedValue("adding_address"),
+          Toast.LENGTH_SHORT);
+    } else {
+      if (_items.length > 0) {
+        if (order.value.address == null &&
+            order.value.address == Address.init() &&
+            order.value.address.id == null &&
+            currentUser.value.addresses.list.length > 2) {
           _showToast(
               AppLocalization.of(context)
-                  .getTranslatedValue("select_payment_option"),
+                  .getTranslatedValue("select_delivery_address"),
               Toast.LENGTH_SHORT);
         } else {
-          if (!_isChecked) {
+          if (paymentOption.value == false) {
             _showToast(
                 AppLocalization.of(context)
-                    .getTranslatedValue("you_must_agree"),
+                    .getTranslatedValue("select_payment_option"),
                 Toast.LENGTH_SHORT);
           } else {
-            order.value.coupon = _coupon;
-
-            if (_paymentIncomplete) {
-              onOrderPlaced(_placedOrder);
+            if (!_isChecked) {
+              _showToast(
+                  AppLocalization.of(context)
+                      .getTranslatedValue("you_must_agree"),
+                  Toast.LENGTH_SHORT);
             } else {
-              _presenter.placeOrder(_context, _items);
+              order.value.coupon = _coupon;
+
+              if (_paymentIncomplete) {
+                onOrderPlaced(_placedOrder);
+              } else {
+                _presenter.placeOrder(_context, _items);
+              }
             }
           }
         }
@@ -763,12 +774,21 @@ class _CartState extends State<Cart>
       }
     }
     order.value = Order(
-        vat: 0.0,
-        sslCharge: 0.0,
-        advancePayment: 0.0,
-        address: address,
-        deliveryType: type,
-        deliveryFee: fee,
-        paymentOption: PaymentOption.init());
+      vat: 0.0,
+      sslCharge: 0.0,
+      advancePayment: 0.0,
+      address: address,
+      deliveryType: type,
+      deliveryFee: fee,
+      paymentOption: PaymentOption(
+        id: 0,
+        name: "Cash on delivery",
+        icon: Image(
+          image: AssetImage("assets/images/cash.png"),
+        ),
+      ),
+    );
+
+    Logger().v(order);
   }
 }

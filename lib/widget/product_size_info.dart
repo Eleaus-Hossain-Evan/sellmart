@@ -205,18 +205,20 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
                     vertical: .5 * SizeConfig.heightSizeMultiplier,
                   ),
                   child: Center(
-                      child: Text(
-                    e[index],
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        color: widget.product.selectedSizeItem != null &&
-                                widget.product.selectedSizeItem == e[1]
-                            ? Colors.white
-                            : Colors.black.withOpacity(.75),
-                        fontSize: isTop
-                            ? 1.8 * SizeConfig.textSizeMultiplier
-                            : 2 * SizeConfig.textSizeMultiplier,
-                        fontWeight: isTop ? FontWeight.bold : FontWeight.w500),
-                  )),
+                    child: Text(
+                      e[index],
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          color: widget.product.selectedSizeItem != null &&
+                                  widget.product.selectedSizeItem == e[1]
+                              ? Colors.white
+                              : Colors.black.withOpacity(.75),
+                          fontSize: isTop
+                              ? 1.8 * SizeConfig.textSizeMultiplier
+                              : 2 * SizeConfig.textSizeMultiplier,
+                          fontWeight:
+                              isTop ? FontWeight.bold : FontWeight.w500),
+                    ),
+                  ),
                 ),
                 onTap: () {
                   if (!isTop) {
@@ -230,155 +232,6 @@ class _ProductSizeInfoState extends State<ProductSizeInfo> with ChangeNotifier {
       ),
     );
   }
-
-  // Widget _buildVariation(List<Variation> variations) {
-  //   // Logger().i('variations: $variations');
-  //   return Table(
-  //     border: TableBorder.all(
-  //       color: Theme.of(context).primaryColor,
-  //       width: .25 * SizeConfig.widthSizeMultiplier,
-  //     ),
-  //     defaultColumnWidth: IntrinsicColumnWidth(flex: 1),
-  //     children: List.generate(
-  //       variations.length,
-  //       (index) {
-  //         final e = variations[index];
-  //         // final isTop = index == 0;
-  //         return TableRow(
-  //           decoration: BoxDecoration(
-  //             color: widget.product.selectedVariation != null &&
-  //                     widget.product.selectedVariation.id == e.id
-  //                 ? Theme.of(context).primaryColor
-  //                 : Colors.grey[300],
-  //           ),
-  //           children: [
-  //             GestureDetector(
-  //               child: Row(
-  //                 children: [
-  //                   Visibility(
-  //                     visible: e.value1.isNotEmpty,
-  //                     child: Flexible(
-  //                       child: Padding(
-  //                         padding: EdgeInsets.symmetric(
-  //                           horizontal: 1 * SizeConfig.widthSizeMultiplier,
-  //                           vertical: .5 * SizeConfig.heightSizeMultiplier,
-  //                         ),
-  //                         child: Center(
-  //                             child: Text(
-  //                           e.value1,
-  //                           style: Theme.of(context)
-  //                               .textTheme
-  //                               .bodyText1
-  //                               .copyWith(
-  //                                   color: widget.product.selectedVariation !=
-  //                                               null &&
-  //                                           widget.product.selectedVariation
-  //                                                   .id ==
-  //                                               e.id
-  //                                       ? Colors.white
-  //                                       : Colors.black.withOpacity(.75),
-  //                                   fontSize: 2 * SizeConfig.textSizeMultiplier,
-  //                                   fontWeight: FontWeight.w500),
-  //                         )),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   Visibility(
-  //                     visible: e.value2.isNotEmpty,
-  //                     child: Flexible(
-  //                       child: Padding(
-  //                         padding: EdgeInsets.symmetric(
-  //                           horizontal: 1 * SizeConfig.widthSizeMultiplier,
-  //                           vertical: .5 * SizeConfig.heightSizeMultiplier,
-  //                         ),
-  //                         child: Center(
-  //                             child: Text(
-  //                           e.value2,
-  //                           style: Theme.of(context)
-  //                               .textTheme
-  //                               .bodyText1
-  //                               .copyWith(
-  //                                   color: widget.product.selectedVariation !=
-  //                                               null &&
-  //                                           widget.product.selectedVariation
-  //                                                   .id ==
-  //                                               e.id
-  //                                       ? Colors.white
-  //                                       : Colors.black.withOpacity(.75),
-  //                                   fontSize: 2 * SizeConfig.textSizeMultiplier,
-  //                                   fontWeight: FontWeight.w500),
-  //                         )),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   Visibility(
-  //                     visible: e.stock.toString().isNotEmpty,
-  //                     child: Flexible(
-  //                       child: Padding(
-  //                         padding: EdgeInsets.symmetric(
-  //                           horizontal: 1 * SizeConfig.widthSizeMultiplier,
-  //                           vertical: .5 * SizeConfig.heightSizeMultiplier,
-  //                         ),
-  //                         child: Center(
-  //                             child: Text(
-  //                           e.stock.toString(),
-  //                           style: Theme.of(context)
-  //                               .textTheme
-  //                               .bodyText1
-  //                               .copyWith(
-  //                                   color: widget.product.selectedVariation !=
-  //                                               null &&
-  //                                           widget.product.selectedVariation
-  //                                                   .id ==
-  //                                               e.id
-  //                                       ? Colors.white
-  //                                       : Colors.black.withOpacity(.75),
-  //                                   fontSize: 2 * SizeConfig.textSizeMultiplier,
-  //                                   fontWeight: FontWeight.w500),
-  //                         )),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   Visibility(
-  //                     visible: e.discountPrice.toStringAsFixed(0).isNotEmpty,
-  //                     child: Flexible(
-  //                       child: Padding(
-  //                         padding: EdgeInsets.symmetric(
-  //                           horizontal: 1 * SizeConfig.widthSizeMultiplier,
-  //                           vertical: .5 * SizeConfig.heightSizeMultiplier,
-  //                         ),
-  //                         child: Center(
-  //                             child: Text(
-  //                           e.discountPrice.toStringAsFixed(0),
-  //                           style: Theme.of(context)
-  //                               .textTheme
-  //                               .bodyText1
-  //                               .copyWith(
-  //                                   color: widget.product.selectedVariation !=
-  //                                               null &&
-  //                                           widget.product.selectedVariation
-  //                                                   .id ==
-  //                                               e.id
-  //                                       ? Colors.white
-  //                                       : Colors.black.withOpacity(.75),
-  //                                   fontSize: 2 * SizeConfig.textSizeMultiplier,
-  //                                   fontWeight: FontWeight.w500),
-  //                         )),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //               onTap: () {
-  //                 _onVariationSelected(e);
-  //               },
-  //             ),
-  //           ],
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
 
   Widget _divider() {
     return Container(
@@ -471,54 +324,69 @@ class __VariationItemsState extends State<_VariationItems> {
           children: <Widget>[
             Flexible(
               child: Wrap(
-                children: widget.product.variations[0].id.isNotEmpty
-                    ? List.generate(_value1.length, (index) {
-                        final e = _value1[index];
-                        return GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () {
-                            // _onVariationSelected(item);
-                            _selectedValue1.value = e;
-                            setState(() {});
-                            print('_selectedValue1: $_selectedValue1');
-                            _selectedValue1.notifyListeners();
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: .825 * SizeConfig.heightSizeMultiplier,
-                              horizontal: 2.5 * SizeConfig.widthSizeMultiplier,
-                            ),
-                            margin: EdgeInsets.only(
-                              right: 3 * SizeConfig.widthSizeMultiplier,
-                              bottom: 2 * SizeConfig.heightSizeMultiplier,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _selectedValue1.value == e
-                                  ? Theme.of(context).primaryColor
-                                  : Colors.grey[300],
-                              borderRadius: BorderRadius.circular(
-                                  .25 * SizeConfig.heightSizeMultiplier),
-                            ),
-                            child: Text(
-                              e,
-                              style:
-                                  Theme.of(context)
-                                      .textTheme
-                                      .bodyText1
-                                      .copyWith(
-                                          color: _selectedValue1.value == e
-                                              ? Colors.white
-                                              : Colors.black.withOpacity(.75),
-                                          fontSize: 1.75 *
-                                              SizeConfig.textSizeMultiplier,
-                                          fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        );
-                      })
-                    : List.generate(0, (index) {
-                        return Container();
-                      }),
+                children: widget.product.variations[0].id.isNotEmpty &&
+                        _value1.isNotEmpty
+                    ? List.generate(
+                        _value1.length,
+                        (index) {
+                          final e = _value1[index];
+                          return e.isNotEmpty
+                              ? GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    // _onVariationSelected(item);
+                                    _selectedValue1.value = e;
+                                    setState(() {});
+                                    print('_selectedValue1: $_selectedValue1');
+                                    // _selectedValue1.notifyListeners();
+                                    if (_value2.any(
+                                        (element) => element.value2.isEmpty)) {
+                                      _onVariationSelected(widget
+                                          .product.variations
+                                          .firstWhere((element) =>
+                                              element.value1 ==
+                                              _selectedValue1.value));
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: .825 *
+                                          SizeConfig.heightSizeMultiplier,
+                                      horizontal:
+                                          2.5 * SizeConfig.widthSizeMultiplier,
+                                    ),
+                                    margin: EdgeInsets.only(
+                                      right: 3 * SizeConfig.widthSizeMultiplier,
+                                      bottom:
+                                          2 * SizeConfig.heightSizeMultiplier,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: _selectedValue1.value == e
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(.25 *
+                                          SizeConfig.heightSizeMultiplier),
+                                    ),
+                                    child: Text(
+                                      e,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .copyWith(
+                                              color: _selectedValue1.value == e
+                                                  ? Colors.white
+                                                  : Colors.black
+                                                      .withOpacity(.75),
+                                              fontSize: 1.75 *
+                                                  SizeConfig.textSizeMultiplier,
+                                              fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox.shrink();
+                        },
+                      )
+                    : SizedBox.shrink(),
               ),
             ),
           ],
@@ -526,44 +394,60 @@ class __VariationItemsState extends State<_VariationItems> {
         SizedBox(
           height: 1.875 * SizeConfig.heightSizeMultiplier,
         ),
-        widget.product.variations.isNotEmpty
+        widget.product.variations.isNotEmpty && _value2.isNotEmpty
             ? Align(
                 alignment: Alignment.bottomLeft,
                 child: Wrap(
                   alignment: WrapAlignment.start,
-                  children: List.generate(_value2.length, (index) {
-                    final e = _value2[index];
-                    return GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () => _onVariationSelected(e),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: .825 * SizeConfig.heightSizeMultiplier,
-                          horizontal: 2.5 * SizeConfig.widthSizeMultiplier,
-                        ),
-                        margin: EdgeInsets.only(
-                          right: 3 * SizeConfig.widthSizeMultiplier,
-                          bottom: 2 * SizeConfig.heightSizeMultiplier,
-                        ),
-                        decoration: BoxDecoration(
-                          color: widget.product.selectedVariation.id == e.id
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(
-                              .25 * SizeConfig.heightSizeMultiplier),
-                        ),
-                        child: Text(
-                          e.value2,
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              color: widget.product.selectedVariation.id == e.id
-                                  ? Colors.white
-                                  : Colors.black.withOpacity(.75),
-                              fontSize: 1.75 * SizeConfig.textSizeMultiplier,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    );
-                  }),
+                  children: List.generate(
+                    _value2.length,
+                    (index) {
+                      final e = _value2[index];
+                      return e.value2.isNotEmpty
+                          ? GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () => _onVariationSelected(e),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      .825 * SizeConfig.heightSizeMultiplier,
+                                  horizontal:
+                                      2.5 * SizeConfig.widthSizeMultiplier,
+                                ),
+                                margin: EdgeInsets.only(
+                                  right: 3 * SizeConfig.widthSizeMultiplier,
+                                  bottom: 2 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: widget.product.selectedVariation.id ==
+                                          e.id
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(
+                                    .25 * SizeConfig.heightSizeMultiplier,
+                                  ),
+                                ),
+                                child: Text(
+                                  e.value2,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .copyWith(
+                                        color: widget.product.selectedVariation
+                                                    .id ==
+                                                e.id
+                                            ? Colors.white
+                                            : Colors.black.withOpacity(.75),
+                                        fontSize: 1.75 *
+                                            SizeConfig.textSizeMultiplier,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                              ),
+                            )
+                          : SizedBox.shrink();
+                    },
+                  ),
                 ),
               )
             : SizedBox.shrink(),
@@ -578,17 +462,19 @@ class __VariationItemsState extends State<_VariationItems> {
     if (variation.id != widget.product.selectedVariation.id) {
       setState(() {
         widget.product.selectedVariation = variation;
-        onSelectedVariation = variation;
+        onSelectedVariation.value = variation;
       });
 
       // onSelectedVariation.notifyListeners();
-      Logger().v('onSelectedVariation: ${onSelectedVariation}');
+      Logger().v('onSelectedVariation: ${variation}');
       for (int i = 1; i < widget.product.variations.length; i++) {
         if (widget.product.variations[i].id == variation.id) {
           if (widget.product.variations[i].stock > 0) {
             if (widget.product.quantity > widget.product.variations[i].stock) {
               setState(() {
                 widget.product.quantity = widget.product.variations[i].stock;
+                widget.product.currentPrice =
+                    onSelectedVariation.value.discountPrice;
               });
             }
           } else {

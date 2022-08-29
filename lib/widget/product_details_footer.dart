@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:app/view/product_details.dart';
 import 'package:flutter/material.dart';
 import '../localization/app_localization.dart';
 import '../utils/size_config.dart';
@@ -253,10 +256,11 @@ class _ProductDetailsFooterState extends State<ProductDetailsFooter>
     if ((widget.product.variationType == 0 ||
             widget.product.variationType == 1) &&
         widget.product.variations.length > 0) {
-      if ((widget.product.selectedVariation != null &&
-              widget.product.selectedVariation.stock > 0) ||
+      if ((onSelectedVariation != null &&
+              onSelectedVariation.value.stock > 0) ||
           (widget.product.currentStock != null &&
               widget.product.currentStock > 0)) {
+        widget.product.selectedVariation = onSelectedVariation.value;
         _insertIntoLocalDB(context, isBuying);
       }
     } else if (widget.product.variationType == 2 &&
@@ -298,6 +302,13 @@ class _ProductDetailsFooterState extends State<ProductDetailsFooter>
     }
 
     widget.product.isCampaignOffer = false;
+    // if (widget.product.variationType == 2) {
+    //   widget.product.currentPrice = widget.product.sizeInfos[0].discountPrice;
+    // } else {
+    //   widget.product.currentPrice = onSelectedVariation.value.discountPrice;
+    // }
+
+    // log(widget.product.toString());
 
     int value = await _dbHelper.addProduct(widget.product);
 
