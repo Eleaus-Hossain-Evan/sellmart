@@ -29,7 +29,7 @@ import 'package:flutter/material.dart';
 
 import 'dart:developer';
 
-ValueNotifier<Variation> onSelectedVariation = ValueNotifier(Variation());
+ValueNotifier<Variation> onSelectedVariation = ValueNotifier(null);
 
 class ProductDetails extends StatefulWidget {
   final String productSlug;
@@ -275,15 +275,19 @@ class _ProductDetailsState extends State<ProductDetails>
       product.selectedVariation = product.variations[0];
 
       product.images = product.variations[0].images;
+      product.selectedVariation = product.variations[0];
+      onSelectedVariation.value = product.variations[0];
 
       for (var i = 0; i < product.variations.length; i++) {
         if (product.variations[i].value1.isNotEmpty) {
+          product.selectedVariation = product.variations[i];
           onSelectedVariation.value = product.variations[i];
           break;
         }
       }
-      if (product.selectedVariation != null) {
-        product.selectedVariation = onSelectedVariation.value;
+      if (product.selectedVariation != null &&
+          product.selectedVariation.id.isNotEmpty) {
+        // product.selectedVariation = onSelectedVariation.value;
         if (product.selectedVariation.regularPrice ==
             product.selectedVariation.discountPrice) {
           setState(() {
