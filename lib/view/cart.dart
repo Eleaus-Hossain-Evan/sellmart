@@ -791,4 +791,10 @@ class _CartState extends State<Cart>
 
     Logger().v(order);
   }
+
+  @override
+  void failedToFetchSingleOrder(BuildContext context, String text) {}
+
+  @override
+  void fetchSingleOrder(Order order) {}
 }

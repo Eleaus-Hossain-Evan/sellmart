@@ -60,33 +60,39 @@ class _MyOrdersState extends State<MyOrders>
                     },
                   ),
                   Expanded(
-                    child:
-                        NotificationListener<OverscrollIndicatorNotification>(
-                      onNotification: (overScroll) {
-                        overScroll.disallowGlow();
-                        return;
+                    child: RefreshIndicator(
+                      onRefresh: () {
+                        reloadPage();
+                        return Future(() => false);
                       },
-                      child: ListView.separated(
-                        itemCount: _orders.length,
-                        padding: EdgeInsets.all(
-                            1.875 * SizeConfig.heightSizeMultiplier),
-                        separatorBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            height: 2.5 * SizeConfig.heightSizeMultiplier,
-                          );
+                      child:
+                          NotificationListener<OverscrollIndicatorNotification>(
+                        onNotification: (overScroll) {
+                          overScroll.disallowGlow();
+                          return;
                         },
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              _orders[index].justOrdered = false;
-                              Navigator.of(context).pushNamed(
-                                  RouteManager.ORDER_INFO,
-                                  arguments: _orders[index]);
-                            },
-                            child: OrderWidget(_orders[index]),
-                          );
-                        },
+                        child: ListView.separated(
+                          itemCount: _orders.length,
+                          padding: EdgeInsets.all(
+                              1.875 * SizeConfig.heightSizeMultiplier),
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                              height: 2.5 * SizeConfig.heightSizeMultiplier,
+                            );
+                          },
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                _orders[index].justOrdered = false;
+                                Navigator.of(context).pushNamed(
+                                    RouteManager.ORDER_INFO,
+                                    arguments: _orders[index]);
+                              },
+                              child: OrderWidget(_orders[index]),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -215,4 +221,10 @@ class _MyOrdersState extends State<MyOrders>
 
   @override
   void onReturnRefundRequested(Order order) {}
+
+  @override
+  void failedToFetchSingleOrder(BuildContext context, String text) {}
+
+  @override
+  void fetchSingleOrder(Order order) {}
 }

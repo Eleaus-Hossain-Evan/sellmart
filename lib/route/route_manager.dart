@@ -37,7 +37,6 @@ import '../view/wish_list.dart';
 import 'package:flutter/material.dart';
 
 class RouteManager {
-
   static const String SPLASH_SCREEN = "splashScreen";
   static const String BOTTOM_NAV = "bottomNav";
   static const String ALL_BRAND = "allBrand";
@@ -69,11 +68,9 @@ class RouteManager {
   static const String WISH_LIST = "wishList";
 
   static Route<dynamic> generate(RouteSettings settings) {
-
     final args = settings.arguments;
 
-    switch(settings.name) {
-
+    switch (settings.name) {
       case SPLASH_SCREEN:
         return MaterialPageRoute(builder: (_) => SplashScreen());
 
@@ -90,7 +87,8 @@ class RouteManager {
         return MaterialPageRoute(builder: (_) => Products());
 
       case PRODUCT_DETAILS:
-        return MaterialPageRoute(builder: (_) => ProductDetails(args as String));
+        return MaterialPageRoute(
+            builder: (_) => ProductDetails(args as String));
 
       case LOGIN:
         return MaterialPageRoute(builder: (_) => Login());
@@ -120,7 +118,8 @@ class RouteManager {
         return MaterialPageRoute(builder: (_) => ChangePassword());
 
       case SINGLE_CAMPAIGN:
-        return MaterialPageRoute(builder: (_) => SingleCampaign(args as String));
+        return MaterialPageRoute(
+            builder: (_) => SingleCampaign(args as String));
 
       case ORDER_INFO:
         return MaterialPageRoute(builder: (_) => OrderInfo(args as Order));
@@ -129,7 +128,8 @@ class RouteManager {
         return MaterialPageRoute(builder: (_) => MyOrders());
 
       case WRITE_REVIEW:
-        return MaterialPageRoute(builder: (_) => WriteReview(args as modelProduct.Product));
+        return MaterialPageRoute(
+            builder: (_) => WriteReview(args as modelProduct.Product));
 
       case ABOUT_US:
         return MaterialPageRoute(builder: (_) => AboutUs());
@@ -156,7 +156,9 @@ class RouteManager {
         return MaterialPageRoute(builder: (_) => WishList());
 
       default:
-        return MaterialPageRoute(builder: (_) => Scaffold(body: SafeArea(child: Center(child: Text("Route Error")))));
+        return MaterialPageRoute(
+            builder: (_) => Scaffold(
+                body: SafeArea(child: Center(child: Text("Route Error")))));
     }
   }
 }

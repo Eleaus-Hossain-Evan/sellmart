@@ -12,6 +12,8 @@ import '../contract/connectivity_contract.dart';
 import '../contract/order_contract.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:developer';
+
 class CancelOrder extends StatefulWidget {
   final String orderID;
 
@@ -36,6 +38,8 @@ class _CancelOrderState extends State<CancelOrder>
     _orderContract = this;
 
     _presenter = DataPresenter(_connectivity, orderContract: _orderContract);
+
+    log(widget.orderID);
 
     super.initState();
   }
@@ -192,7 +196,7 @@ class _CancelOrderState extends State<CancelOrder>
           AppLocalization.of(context)
               .getTranslatedValue("enter_cancel_reason"));
     } else {
-      _presenter.cancelOrder(context, widget.orderID, _controller.text);
+      // _presenter.cancelOrder(context, widget.orderID, _controller.text);
     }
   }
 
@@ -254,4 +258,10 @@ class _CancelOrderState extends State<CancelOrder>
 
   @override
   void onReturnRefundRequested(Order order) {}
+
+  @override
+  void failedToFetchSingleOrder(BuildContext context, String text) {}
+
+  @override
+  void fetchSingleOrder(Order order) {}
 }

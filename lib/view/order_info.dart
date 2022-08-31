@@ -21,11 +21,12 @@ import '../utils/my_datetime.dart';
 import '../utils/size_config.dart';
 import '../widget/my_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 import 'cart.dart';
 
 class OrderInfo extends StatefulWidget {
-  final Order order;
+  Order order;
 
   OrderInfo(this.order);
 
@@ -52,7 +53,9 @@ class _OrderInfoState extends State<OrderInfo>
     _orderContract = this;
 
     _presenter = DataPresenter(_connectivity, orderContract: _orderContract);
-    Logger().v(widget.order.toString());
+
+    reloadPage();
+    log(widget.order.toString());
 
     super.initState();
   }
@@ -86,308 +89,329 @@ class _OrderInfoState extends State<OrderInfo>
                           overScroll.disallowGlow();
                           return;
                         },
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                height: 1.5 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        AppLocalization.of(context)
-                                            .getTranslatedValue("order_id"),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            2 * SizeConfig.widthSizeMultiplier,
-                                      ),
-                                      Text(
-                                        "#" + widget.order.orderID,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2
-                                            .copyWith(color: Colors.blue[800]),
-                                      ),
-                                    ],
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            return await _presenter.getSingleOrder(
+                                context, widget.order.id);
+                          },
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 1.5 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          AppLocalization.of(context)
+                                              .getTranslatedValue("order_id"),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2,
+                                        ),
+                                        SizedBox(
+                                          width: 2 *
+                                              SizeConfig.widthSizeMultiplier,
+                                        ),
+                                        Text(
+                                          "#" + widget.order.orderID,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2
+                                              .copyWith(
+                                                  color: Colors.blue[800]),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      MyDateTime.getDatabaseFormat(
+                                          DateTime.parse(widget.order.createdAt)
+                                              .add(Duration(hours: 6))),
+                                      style:
+                                          Theme.of(context).textTheme.subtitle2,
+                                    ),
+                                  ],
+                                ),
+                                Visibility(
+                                  visible: widget.order.currentState !=
+                                      Constants.CANCELLED,
+                                  child: SizedBox(
+                                    height:
+                                        3.5 * SizeConfig.heightSizeMultiplier,
                                   ),
-                                  Text(
-                                    MyDateTime.getDatabaseFormat(
-                                        DateTime.parse(widget.order.createdAt)
-                                            .add(Duration(hours: 6))),
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
-                                  ),
-                                ],
-                              ),
-                              Visibility(
-                                visible: widget.order.currentState !=
-                                    Constants.CANCELLED,
-                                child: SizedBox(
+                                ),
+                                Visibility(
+                                  visible: widget.order.currentState !=
+                                      Constants.CANCELLED,
+                                  child: CurrentOrderStatus(
+                                      widget.order.currentState),
+                                ),
+                                SizedBox(
                                   height: 3.5 * SizeConfig.heightSizeMultiplier,
                                 ),
-                              ),
-                              Visibility(
-                                visible: widget.order.currentState !=
-                                    Constants.CANCELLED,
-                                child: CurrentOrderStatus(
-                                    widget.order.currentState),
-                              ),
-                              SizedBox(
-                                height: 3.5 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              Text(
-                                AppLocalization.of(context)
-                                    .getTranslatedValue("order_timeline")
-                                    .toUpperCase(),
-                                style: Theme.of(context).textTheme.subtitle1,
-                              ),
-                              SizedBox(
-                                height: 3.5 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              OrderStateHistory(widget.order.states),
-                              SizedBox(
-                                height: 3.5 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              Text(
-                                AppLocalization.of(context)
-                                    .getTranslatedValue("products"),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1
-                                    .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                              ),
-                              SizedBox(
-                                height: 2.5 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                primary: false,
-                                itemCount: widget.order.products.length,
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  return SizedBox(
-                                    height: 3 * SizeConfig.heightSizeMultiplier,
-                                  );
-                                },
-                                itemBuilder: (BuildContext context, int index) {
-                                  return _productWidget(
-                                      context, widget.order.products[index]);
-                                },
-                              ),
-                              SizedBox(
-                                height: 6 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              OrderIssues(
-                                widget.order,
-                                onCancelOrder: () async {
-                                  Order order = await Navigator.of(context)
-                                          .pushNamed(RouteManager.CANCEL_ORDER,
-                                              arguments: widget.order.orderID)
-                                      as Order;
+                                Text(
+                                  AppLocalization.of(context)
+                                      .getTranslatedValue("order_timeline")
+                                      .toUpperCase(),
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                ),
+                                SizedBox(
+                                  height: 3.5 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                OrderStateHistory(widget.order.states),
+                                SizedBox(
+                                  height: 3.5 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                Text(
+                                  AppLocalization.of(context)
+                                      .getTranslatedValue("products"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1
+                                      .copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                                SizedBox(
+                                  height: 2.5 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  primary: false,
+                                  itemCount: widget.order.products.length,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return SizedBox(
+                                      height:
+                                          3 * SizeConfig.heightSizeMultiplier,
+                                    );
+                                  },
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return _productWidget(
+                                        context, widget.order.products[index]);
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 6 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                Visibility(
+                                  visible: !widget.order.cancelOrder,
+                                  child: OrderIssues(
+                                    widget.order,
+                                    onCancelOrder: () async {
+                                      _presenter.cancelOrder(
+                                          context, widget.order.orderID);
+                                      // Order order = await Navigator.of(context)
+                                      //     .pushNamed(RouteManager.CANCEL_ORDER,
+                                      //         arguments:
+                                      //             widget.order.orderID) as Order;
 
-                                  if (order != null &&
-                                      order.currentState ==
-                                          Constants.CANCELLED) {
-                                    setState(() {
-                                      widget.order.currentState =
-                                          order.currentState;
-                                      widget.order.states = order.states;
-                                    });
+                                      // if (order != null &&
+                                      //     order.currentState ==
+                                      //         Constants.CANCELLED) {
+                                      //   setState(() {
+                                      //     widget.order.currentState =
+                                      //         order.currentState;
+                                      //     widget.order.states = order.states;
+                                      //   });
 
-                                    MyFlushBar.show(
-                                        context,
-                                        AppLocalization.of(context)
-                                            .getTranslatedValue(
-                                                "order_is_cancelled"));
-                                  }
-                                },
-                                onRequestRefund: () {
-                                  _presenter.withdrawRequest(
-                                      context, widget.order.orderID);
-                                },
-                                requestReturnRefund: () async {
-                                  _presenter.requestReturnRefund(
-                                      context, widget.order.orderID);
-                                },
-                              ),
-                              Text(
-                                AppLocalization.of(context)
-                                    .getTranslatedValue("order_summary"),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1
-                                    .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                              ),
-                              SizedBox(
-                                height: 1.875 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              _summaryTestWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("product_total"),
-                                  _subTotal.truncate()),
-                              _summaryTestWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("total_vat"),
-                                  widget.order.vat.round()),
-                              _summaryTestWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("discount"),
-                                  widget.order.discountAmount.round()),
-                              _summaryTestWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("coupon_discount"),
-                                  _couponDiscount.round()),
-                              _summaryTestWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("sub_total"),
-                                  (_subTotal - _couponDiscount).round()),
-                              _summaryTestWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("delivery_charge"),
-                                  widget.order.deliveryFee.round()),
-                              _summaryTestWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("total"),
-                                  widget.order.totalBill.round()),
-                              _summaryTestWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("advance_payment"),
-                                  widget.order.advancePaymentBKash.round()),
-                              Visibility(
-                                visible: widget.order.paymentType ==
-                                        Constants.CASH_ON_DELIVERY &&
-                                    widget.order.advancePayment == 0.0,
-                                child: Column(
-                                  children: [
-                                    _summaryTestWidget(
-                                        AppLocalization.of(context)
-                                            .getTranslatedValue("paid_amount"),
-                                        widget.order.currentState ==
-                                                Constants.DELIVERED
-                                            ? widget.order.totalBill.round()
-                                            : 0),
-                                    _summaryTestWidget(
-                                        AppLocalization.of(context)
-                                            .getTranslatedValue("due_amount"),
-                                        widget.order.currentState ==
-                                                Constants.DELIVERED
-                                            ? 0
-                                            : widget.order.totalBill.round()),
-                                  ],
+                                      //   MyFlushBar.show(
+                                      //       context,
+                                      //       AppLocalization.of(context)
+                                      //           .getTranslatedValue(
+                                      //               "order_is_cancelled"));
+                                      // }
+                                    },
+                                    onRequestRefund: () {
+                                      _presenter.withdrawRequest(
+                                          context, widget.order.orderID);
+                                    },
+                                    requestReturnRefund: () async {
+                                      _presenter.requestReturnRefund(
+                                          context, widget.order.orderID);
+                                    },
+                                  ),
                                 ),
-                              ),
-                              Visibility(
-                                visible: widget.order.paymentType ==
-                                        Constants.CASH_ON_DELIVERY &&
-                                    widget.order.advancePayment > 0.0,
-                                child: Column(
-                                  children: [
-                                    _summaryTestWidget(
-                                        AppLocalization.of(context)
-                                            .getTranslatedValue("paid_amount"),
-                                        widget.order.currentState ==
-                                                Constants.DELIVERED
-                                            ? widget.order.totalBill.round()
-                                            : widget.order
-                                                .advancePaymentWithOutSSLCharge
-                                                .round()),
-                                    _summaryTestWidget(
-                                        AppLocalization.of(context)
-                                            .getTranslatedValue("due_amount"),
-                                        widget.order.currentState ==
-                                                Constants.DELIVERED
-                                            ? 0
-                                            : (widget.order.totalBill.round() -
-                                                    widget.order
-                                                        .advancePaymentWithOutSSLCharge
-                                                        .round())
-                                                .round()),
-                                  ],
+                                Text(
+                                  AppLocalization.of(context)
+                                      .getTranslatedValue("order_summary"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1
+                                      .copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                 ),
-                              ),
-                              Visibility(
-                                visible: widget.order.paymentType ==
-                                        Constants.ONLINE_PAYMENT &&
-                                    widget.order.advancePayment > 0.0,
-                                child: Column(
-                                  children: [
-                                    _summaryTestWidget(
-                                        AppLocalization.of(context)
-                                            .getTranslatedValue("paid_amount"),
-                                        widget.order.totalBill.round()),
-                                    _summaryTestWidget(
-                                        AppLocalization.of(context)
-                                            .getTranslatedValue("due_amount"),
-                                        0),
-                                  ],
+                                SizedBox(
+                                  height:
+                                      1.875 * SizeConfig.heightSizeMultiplier,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 5 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              Text(
-                                AppLocalization.of(context)
-                                    .getTranslatedValue("billing_address"),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1
-                                    .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                              ),
-                              SizedBox(
-                                height: 2.5 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              _textWidget(
+                                _summaryTestWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("product_total"),
+                                    _subTotal.truncate()),
+                                _summaryTestWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("total_vat"),
+                                    widget.order.vat.round()),
+                                _summaryTestWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("discount"),
+                                    widget.order.discountAmount.round()),
+                                _summaryTestWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("coupon_discount"),
+                                    _couponDiscount.round()),
+                                _summaryTestWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("sub_total"),
+                                    (_subTotal - _couponDiscount).round()),
+                                _summaryTestWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("delivery_charge"),
+                                    widget.order.deliveryFee.round()),
+                                _summaryTestWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("total"),
+                                    widget.order.totalBill.round()),
+                                _summaryTestWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("advance_payment"),
+                                    widget.order.advancePaymentBKash.round()),
+                                Visibility(
+                                  visible: widget.order.paymentType ==
+                                          Constants.CASH_ON_DELIVERY &&
+                                      widget.order.advancePayment == 0.0,
+                                  child: Column(
+                                    children: [
+                                      _summaryTestWidget(
+                                          AppLocalization.of(context)
+                                              .getTranslatedValue(
+                                                  "paid_amount"),
+                                          widget.order.currentState ==
+                                                  Constants.DELIVERED
+                                              ? widget.order.totalBill.round()
+                                              : 0),
+                                      _summaryTestWidget(
+                                          AppLocalization.of(context)
+                                              .getTranslatedValue("due_amount"),
+                                          widget.order.currentState ==
+                                                  Constants.DELIVERED
+                                              ? 0
+                                              : widget.order.totalBill.round()),
+                                    ],
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: widget.order.paymentType ==
+                                          Constants.CASH_ON_DELIVERY &&
+                                      widget.order.advancePayment > 0.0,
+                                  child: Column(
+                                    children: [
+                                      _summaryTestWidget(
+                                          AppLocalization.of(context)
+                                              .getTranslatedValue(
+                                                  "paid_amount"),
+                                          widget.order.currentState ==
+                                                  Constants.DELIVERED
+                                              ? widget.order.totalBill.round()
+                                              : widget.order
+                                                  .advancePaymentWithOutSSLCharge
+                                                  .round()),
+                                      _summaryTestWidget(
+                                          AppLocalization.of(context)
+                                              .getTranslatedValue("due_amount"),
+                                          widget.order.currentState ==
+                                                  Constants.DELIVERED
+                                              ? 0
+                                              : (widget.order.totalBill
+                                                          .round() -
+                                                      widget.order
+                                                          .advancePaymentWithOutSSLCharge
+                                                          .round())
+                                                  .round()),
+                                    ],
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: widget.order.paymentType ==
+                                          Constants.ONLINE_PAYMENT &&
+                                      widget.order.advancePayment > 0.0,
+                                  child: Column(
+                                    children: [
+                                      _summaryTestWidget(
+                                          AppLocalization.of(context)
+                                              .getTranslatedValue(
+                                                  "paid_amount"),
+                                          widget.order.totalBill.round()),
+                                      _summaryTestWidget(
+                                          AppLocalization.of(context)
+                                              .getTranslatedValue("due_amount"),
+                                          0),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                Text(
                                   AppLocalization.of(context)
-                                      .getTranslatedValue("name"),
-                                  widget.order.name),
-                              SizedBox(
-                                height: 1 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              _textWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("phone"),
-                                  widget.order.phone),
-                              SizedBox(
-                                height: 1 * SizeConfig.heightSizeMultiplier,
-                              ),
-                              _textWidget(
-                                  AppLocalization.of(context)
-                                      .getTranslatedValue("address"),
-                                  widget.order.address.details +
-                                      ", " +
-                                      widget.order.address.upazila +
-                                      ", " +
-                                      widget.order.address.district +
-                                      ", " +
-                                      widget.order.address.division),
-                              SizedBox(
-                                height: 3.5 * SizeConfig.heightSizeMultiplier,
-                              ),
-                            ],
+                                      .getTranslatedValue("billing_address"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1
+                                      .copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                                SizedBox(
+                                  height: 2.5 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                _textWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("name"),
+                                    widget.order.name),
+                                SizedBox(
+                                  height: 1 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                _textWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("phone"),
+                                    widget.order.phone),
+                                SizedBox(
+                                  height: 1 * SizeConfig.heightSizeMultiplier,
+                                ),
+                                _textWidget(
+                                    AppLocalization.of(context)
+                                        .getTranslatedValue("address"),
+                                    widget.order.address.details +
+                                        ", " +
+                                        widget.order.address.upazila +
+                                        ", " +
+                                        widget.order.address.district +
+                                        ", " +
+                                        widget.order.address.division),
+                                SizedBox(
+                                  height: 3.5 * SizeConfig.heightSizeMultiplier,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -701,7 +725,9 @@ class _OrderInfoState extends State<OrderInfo>
   void onFailedCancelOrder(BuildContext context, String message) {}
 
   @override
-  void onFailedToPlaceOrder(BuildContext context, String message) {}
+  void onFailedToPlaceOrder(BuildContext context, String message) {
+    MyFlushBar.show(context, message);
+  }
 
   @override
   void onFailedToRequestRefund(BuildContext context, String message) {
@@ -709,7 +735,18 @@ class _OrderInfoState extends State<OrderInfo>
   }
 
   @override
-  void onOrderCanceled(Order order) {}
+  void onOrderCanceled(Order order) {
+    if (order != null && order.currentState == Constants.CANCELLED) {
+      setState(() {
+        // widget.order.currentState = order.currentState;
+        // widget.order.states = order.states;
+        widget.order = order;
+        widget.order.justOrdered = false;
+      });
+      MyFlushBar.show(context,
+          AppLocalization.of(context).getTranslatedValue("order_is_cancelled"));
+    }
+  }
 
   @override
   void onOrderPlaced(Order order) {}
@@ -751,5 +788,26 @@ class _OrderInfoState extends State<OrderInfo>
           AppLocalization.of(context)
               .getTranslatedValue("return_refund_requested"));
     }
+  }
+
+  @override
+  void failedToFetchSingleOrder(BuildContext context, String text) {
+    MyFlushBar.show(context, text);
+  }
+
+  @override
+  void fetchSingleOrder(Order order) {
+    if (order != null && order.currentState == Constants.CANCELLED) {
+      setState(() {
+        // widget.order.currentState = order.currentState;
+        // widget.order.states = order.states;
+        widget.order = order;
+        widget.order.justOrdered = false;
+      });
+    }
+  }
+
+  void reloadPage() async {
+    await _presenter.getSingleOrder(context, widget.order.id);
   }
 }

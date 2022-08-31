@@ -1336,7 +1336,8 @@ class DataPresenter with ChangeNotifier {
     });
   }
 
-  void getMyOrders(BuildContext context) {
+  Future<void> getMyOrders(BuildContext context) {
+    Logger().wtf("getMyOrders");
     con.Connectivity().checkConnectivity().then((result) {
       if (result == con.ConnectivityResult.mobile ||
           result == con.ConnectivityResult.wifi) {
@@ -1374,6 +1375,71 @@ class DataPresenter with ChangeNotifier {
                 }
               } else {
                 _orderContract.failedToGetAllOrders(context);
+              }
+            }).timeout(Duration(seconds: Constants.timeoutSeconds),
+                onTimeout: () {
+              client.close();
+
+              _myOverlayLoader.dismissDialog(context);
+              _connectivity.onTimeout(context);
+            }).catchError((error) {
+              print(error);
+
+              _myOverlayLoader.dismissDialog(context);
+              _orderContract.failedToGetAllOrders(context);
+            });
+          } else {
+            _connectivity.onInactive(context);
+          }
+        });
+      } else {
+        _connectivity.onDisconnected(context);
+      }
+    });
+  }
+
+  Future<Order> getSingleOrder(BuildContext context, String objId) {
+    Logger().wtf("getSingleOrder");
+    con.Connectivity().checkConnectivity().then((result) {
+      if (result == con.ConnectivityResult.mobile ||
+          result == con.ConnectivityResult.wifi) {
+        DataConnectionChecker().isHostReachable(_options).then((addressCheck) {
+          if (addressCheck.isSuccess) {
+            _myOverlayLoader.customLoader(context);
+
+            var client = http.Client();
+
+            client.get(Uri.encodeFull(APIRoute.SINGLE_ORDER + objId), headers: {
+              "Authorization": currentUser.value.token,
+              "Accept": "application/json"
+            }).then((response) async {
+              CustomLogger.debug(
+                  trace: CustomTrace(StackTrace.current),
+                  tag: "Single Order",
+                  message: response.body);
+              Logger().v(Uri.encodeFull(APIRoute.SINGLE_ORDER + objId));
+
+              log('response.body: ${response.body}');
+              var jsonData = json.decode(response.body);
+
+              _myOverlayLoader.dismissDialog(context);
+
+              if (response.statusCode == 200 || response.statusCode == 201) {
+                if (jsonData['success']) {
+                  Order order = Order.fromJson(jsonData['data']);
+
+                  _orderContract.fetchSingleOrder(order);
+                  // Logger().d(orders.toString());
+                  // Logger().d(orders.list[0].products[0].toString());
+                  // getMyOrders(context);
+                  return order;
+                } else {
+                  _orderContract.failedToFetchSingleOrder(
+                      context, jsonData['message']);
+                }
+              } else {
+                _orderContract.failedToFetchSingleOrder(
+                    context, jsonData['message']);
               }
             }).timeout(Duration(seconds: Constants.timeoutSeconds),
                 onTimeout: () {
@@ -1492,7 +1558,7 @@ class DataPresenter with ChangeNotifier {
     });
   }
 
-  void cancelOrder(BuildContext context, String orderID, String message) {
+  void cancelOrder(BuildContext context, String orderID) {
     con.Connectivity().checkConnectivity().then((result) {
       if (result == con.ConnectivityResult.mobile ||
           result == con.ConnectivityResult.wifi) {
@@ -1502,19 +1568,16 @@ class DataPresenter with ChangeNotifier {
 
             var client = http.Client();
 
-            Map<String, dynamic> data = {'cancelOrderReason': message};
+            // Map<String, dynamic> data = {'cancelOrderReason': message};
 
-            client
-                .post(
+            client.get(
               Uri.encodeFull(
                   APIRoute.CANCEL_ORDER + currentUser.value.id + "/" + orderID),
               headers: {
                 "Authorization": currentUser.value.token,
                 "Accept": "application/json"
               },
-              body: data,
-            )
-                .then((response) async {
+            ).then((response) async {
               CustomLogger.debug(
                   trace: CustomTrace(StackTrace.current),
                   tag: "Order Cancel",
@@ -1529,17 +1592,20 @@ class DataPresenter with ChangeNotifier {
                 if (jsonData['success']) {
                   Order order = Order.fromJson(jsonData['data']);
                   _orderContract.onOrderCanceled(order);
+                } else {
+                  _orderContract.onFailedCancelOrder(
+                      context,
+                      AppLocalization.of(context)
+                          .getTranslatedValue("failed_to_cancel_order"));
                 }
               } else {
                 _orderContract.onFailedCancelOrder(
                     context,
-                    jsonData['message'] != null
-                        ? jsonData['message']
-                        : AppLocalization.of(context)
-                            .getTranslatedValue("failed_to_cancel_order"));
+                    AppLocalization.of(context)
+                        .getTranslatedValue("failed_to_cancel_order"));
               }
             }).timeout(Duration(seconds: Constants.timeoutSeconds),
-                    onTimeout: () {
+                onTimeout: () {
               client.close();
 
               _myOverlayLoader.dismissDialog(context);

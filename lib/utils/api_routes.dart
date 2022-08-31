@@ -35,6 +35,7 @@ class APIRoute {
   static const String ALL_CAMPAIGN = API_V1 + "campaign/all";
   static const String PRODUCTS_BY_CAMPAIGN = API_V1 + "campaign/";
   static const String MY_ORDERS = API_V1 + "order/view/customer/";
+  static const String SINGLE_ORDER = API_V1 + "order/view/";
   static const String POST_REVIEW = API_V1 + "review/create";
   static const String PAYMENT_SUCCESS_ACKNOWLEDGE =
       API_V1 + "order/mobile/ssl-payment-success";
