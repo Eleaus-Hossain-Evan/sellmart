@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/contract/balance_contract.dart';
 import 'package:app/model/payment_option.dart';
 
@@ -789,7 +791,7 @@ class _CartState extends State<Cart>
       ),
     );
 
-    Logger().v(order);
+    log(order.toString());
   }
 
   @override

@@ -302,13 +302,13 @@ class _ProductDetailsFooterState extends State<ProductDetailsFooter>
     }
 
     widget.product.isCampaignOffer = false;
-    // if (widget.product.variationType == 2) {
-    //   widget.product.currentPrice = widget.product.sizeInfos[0].discountPrice;
-    // } else {
-    //   widget.product.currentPrice = onSelectedVariation.value.discountPrice;
-    // }
+    if (widget.product.variationType == 2) {
+      widget.product.currentPrice = widget.product.sizeInfos[0].discountPrice;
+    } else {
+      widget.product.currentPrice = onSelectedVariation.value.discountPrice;
+    }
 
-    // log(widget.product.toString());
+    log(widget.product.toString());
 
     int value = await _dbHelper.addProduct(widget.product);
 
