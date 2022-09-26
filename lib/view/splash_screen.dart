@@ -76,12 +76,12 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> checkVersion() async {
     final newVersion = NewVersion(
-      androidId: 'com.sellmart.app',
-      // context: context,
-      // dismissText: "Cancel",
-      // dismissAction: () => SystemNavigator.pop(),
-      // dialogText: 'Update Now',
-    );
+        // androidId: 'com.sellmart.app',
+        // context: context,
+        // dismissText: "Cancel",
+        // dismissAction: () => SystemNavigator.pop(),
+        // dialogText: 'Update Now',
+        );
 
     /// only notify the users.
     // newVersion.showAlertIfNecessary(context: context);

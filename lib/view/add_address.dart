@@ -645,6 +645,7 @@ class _AddAddressState extends State<AddAddress>
   void onAddressAdded(BuildContext context) {
     MyFlushBar.show(context,
         AppLocalization.of(context).getTranslatedValue("address_added"));
+    Navigator.pop(context);
   }
 
   @override
@@ -778,7 +779,7 @@ class _AddAddressState extends State<AddAddress>
                     // });
                   } else {
                     _userPresenter.addNewAddress(context, address);
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   }
                 }
               }

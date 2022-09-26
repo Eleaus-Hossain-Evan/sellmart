@@ -644,7 +644,7 @@ class UserPresenter with ChangeNotifier {
     });
   }
 
-  void addNewAddress(BuildContext context, Address address) {
+  Future<void> addNewAddress(BuildContext context, Address address) async {
     con.Connectivity().checkConnectivity().then((result) {
       if (result == con.ConnectivityResult.mobile ||
           result == con.ConnectivityResult.wifi) {
@@ -680,6 +680,7 @@ class UserPresenter with ChangeNotifier {
                 if (jsonData['success']) {
                   _setUser(jsonData, currentUser.value.token);
                   _profileContract.onAddressAdded(context);
+                  Navigator.pop(context);
                 }
               } else {
                 _profileContract.onFailed(
