@@ -1,5 +1,4 @@
 class Constants {
-
   static const int timeoutSeconds = 20;
 
   static const String ALL_CUSTOMER = "all-customer";
@@ -74,12 +73,14 @@ class Constants {
   static const String Phone_Already_Used = "Phone number is already use.";
   static const String INVALID_OTP = "Wrong OTP!";
   static const String INCORRECT_PHONE = "Phone number Incorrect";
-  static const String INCORRECT_PHONE_OR_PASSWORD = "Incorrect PhoneNumber Or Password!";
+  static const String INCORRECT_PHONE_OR_PASSWORD =
+      "Incorrect PhoneNumber Or Password!";
   static const String WRONG_PASSWORD = "Password didn't match!";
   static const String INVALID_COUPON = "Promo code is not valid!";
   static const String NUMBER_NOT_FOUND = "Phone number not found!.";
   static const String OLD_PASSWORD_WRONG = "Old password didn't match!.";
-  static const String ALREADY_REVIEWED = "You have already reviewed this product!";
+  static const String ALREADY_REVIEWED =
+      "You have already reviewed this product!";
   static const String INVALID_REFERRAL_CODE = "Invalid Refer Code!";
 
   static const int MY_ORDER_MENU = 1;
@@ -101,5 +102,15 @@ class Constants {
   static const String PRODUCT = "product";
   static const String FOOD = "food";
 
-  static const List<String> ORDER_STATES = ["Pending", "Confirmed", "Processing", "Picked", "Shipped", "Delivered", "Cancelled", "Returned", "Refunded"];
+  static const List<String> ORDER_STATES = [
+    "Pending",
+    "Confirmed",
+    "Processing",
+    "Picked",
+    "Shipped",
+    "Delivered",
+    "Cancelled",
+    "Returned",
+    "Refunded"
+  ];
 }

@@ -536,10 +536,22 @@ class _CartState extends State<Cart>
         if (order.value.address == null &&
             order.value.address == Address.init() &&
             order.value.address.id == null &&
-            currentUser.value.addresses.list.length > 2) {
+            currentUser.value.addresses.list.length > 2 &&
+            order.value.address.id == null &&
+            order.value.address.id.isEmpty &&
+            order.value.address.phone == null &&
+            order.value.address.phone.isEmpty &&
+            order.value.address.details == null &&
+            order.value.address.details.isEmpty &&
+            order.value.address.district == null &&
+            order.value.address.district.isEmpty &&
+            order.value.address.division == null &&
+            order.value.address.division.isEmpty &&
+            order.value.address.upazila == null &&
+            order.value.address.upazila.isEmpty) {
           _showToast(
               AppLocalization.of(context)
-                  .getTranslatedValue("select_delivery_address"),
+                  .getTranslatedValue("select_a_valid_delivery_address"),
               Toast.LENGTH_SHORT);
         } else {
           if (paymentOption.value == false) {

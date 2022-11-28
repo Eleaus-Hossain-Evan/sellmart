@@ -368,7 +368,7 @@
   "select": "Select",
   "order_summary": "Order Summary",
   "product_total": "Cart Total",
-  "select_delivery_address": "Select delivery address",
+  "select_a_valid_delivery_address": "Select a valid delivery address",
   "order_confirmation": "Order Confirmation",
   "enter_alternative_phone": "Enter alternative phone",
   "i_agree_to": "I agree to the ",

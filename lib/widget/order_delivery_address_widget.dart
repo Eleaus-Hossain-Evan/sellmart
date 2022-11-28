@@ -3,6 +3,7 @@ import 'package:app/model/upazilla.dart';
 import 'package:app/model/division.dart';
 
 import 'package:app/model/district.dart';
+import 'package:app/route/route_manager.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/view/home.dart';
 import 'package:logger/logger.dart';
@@ -18,7 +19,6 @@ import '../localization/app_localization.dart';
 import '../utils/size_config.dart';
 import 'package:flutter/material.dart';
 
-import 'delivery_address_widget.dart';
 import '../contract/location_contract.dart';
 import '../widget/error_widget.dart';
 import '../presenter/data_presenter.dart';
@@ -28,6 +28,7 @@ import '../utils/my_flush_bar.dart';
 import '../utils/shared_preference.dart';
 import 'address_list_view.dart';
 import '../model/address.dart';
+import 'delivery_address_widget.dart';
 
 class OrderDeliveryAddressWidget extends StatefulWidget {
   @override
@@ -127,8 +128,9 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
                 //     children: [
                 //       ValueListenableBuilder(
                 //         valueListenable: currentUser,
-                //         builder: (BuildContext context, User user, _) {
-                //          order.address = user.addresses.list[addressIndex.value];
+                //         builder: (BuildContext context, user, _) {
+                //           orderData.address =
+                //               user.addresses.list[addressIndex.value];
 
                 //           return Visibility(
                 //             visible: user.addresses.list.length > 1,
@@ -226,7 +228,7 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
                 //   height: 2.5 * SizeConfig.heightSizeMultiplier,
                 // ),
                 // Visibility(
-                //   visible: order.address != null,
+                //   visible: orderData.address != null,
                 //   child: Padding(
                 //     padding: EdgeInsets.only(
                 //       left: 1.5 * SizeConfig.heightSizeMultiplier,
@@ -237,7 +239,7 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
                 //       mainAxisAlignment: MainAxisAlignment.start,
                 //       crossAxisAlignment: CrossAxisAlignment.start,
                 //       children: <Widget>[
-                //         DeliveryAddressWidget(order.address, true),
+                //         DeliveryAddressWidget(orderData.address, true),
                 //         SizedBox(
                 //           height: 1.875 * SizeConfig.heightSizeMultiplier,
                 //         ),
@@ -261,7 +263,6 @@ class _OrderDeliveryAddressWidgetState extends State<OrderDeliveryAddressWidget>
                     },
                   ),
                 ),
-
                 SizedBox(
                   height: 2 * SizeConfig.heightSizeMultiplier,
                 ),

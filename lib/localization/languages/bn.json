@@ -368,7 +368,7 @@
   "select": "নির্বাচন করুন",
   "order_summary": "অর্ডারের সারাংশ",
   "product_total": "কার্টের মোট",
-  "select_delivery_address": "ডেলিভারির ঠিকানা নির্বাচন করুন",
+  "select_a_valid_delivery_address": "সঠিক ডেলিভারির ঠিকানা নির্বাচন করুন",
   "order_confirmation": "অর্ডার নিশ্চিত করন",
   "enter_alternative_phone": "বিকল্প ফোন লিখুন",
   "i_agree_to": "আমি একমত ",

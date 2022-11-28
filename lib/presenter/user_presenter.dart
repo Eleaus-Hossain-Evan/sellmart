@@ -152,9 +152,7 @@ class UserPresenter with ChangeNotifier {
                             .getTranslatedValue("invalid_referral_code"));
                   } else {
                     _otpContract.onFailedToSendOTP(
-                        context,
-                        AppLocalization.of(context)
-                            .getTranslatedValue("failed_to_send_otp"));
+                        context, jsonData['message']);
                   }
                 }
               }

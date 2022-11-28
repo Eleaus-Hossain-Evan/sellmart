@@ -23,7 +23,18 @@ class _DeliveryAddressWidgetState extends State<DeliveryAddressWidget> {
   Widget build(BuildContext context) {
     return Visibility(
       // visible: true,
-      visible: widget.address.id != null && widget.address.id.isNotEmpty,
+      visible: widget.address.id != null &&
+          widget.address.id.isNotEmpty &&
+          widget.address.phone != null &&
+          widget.address.phone.isNotEmpty &&
+          widget.address.details != null &&
+          widget.address.details.isNotEmpty &&
+          widget.address.district != null &&
+          widget.address.district.isNotEmpty &&
+          widget.address.division != null &&
+          widget.address.division.isNotEmpty &&
+          widget.address.upazila != null &&
+          widget.address.upazila.isNotEmpty,
       child: Card(
         elevation: !widget.isSelection ? widget.elevation : 4,
         // elevation: widget.elevation ,
