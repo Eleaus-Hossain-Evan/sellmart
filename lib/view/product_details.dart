@@ -376,10 +376,12 @@ class _ProductDetailsState extends State<ProductDetails>
 
     Logger().wtf(
         "${_product.id}-${_product.name}-${_product.slug}-${_product.youtubeVideo}");
-    Logger().v('product.selectedVariation: ${product.selectedVariation}');
-    Logger().v('onSelectedVariation: ${onSelectedVariation}');
-    Logger().v('sizeinfo: ${product.sizeInfos}');
-    Logger().v('currentPrice: ${product.currentPrice}');
+    // Logger().v('product.selectedVariation: ${product.selectedVariation}');
+    // Logger().v('onSelectedVariation: ${onSelectedVariation}');
+    // Logger().v('sizeinfo: ${product.sizeInfos}');
+    // Logger().v('currentPrice: ${product.currentPrice}');
+
+    log(_product.toString());
 
     _onImagesSelected();
   }
